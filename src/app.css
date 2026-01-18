@@ -1,0 +1,544 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Rubik:ital,wght@0,300..900;1,300..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@import 'tailwindcss';
+@import "tw-animate-css";
+
+/* Import component package CSS (theme tokens) */
+@import '@parallaxrealms/components-ecom/shadcn/css';
+
+/* Tell Tailwind to scan source files */
+@source "./lib/**/*.{html,js,svelte,ts}";
+@source "./routes/**/*.{html,js,svelte,ts}";
+
+/* CRITICAL: Scan component packages for Tailwind classes */
+@source "node_modules/@parallaxrealms/components-core/src/**/*.{html,js,svelte,ts}";
+@source "node_modules/@parallaxrealms/components-ecom/src/**/*.{html,js,svelte,ts}";
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@plugin './lib/tailwind/flex-transitions.cjs';
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Slate palette - no rounded borders */
+  --radius: 0;
+
+  /* Parallax & Pixel - Aqua color palette (dark mode only) */
+  --palette-deep-teal: #004e64;
+  --palette-cyan: #00a5cf;
+  --palette-mint: #9fffcb;
+  --palette-sea-green: #25a18e;
+  --palette-light-green: #7ae582;
+
+  /* Primary accent colors (semantic naming) */
+  --accent-primary: #00a5cf;
+  /* Bright cyan - main brand */
+  --accent-secondary: #25a18e;
+  /* Sea green - secondary */
+  --accent-highlight: #9fffcb;
+  /* Mint - CTAs, attention */
+
+  /* Legacy aliases for existing components */
+  --accent-cyan: #00a5cf;
+  --accent-magenta: #9fffcb;
+  --accent-purple: #25a18e;
+
+  /* Dark mode base colors - SLATE palette */
+  --background: oklch(0.208 0.042 265.755);
+  /* slate-900 */
+  --foreground: oklch(0.984 0.003 247.858);
+  /* slate-50 */
+  --card: oklch(0.279 0.041 260.031);
+  /* slate-800 */
+  --card-foreground: oklch(0.984 0.003 247.858);
+  /* slate-50 */
+  --popover: oklch(0.279 0.041 260.031);
+  /* slate-800 */
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  /* slate-50 */
+  --primary: oklch(0.968 0.007 247.896);
+  /* slate-100 */
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  /* slate-900 */
+  --secondary: oklch(0.372 0.044 257.287);
+  /* slate-700 */
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  /* slate-50 */
+  --muted: oklch(0.372 0.044 257.287);
+  /* slate-700 */
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  /* slate-400 */
+  --accent: oklch(0.372 0.044 257.287);
+  /* slate-700 */
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  /* slate-50 */
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(0.372 0.044 257.287);
+  /* slate-700 */
+  --input: oklch(0.372 0.044 257.287);
+  /* slate-700 */
+  --ring: oklch(0.554 0.046 257.417);
+  /* slate-500 */
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.279 0.041 260.031);
+  /* slate-800 */
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  /* slate-50 */
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  /* slate-50 */
+  --sidebar-accent: oklch(0.372 0.044 257.287);
+  /* slate-700 */
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  /* slate-50 */
+  --sidebar-border: oklch(0.372 0.044 257.287);
+  /* slate-700 */
+  --sidebar-ring: oklch(0.554 0.046 257.417);
+  /* slate-500 */
+
+  /* Surface/text colors for dashboard theming (slate) */
+  --surface: oklch(0.279 0.041 260.031);
+  /* slate-800 */
+  --surface-hover: oklch(0.372 0.044 257.287);
+  /* slate-700 */
+  --text: oklch(0.968 0.007 247.896);
+  /* slate-100 */
+  --text-muted: oklch(0.704 0.04 256.788);
+  /* slate-400 */
+
+  /* Dashboard-specific colors (hex for easy use) */
+  --dashboard-bg: #0f172a;
+  /* slate-900 */
+  --dashboard-surface: #1e293b;
+  /* slate-800 */
+  --dashboard-border: #334155;
+  /* slate-700 */
+  --dashboard-text: #f8fafc;
+  /* slate-50 */
+  --dashboard-text-muted: #94a3b8;
+  /* slate-400 */
+  --dashboard-input-bg: #0f172a;
+  /* slate-900 */
+  --dashboard-focus-ring: #00a5cf;
+  /* accent-primary */
+
+  /* CMY tokens (using aqua palette) */
+  --cyan: #00a5cf;
+  --cyan-dark: #004e64;
+  --magenta: #9fffcb;
+  --magenta-dark: #7ae582;
+  --yellow: #25a18e;
+  --yellow-dark: #004e64;
+
+  .bg-section\/50 {
+    background-color: rgba(15, 23, 42, 0.5);
+    /* slate-900 */
+  }
+
+  .bg-copyright {
+    background-color: rgba(15, 23, 42, 0.5);
+  }
+
+  .card-bg {
+    background: oklch(0.279 0.041 260.031);
+    /* slate-800 */
+  }
+
+  .card-base {
+    background-color: var(--card-bg);
+    color: var(--card-text);
+  }
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Parallax & Pixel accent colors (semantic) */
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-highlight: var(--accent-highlight);
+
+  /* Legacy color aliases */
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-magenta: var(--accent-magenta);
+  --color-accent-purple: var(--accent-purple);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Dashboard surface/text colors */
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Custom scrollbar styling (dark mode only) */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1e293b;
+    /* slate-800 */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg,
+        var(--palette-deep-teal) 0%,
+        var(--palette-cyan) 50%,
+        var(--palette-mint) 100%);
+    border: 2px solid #1e293b;
+    /* slate-800 */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg,
+        var(--palette-cyan) 0%,
+        var(--palette-sea-green) 50%,
+        var(--palette-mint) 100%);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: #1e293b;
+    /* slate-800 */
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-primary) #1e293b;
+    /* slate-800 */
+  }
+}
+
+/* Token utility aliases (so you can use shadcn-like classes without changing Tailwind config) */
+@layer utilities {
+  .font-logo {
+    font-family: 'Baloo 2', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  /* Parallax & Pixel fonts */
+  .font-terminal {
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Rubik Glitch - for main titles */
+  .font-pixel {
+    font-family: 'Rubik Glitch', system-ui;
+    letter-spacing: 0.02em;
+  }
+
+  /* Rubik Bold - for section headers (secondary word) */
+  .font-fade {
+    font-family: 'Rubik', system-ui;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  /* Rubik Black - for title default state */
+  .font-rubik {
+    font-family: 'Rubik', system-ui;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+  }
+
+  /* Rubik Semi-Bold - for card headers */
+  .font-rubik-card {
+    font-family: 'Rubik', system-ui;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  /* Semantic accent color utilities */
+  .text-accent-primary {
+    color: var(--accent-primary);
+  }
+
+  .text-accent-secondary {
+    color: var(--accent-secondary);
+  }
+
+  .text-accent-highlight {
+    color: var(--accent-highlight);
+  }
+
+  /* Legacy accent color text utilities */
+  .text-accent-cyan {
+    color: var(--accent-cyan);
+  }
+
+  .text-accent-magenta {
+    color: var(--accent-magenta);
+  }
+
+  .text-accent-purple {
+    color: var(--accent-purple);
+  }
+
+  /* Semantic accent background utilities */
+  .bg-accent-primary {
+    background-color: var(--accent-primary);
+  }
+
+  .bg-accent-secondary {
+    background-color: var(--accent-secondary);
+  }
+
+  .bg-accent-highlight {
+    background-color: var(--accent-highlight);
+  }
+
+  /* Legacy accent background utilities */
+  .bg-accent-cyan {
+    background-color: var(--accent-cyan);
+  }
+
+  .bg-accent-magenta {
+    background-color: var(--accent-magenta);
+  }
+
+  .bg-accent-purple {
+    background-color: var(--accent-purple);
+  }
+
+  /* Semantic glow effects (aqua palette) */
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(0, 165, 207, 0.5);
+  }
+
+  .glow-secondary {
+    box-shadow: 0 0 20px rgba(37, 161, 142, 0.5);
+  }
+
+  .glow-highlight {
+    box-shadow: 0 0 20px rgba(159, 255, 203, 0.5);
+  }
+
+  /* Legacy glow effects */
+  .glow-cyan {
+    box-shadow: 0 0 20px rgba(0, 165, 207, 0.5);
+  }
+
+  .glow-magenta {
+    box-shadow: 0 0 20px rgba(159, 255, 203, 0.5);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(37, 161, 142, 0.5);
+  }
+
+  /* Palette utilities for aqua colors */
+  .text-palette-deep-teal {
+    color: var(--palette-deep-teal);
+  }
+
+  .text-palette-cyan {
+    color: var(--palette-cyan);
+  }
+
+  .text-palette-mint {
+    color: var(--palette-mint);
+  }
+
+  .text-palette-sea-green {
+    color: var(--palette-sea-green);
+  }
+
+  .text-palette-light-green {
+    color: var(--palette-light-green);
+  }
+
+  .bg-palette-deep-teal {
+    background-color: var(--palette-deep-teal);
+  }
+
+  .bg-palette-cyan {
+    background-color: var(--palette-cyan);
+  }
+
+  .bg-palette-mint {
+    background-color: var(--palette-mint);
+  }
+
+  .bg-palette-sea-green {
+    background-color: var(--palette-sea-green);
+  }
+
+  .bg-palette-light-green {
+    background-color: var(--palette-light-green);
+  }
+
+  /* Glitch text animation utility */
+  .glitch-hover:hover {
+    animation: glitchText 0.3s infinite;
+  }
+
+  @keyframes glitchText {
+    0% {
+      text-shadow:
+        2px 0 var(--accent-primary),
+        -2px 0 var(--accent-highlight);
+    }
+
+    25% {
+      text-shadow:
+        -2px 0 var(--accent-primary),
+        2px 0 var(--accent-highlight);
+    }
+
+    50% {
+      text-shadow:
+        2px 0 var(--accent-highlight),
+        -2px 0 var(--accent-primary);
+    }
+
+    75% {
+      text-shadow:
+        -2px 0 var(--accent-highlight),
+        2px 0 var(--accent-primary);
+    }
+
+    100% {
+      text-shadow:
+        2px 0 var(--accent-primary),
+        -2px 0 var(--accent-highlight);
+    }
+  }
+
+  /* Scanline overlay */
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px);
+    opacity: 0.3;
+  }
+
+  /* Gradient text using aqua palette */
+  .gradient-text {
+    background: linear-gradient(135deg,
+        var(--palette-deep-teal),
+        var(--palette-cyan),
+        var(--palette-mint),
+        var(--palette-sea-green));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+    padding-bottom: 0.1em;
+    line-height: 1.2 !important;
+    display: inline-block;
+  }
+
+  .gradient-text-white {
+    background: linear-gradient(135deg,
+        var(--palette-cyan),
+        var(--palette-mint),
+        var(--palette-sea-green),
+        var(--palette-light-green));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+    padding-bottom: 0.1em;
+    line-height: 1.2 !important;
+    display: inline-block;
+  }
+
+  /* Gradient button using aqua palette */
+  .btn-gradient {
+    background: linear-gradient(135deg,
+        var(--palette-deep-teal),
+        var(--palette-cyan),
+        var(--palette-sea-green),
+        var(--palette-mint));
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+    transition: all 0.3s ease;
+  }
+
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 165, 207, 0.4);
+  }
+
+  /* Legacy btn-cmy alias */
+  .btn-cmy {
+    background: linear-gradient(135deg,
+        var(--palette-deep-teal),
+        var(--palette-cyan),
+        var(--palette-sea-green),
+        var(--palette-mint));
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+    transition: all 0.3s ease;
+  }
+
+  .btn-cmy:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 165, 207, 0.4);
+  }
+
+  .blob-shape {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+}

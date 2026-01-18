@@ -1,0 +1,8 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+
+Disallow: /*.js$
+Disallow: /*.json
+Disallow: /admin/
+Allow: /
+Sitemap: https://www.satoridigital.io/sitemap.xml
