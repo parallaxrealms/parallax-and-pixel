@@ -431,6 +431,7 @@
 </Dialog>
 
 <style lang="postcss">
+	@reference "tailwindcss";
 	.tab-header {
 		@apply my-8 border border-slate-700/50 bg-gradient-to-r from-slate-900/90 to-slate-800/90 p-6 shadow-xl backdrop-blur-sm;
 	}
