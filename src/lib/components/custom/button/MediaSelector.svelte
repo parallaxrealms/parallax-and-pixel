@@ -60,7 +60,6 @@
 			const likeSearch = search ? `%${search.replaceAll('%', '\\%')}%` : '%';
 
 			let query = supabase
-				.schema('odin')
 				.from('media_assets')
 				.select('*')
 				.ilike('path', likeFolder)
@@ -101,7 +100,7 @@
 		if (!confirm('Delete this file?')) return;
 
 		// remove from Storage first
-		const { error: delErr } = await supabase.storage.from('odin').remove([id]);
+		const { error: delErr } = await supabase.storage.from('media_library').remove([id]);
 		if (delErr) {
 			error = delErr.message;
 			return;
@@ -109,7 +108,6 @@
 
 		// then delete DB row
 		const { error: dbErr } = await supabase
-			.schema('odin')
 			.from('media_assets')
 			.delete()
 			.eq('path', id);
@@ -139,23 +137,22 @@
 		for (const file of Array.from(filesToUpload)) {
 			const key = (folder ? folder.replace(/^\/|\/$/g, '') + '/' : '') + file.name;
 			// 1) upload or upsert
-			const up = await supabase.storage.from('odin').upload(key, file, { upsert: true });
+			const up = await supabase.storage.from('media_library').upload(key, file, { upsert: true });
 			if (up.error) {
 				error = up.error.message;
 				continue;
 			}
 			// 2) public URL
-			const { data: pub } = supabase.storage.from('odin').getPublicUrl(key);
+			const { data: pub } = supabase.storage.from('media_library').getPublicUrl(key);
 			// 3) infer type
 			const ext = file.name.split('.').pop() || '';
 			const kind = detectType(ext);
 			// 4) upsert DB row
 			const { error: insErr } = await supabase
-				.schema('odin')
 				.from('media_assets')
 				.upsert(
 					{
-						bucket: 'odin',
+						bucket: 'media_library',
 						path: key,
 						url: pub.publicUrl,
 						type: kind,
@@ -299,54 +296,55 @@
 			{:else}
 				<button
 					type="button"
-					class="group relative overflow-hidden border border-slate-700/50 bg-slate-900/80 p-2 text-left transition hover:border-slate-500"
+					class="group relative overflow-hidden border border-slate-700/50 bg-slate-900/80 p-1.5 text-left transition hover:border-slate-500"
 					onclick={() => toggleSelect(it.id)}
 				>
-					<div class="relative h-36 w-full bg-slate-700/70">
+					<div class="relative w-full bg-slate-700/70">
 						{#if it.type === 'image'}
 							<img
 								src={it.publicUrl}
 								alt={it.name}
-								class="h-full w-full object-cover"
+								class="w-full object-contain"
+								style="max-height: 6rem;"
 								loading="lazy"
 							/>
 						{:else if it.type === 'video'}
-							<video src={it.publicUrl} class="h-full w-full object-cover" muted></video>
+							<video src={it.publicUrl} class="w-full object-contain" style="max-height: 6rem;" muted></video>
 						{:else}
-							<div class="flex h-full items-center justify-center">
-								<ImgIcon class="h-10 w-10 text-slate-300" />
+							<div class="flex h-16 items-center justify-center">
+								<ImgIcon class="h-8 w-8 text-slate-300" />
 							</div>
 						{/if}
 						{#if selected.has(it.id)}
 							<div class="absolute inset-0 flex items-center justify-center bg-blue-600/40">
-								<Check class="h-7 w-7 text-white" />
+								<Check class="h-5 w-5 text-white" />
 							</div>
 						{/if}
 					</div>
-					<div class="mt-2 flex items-center justify-between">
-						<p class="truncate text-sm text-slate-100" title={it.name}>{it.name}</p>
-						<div class="flex gap-1">
+					<div class="mt-1 flex items-center justify-between">
+						<p class="truncate text-xs text-slate-100" title={it.name}>{it.name}</p>
+						<div class="flex gap-0.5">
 							<Button
 								variant="outline"
 								size="icon"
-								class="h-8 w-8"
+								class="h-6 w-6"
 								onclick={(e: any) => {
 									e.stopPropagation();
 									copy(it.publicUrl);
 								}}
 							>
-								<Copy class="h-4 w-4" />
+								<Copy class="h-3 w-3" />
 							</Button>
 							<Button
 								variant="ghost"
 								size="icon"
-								class="h-8 w-8 text-red-400 hover:bg-red-500/10"
+								class="h-6 w-6 text-red-400 hover:bg-red-500/10"
 								onclick={(e: any) => {
 									e.stopPropagation();
 									remove(it.id);
 								}}
 							>
-								<Trash2 class="h-4 w-4" />
+								<Trash2 class="h-3 w-3" />
 							</Button>
 						</div>
 					</div>
@@ -364,7 +362,7 @@
 		<DialogHeader>
 			<DialogTitle>Upload media</DialogTitle>
 			<DialogDescription
-				>Files go to bucket “odin”{folder ? ` / ${folder}` : ''} and into odin.media_assets.</DialogDescription
+				>Files go to bucket "media_library"{folder ? ` / ${folder}` : ''} and into media_assets.</DialogDescription
 			>
 		</DialogHeader>
 

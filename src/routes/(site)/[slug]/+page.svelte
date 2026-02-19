@@ -109,7 +109,14 @@
 	});
 </script>
 
-<SEO title={page.title} description={page.meta_description ?? undefined} />
+<SEO
+	title="{page.title} | Parallax&Pixel"
+	description={page.meta_description ?? undefined}
+	siteName="Parallax&Pixel"
+	siteUrl="https://www.parallaxandpixel.com"
+	author="Parallax"
+	ogImage={page.banner_image_url ?? '/preview/self_circle.webp'}
+/>
 
 <Nav {supabase} {data} variant="site" navbarLinks={data.navbarLinks} />
 
@@ -120,7 +127,7 @@
 
 	<article class="page-content">
 		{#if page.banner_image_url}
-			<img src={page.banner_image_url} alt={page.title} class="banner-image" />
+			<img src={page.banner_image_url} alt={page.title} width="896" height="400" class="banner-image" />
 		{/if}
 
 		<h1>{page.title}</h1>
@@ -175,5 +182,10 @@
 		font-weight: 700;
 		margin-bottom: 1.5rem;
 		color: inherit;
+	}
+
+	/* Hide editor bubble menus (table row/col controls, link menu) on public pages */
+	.page-content :global(.bubble-menu-wrapper) {
+		display: none !important;
 	}
 </style>

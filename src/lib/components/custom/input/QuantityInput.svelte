@@ -119,7 +119,7 @@
 		}
 	};
 
-	const currentSize = sizeClasses[size];
+	const currentSize = $derived(sizeClasses[size]);
 
 	// Variant classes
 	const variantClasses = {

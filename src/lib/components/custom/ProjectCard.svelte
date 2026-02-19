@@ -4,9 +4,10 @@
 	interface Props {
 		project: Project;
 		variant?: 'default' | 'compact';
+		hideViewDetails?: boolean;
 	}
 
-	let { project, variant = 'default' }: Props = $props();
+	let { project, variant = 'default', hideViewDetails = false }: Props = $props();
 </script>
 
 <article
@@ -18,6 +19,9 @@
 			<img
 				src={project.image}
 				alt={project.title}
+				loading="lazy"
+				width="640"
+				height="360"
 				class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
 				onerror={(e) => {
 					const target = e.target as HTMLImageElement;
@@ -25,33 +29,57 @@
 				}}
 			/>
 		{/if}
-		<!-- Placeholder if no image -->
-		<div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-accent-primary/20 via-accent-highlight/20 to-accent-secondary/20">
-			<span class="font-rubik text-2xl text-slate-600">
-				{project.category === 'game' ? 'GAME' : 'WEB'}
-			</span>
-		</div>
-
 		<!-- Overlay with links -->
-		<div class="absolute inset-0 flex items-center justify-center gap-3 bg-slate-900/80 opacity-0 transition-opacity group-hover:opacity-100">
-			{#if project.liveUrl}
-				<a
-					href={project.liveUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="font-terminal bg-accent-primary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
-				>
-					View
-				</a>
+		<div class="absolute inset-0 flex items-end justify-center gap-3 pb-4 opacity-0 transition-opacity group-hover:opacity-100">
+			{#if project.category === 'game'}
+				<!-- Game cards: View Details + Play -->
+				{#if !hideViewDetails}
+					<a
+						href="/games"
+						class="font-terminal bg-slate-100 px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+					>
+						View Details
+					</a>
+				{/if}
+				{#if project.liveUrl}
+					<a
+						href={project.liveUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-terminal bg-accent-primary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+					>
+						Play
+					</a>
+				{/if}
+			{:else}
+				<!-- Web cards: View + Code -->
+				{#if project.liveUrl}
+					<a
+						href={project.liveUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-terminal bg-accent-primary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+					>
+						View
+					</a>
+				{/if}
+				{#if project.repoUrl}
+					<a
+						href={project.repoUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-terminal bg-slate-100 px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+					>
+						Code
+					</a>
+				{/if}
 			{/if}
-			{#if project.repoUrl}
+			{#if project.devlogUrl}
 				<a
-					href={project.repoUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="font-terminal bg-slate-100 px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+					href={project.devlogUrl}
+					class="font-terminal bg-accent-secondary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
 				>
-					Code
+					Devlog
 				</a>
 			{/if}
 		</div>
@@ -59,25 +87,23 @@
 
 	<!-- Content -->
 	<div class="p-5">
-		<h3 class="font-terminal mb-2 text-lg font-semibold text-slate-100">
+		<h3 class="font-terminal mb-2 text-xl font-bold text-slate-100">
 			{project.title}
 		</h3>
 
-		{#if variant === 'default'}
-			<p class="mb-4 line-clamp-2 text-sm text-slate-400">
-				{project.description}
-			</p>
-		{/if}
+		<p class="mb-4 text-slate-400 {variant === 'compact' ? 'line-clamp-2 text-sm' : 'text-base'}">
+			{project.description}
+		</p>
 
 		<!-- Tech Stack -->
 		<div class="flex flex-wrap gap-1.5">
 			{#each project.techStack.slice(0, variant === 'compact' ? 3 : 5) as tech (tech)}
-				<span class="bg-slate-800 px-2 py-0.5 font-terminal text-xs text-slate-400">
+				<span class="bg-slate-800 px-2 py-1 font-terminal text-sm text-slate-400">
 					{tech}
 				</span>
 			{/each}
 			{#if project.techStack.length > (variant === 'compact' ? 3 : 5)}
-				<span class="bg-slate-800 px-2 py-0.5 font-terminal text-xs text-slate-500">
+				<span class="bg-slate-800 px-2 py-1 font-terminal text-sm text-slate-500">
 					+{project.techStack.length - (variant === 'compact' ? 3 : 5)}
 				</span>
 			{/if}

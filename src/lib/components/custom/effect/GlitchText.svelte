@@ -40,14 +40,18 @@
 		...restProps
 	}: GlitchTextProps = $props();
 
-	let charStates = $state<CharState[]>(
-		text.split('').map((c) => ({ char: c, original: c, highlighted: false }))
-	);
+	let charStates = $state<CharState[]>([]);
 	let timeoutRef: ReturnType<typeof setTimeout> | null = null;
 	let containerRef = $state<HTMLElement | null>(null);
-	let charRefs: (HTMLSpanElement | null)[] = new Array(text.length).fill(null);
+	let charRefs = $state<(HTMLSpanElement | null)[]>([]);
 	let mouseX = $state(0);
 	let mouseY = $state(0);
+
+	// Sync charStates and charRefs when text changes
+	$effect(() => {
+		charStates = text.split('').map((c) => ({ char: c, original: c, highlighted: false }));
+		charRefs = new Array(text.length).fill(null);
+	});
 
 	function getRandomInterval() {
 		return glitchInterval + Math.random() * glitchIntervalVariance;

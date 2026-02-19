@@ -95,19 +95,19 @@
 		minimal: 'border-0 shadow-none'
 	};
 
-	const heightClass = sizeClasses[size];
-	const variantClass = variantClasses[variant];
-	const roundedClass = rounded ? 'rounded-xl overflow-hidden' : '';
-	const shadowClass = shadow && variant !== 'minimal' ? 'shadow-xl' : '';
+	const heightClass = $derived(sizeClasses[size]);
+	const variantClass = $derived(variantClasses[variant]);
+	const roundedClass = $derived(rounded ? 'rounded-xl overflow-hidden' : '');
+	const shadowClass = $derived(shadow && variant !== 'minimal' ? 'shadow-xl' : '');
 
-	const finalClass = `
+	const finalClass = $derived(`
 		relative w-full overflow-hidden
 		${heightClass}
 		${variantClass}
 		${roundedClass}
 		${shadowClass}
 		${className}
-	`.trim();
+	`.trim());
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->

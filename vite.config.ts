@@ -6,15 +6,22 @@ import path from 'path';
 export default defineConfig(async (): Promise<UserConfig> => {
 	return {
 		plugins: [tailwindcss(), sveltekit()],
+		optimizeDeps: {
+			exclude: [
+				'@parallaxrealms/components-core',
+				'@parallaxrealms/components-ecom',
+				'@parallaxrealms/stores-ecom',
+				'@parallaxrealms/utils-core'
+				// DO NOT add components-edda here - it needs pre-bundling for highlight.js
+			]
+		},
 		resolve: {
 			alias: {
-				// REQUIRED: Vite needs this to resolve @lib imports in component packages
 				'@lib': path.resolve('node_modules/@parallaxrealms/components-core/src/lib')
 			}
 		},
 		server: {
 			fs: {
-				// Allow Vite to access component package source files
 				allow: ['node_modules/@parallaxrealms']
 			}
 		},

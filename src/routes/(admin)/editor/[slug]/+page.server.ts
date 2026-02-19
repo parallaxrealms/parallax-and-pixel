@@ -45,6 +45,7 @@ export const actions: Actions = {
 		const content = formData.get('content') as string;
 		const status = formData.get('status') as string;
 		const metaDescription = formData.get('meta_description') as string;
+		const category = formData.get('category') as string;
 		const pageStylesData = formData.get('page_styles') as string;
 		const isNew = formData.get('is_new') === 'true';
 
@@ -94,7 +95,8 @@ export const actions: Actions = {
 			...existingOptions,
 			...(pageStylesJson?.background !== undefined ? { background: pageStylesJson.background } : {}),
 			...(pageStylesJson?.textColorLight !== undefined ? { textColorLight: pageStylesJson.textColorLight } : {}),
-			...(pageStylesJson?.textColorDark !== undefined ? { textColorDark: pageStylesJson.textColorDark } : {})
+			...(pageStylesJson?.textColorDark !== undefined ? { textColorDark: pageStylesJson.textColorDark } : {}),
+			...(pageStylesJson?.scrollingText !== undefined ? { scrollingText: pageStylesJson.scrollingText } : {})
 		};
 
 		const pageData = {
@@ -102,6 +104,7 @@ export const actions: Actions = {
 			content: contentJson,
 			status: status || 'draft',
 			meta_description: metaDescription?.trim() || null,
+			category: category?.trim() || null,
 			page_options: pageOptions,
 			last_modified_by: session.user.id,
 			...(status === 'published' ? { published_at: new Date().toISOString() } : {})

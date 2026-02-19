@@ -5,6 +5,7 @@
 	import HomeTab from '$lib/components/dashboardTabs/HomeTab.svelte';
 	import WebsiteTab from '$lib/components/dashboardTabs/WebsiteTab.svelte';
 	import MediaLibraryTab from '$lib/components/dashboardTabs/MediaLibraryTab.svelte';
+	import SocialTab from '$lib/components/dashboardTabs/SocialTab.svelte';
 	import { fade } from 'svelte/transition';
 
 	let { data } = $props();
@@ -39,6 +40,10 @@
 			{:else if $selectedTab === 'media'}
 				<div in:fade={{ duration: 150, delay: 200 }} out:fade={{ duration: 150 }}>
 					<MediaLibraryTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'social'}
+				<div in:fade={{ duration: 150, delay: 200 }} out:fade={{ duration: 150 }}>
+					<SocialTab {supabase} {siteId} />
 				</div>
 			{/if}
 		{/if}

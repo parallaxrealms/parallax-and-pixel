@@ -11,7 +11,29 @@
 	import * as Select from '$lib/components/shadcn/ui/select';
 	import { MediaSelector } from '@parallaxrealms/components-ecom';
 	import { EdraEditor, EdraToolBar } from '@parallaxrealms/components-edda';
-	import { ArrowLeft, Save, Eye, Loader2, ChevronDown } from 'lucide-svelte';
+	import {
+		ImageComparisonSliderNode,
+		ThumbnailGalleryNode,
+		YouTubeEmbedNode,
+		ImageOnlySliderNode,
+		MultiColumnNode,
+		ColumnNode
+	} from '$lib/editor/extensions';
+	import SharePostDialog from '$lib/components/custom/social/SharePostDialog.svelte';
+	import {
+		ArrowLeft, Save, Eye, Share2, Loader2, ChevronDown,
+		SplitSquareHorizontal, LayoutGrid, Youtube,
+		GalleryHorizontal, Columns2, Columns3, Columns4
+	} from 'lucide-svelte';
+
+	const customExtensions = [
+		ImageComparisonSliderNode,
+		ThumbnailGalleryNode,
+		YouTubeEmbedNode,
+		ImageOnlySliderNode,
+		MultiColumnNode,
+		ColumnNode
+	];
 
 	// Dialog component aliases for MediaSelector
 	const MediaDialog = Dialog.Root;
@@ -29,8 +51,12 @@
 	let title = $state(data.page?.title ?? '');
 	let status = $state(data.page?.status ?? 'draft');
 	let metaDescription = $state(data.page?.meta_description ?? '');
+	let category = $state(data.page?.category ?? '');
 	let saving = $state(false);
+	let showShareDialog = $state(false);
 	let sidebarOpen = $state(true);
+	let successMessage = $state('');
+	let errorMessage = $state('');
 
 	// Background options state - initialized from page_options if available
 	const pageOptions = (data.page?.page_options ?? {}) as Record<string, unknown>;
@@ -66,9 +92,12 @@
 	let overlayColorDark = $state((bgOptions?.overlayColorDark as string) ?? '#000000');
 	let overlayAlpha = $state((bgOptions?.overlayAlpha as number) ?? 0.5);
 
-	// Page text color light/dark
-	let textColorLight = $state((pageOptions?.textColorLight as string) ?? '#111111');
-	let textColorDark = $state((pageOptions?.textColorDark as string) ?? '#f5f5f5');
+	// Default text color (light/dark) - applies to uncolored (default) text
+	let textColorLight = $state((pageOptions?.textColorLight as string) ?? '');
+	let textColorDark = $state((pageOptions?.textColorDark as string) ?? '');
+
+	// Scrolling text for blog header ticker
+	let scrollingText = $state((pageOptions?.scrollingText as string) ?? '');
 
 	// For MediaSelector image URL binding
 	let selectedBgImageUrl = $state('');
@@ -106,8 +135,9 @@
 
 		return JSON.stringify({
 			background,
-			textColorLight,
-			textColorDark
+			textColorLight: textColorLight || undefined,
+			textColorDark: textColorDark || undefined,
+			scrollingText
 		});
 	});
 
@@ -149,13 +179,13 @@
 		return `background-color: rgba(${r}, ${g}, ${b}, ${overlayAlpha})`;
 	});
 
-	// Live preview text color
+	let hasPreviewOverlay = $derived(bgType === 'image' && overlayEnabled);
+
+	// Live preview default text color
 	let previewTextColorStyle = $derived(() => {
 		const color = isDark ? textColorDark : textColorLight;
 		return color ? `color: ${color}` : '';
 	});
-
-	let hasPreviewOverlay = $derived(bgType === 'image' && overlayEnabled);
 
 	let contentJson = $derived(() => {
 		if (editor) {
@@ -170,48 +200,138 @@
 
 	function handlePreview() {
 		if (data.slug) {
-			window.open(`/${data.slug}`, '_blank');
+			window.open(`/blog/${data.slug}`, '_blank');
 		}
 	}
 </script>
 
 <div class="editor-page">
-	<!-- Header with Toolbar -->
-	<header class="editor-header">
-		<div class="header-row">
-			<div class="header-left">
-				<Button variant="ghost" size="sm" onclick={handleBack}>
-					<ArrowLeft class="h-4 w-4 mr-2" />
-					Back
-				</Button>
-				<div class="page-info">
-					<span class="slug">/{data.slug}</span>
-					{#if data.isNew}
-						<span class="badge new">New</span>
-					{:else}
-						<span class="badge {status}">{status}</span>
-					{/if}
-				</div>
-			</div>
-
-			<div class="header-right">
-				{#if !data.isNew}
-					<Button variant="outlined" size="sm" onclick={handlePreview}>
-						<Eye class="h-4 w-4 mr-2" />
-						Preview
-					</Button>
-				{/if}
-			</div>
-		</div>
-
-		<!-- Toolbar row -->
-		<div class="toolbar-row">
-			<ToggleFlip isOpen={sidebarOpen} {toggleSidebar} />
-			{#if editor}
-				<EdraToolBar {editor} />
+	<!-- Consolidated Editor Navbar -->
+	<nav class="editor-navbar">
+		<div class="navbar-left">
+			<button class="nav-btn back-btn" onclick={handleBack} title="Back to Dashboard">
+				<ArrowLeft class="h-4 w-4" />
+			</button>
+			<div class="divider"></div>
+			<span class="slug font-terminal">/{data.slug}</span>
+			{#if data.isNew}
+				<span class="badge new">New</span>
+			{:else}
+				<span class="badge {status}">{status}</span>
+			{/if}
+			{#if !data.isNew}
+				<button class="nav-btn preview-btn" onclick={handlePreview} title="Preview">
+					<Eye class="h-4 w-4" />
+				</button>
+			{/if}
+			{#if !data.isNew && status === 'published'}
+				<button class="nav-btn" onclick={() => showShareDialog = true} title="Share to Social">
+					<Share2 class="h-4 w-4" />
+				</button>
 			{/if}
 		</div>
-	</header>
+		<div class="navbar-right">
+			<a href="/blog" class="nav-link font-terminal">Blog</a>
+			<a href="/web" class="nav-link font-terminal">Web</a>
+			<a href="/games" class="nav-link font-terminal">Games</a>
+			<a href="/dashboard" class="nav-link font-terminal">Dashboard</a>
+		</div>
+	</nav>
+
+	<!-- Toolbar row -->
+	<div class="toolbar-row">
+		<ToggleFlip isOpen={sidebarOpen} {toggleSidebar} />
+		{#if editor}
+			<EdraToolBar {editor} />
+			<div class="custom-insert-buttons">
+				<button
+					class="insert-btn"
+					title="Insert Comparison Slider"
+					onclick={() => editor?.chain().focus().insertContent({
+						type: 'imageComparisonSlider',
+						attrs: { beforeImage: '', afterImage: '', beforeLabel: 'Unity', afterLabel: 'Godot' }
+					}).run()}
+				>
+					<SplitSquareHorizontal class="h-4 w-4" />
+				</button>
+				<button
+					class="insert-btn"
+					title="Insert Gallery"
+					onclick={() => editor?.chain().focus().insertContent({
+						type: 'thumbnailGallery',
+						attrs: { images: '[]', columns: 3, aspectRatio: '16/9' }
+					}).run()}
+				>
+					<LayoutGrid class="h-4 w-4" />
+				</button>
+				<button
+					class="insert-btn"
+					title="Insert YouTube Embed"
+					onclick={() => editor?.chain().focus().insertContent({
+						type: 'youtubeEmbed',
+						attrs: { url: '', videoId: '' }
+					}).run()}
+				>
+					<Youtube class="h-4 w-4" />
+				</button>
+				<button
+					class="insert-btn"
+					title="Insert Image Slider"
+					onclick={() => editor?.chain().focus().insertContent({
+						type: 'imageOnlySlider',
+						attrs: { slides: '[]' }
+					}).run()}
+				>
+					<GalleryHorizontal class="h-4 w-4" />
+				</button>
+				<button
+					class="insert-btn"
+					title="Insert 2-Column Layout"
+					onclick={() => editor?.chain().focus().insertContent({
+						type: 'multiColumn',
+						attrs: { columns: 2 },
+						content: [
+							{ type: 'column', content: [{ type: 'paragraph' }] },
+							{ type: 'column', content: [{ type: 'paragraph' }] }
+						]
+					}).run()}
+				>
+					<Columns2 class="h-4 w-4" />
+				</button>
+				<button
+					class="insert-btn"
+					title="Insert 3-Column Layout"
+					onclick={() => editor?.chain().focus().insertContent({
+						type: 'multiColumn',
+						attrs: { columns: 3 },
+						content: [
+							{ type: 'column', content: [{ type: 'paragraph' }] },
+							{ type: 'column', content: [{ type: 'paragraph' }] },
+							{ type: 'column', content: [{ type: 'paragraph' }] }
+						]
+					}).run()}
+				>
+					<Columns3 class="h-4 w-4" />
+				</button>
+				<button
+					class="insert-btn"
+					title="Insert 4-Column Layout"
+					onclick={() => editor?.chain().focus().insertContent({
+						type: 'multiColumn',
+						attrs: { columns: 4 },
+						content: [
+							{ type: 'column', content: [{ type: 'paragraph' }] },
+							{ type: 'column', content: [{ type: 'paragraph' }] },
+							{ type: 'column', content: [{ type: 'paragraph' }] },
+							{ type: 'column', content: [{ type: 'paragraph' }] }
+						]
+					}).run()}
+				>
+					<Columns4 class="h-4 w-4" />
+				</button>
+			</div>
+		{/if}
+	</div>
 
 	<!-- Main Editor Area -->
 	<div class="editor-container">
@@ -221,9 +341,19 @@
 			class:sidebar-collapsed={!sidebarOpen}
 			use:enhance={() => {
 				saving = true;
+				successMessage = '';
+				errorMessage = '';
 				return async ({ result, update }) => {
 					saving = false;
 					if (result.type === 'success') {
+						successMessage = 'Page saved successfully!';
+						await update({ reset: false });
+						// Clear success message after 3 seconds
+						setTimeout(() => {
+							successMessage = '';
+						}, 3000);
+					} else if (result.type === 'failure') {
+						errorMessage = (result.data as { error?: string })?.error || 'Failed to save page';
 						await update();
 					}
 				};
@@ -262,6 +392,16 @@
 				</div>
 
 				<div class="sidebar-section">
+					<Label for="category">Category (optional)</Label>
+					<Input
+						id="category"
+						name="category"
+						bind:value={category}
+						placeholder="e.g. Tutorial, News, Update..."
+					/>
+				</div>
+
+				<div class="sidebar-section">
 					<Label for="meta_description">Meta Description</Label>
 					<textarea
 						id="meta_description"
@@ -271,6 +411,18 @@
 						class="textarea-input"
 						rows="3"
 					></textarea>
+				</div>
+
+				<div class="sidebar-section">
+					<Label for="scrolling_text">Scrolling Text</Label>
+					<Input
+						id="scrolling_text"
+						name="scrolling_text"
+						type="text"
+						placeholder="Optional ticker text for blog header..."
+						bind:value={scrollingText}
+					/>
+					<p class="hint-text">Displayed as scrolling marquee in blog header</p>
 				</div>
 
 				<!-- Background Options -->
@@ -500,22 +652,28 @@
 					</details>
 				{/if}
 
-				<!-- Text Color Options -->
-				<div class="sidebar-section">
-					<Label>Text Color</Label>
-					<div class="color-mode-row">
-						<div class="color-mode-col">
-							<span class="mode-label">Light Mode</span>
-							<input type="color" bind:value={textColorLight} class="color-input" />
-							<Input type="text" bind:value={textColorLight} placeholder="#111111" class="color-text-input" />
-						</div>
-						<div class="color-mode-col">
-							<span class="mode-label">Dark Mode</span>
-							<input type="color" bind:value={textColorDark} class="color-input" />
-							<Input type="text" bind:value={textColorDark} placeholder="#f5f5f5" class="color-text-input" />
+				<!-- Default Text Color -->
+				<details class="collapsible-section">
+					<summary class="collapsible-trigger">
+						<span>Default Text Color</span>
+						<ChevronDown class="h-4 w-4" />
+					</summary>
+					<div class="collapsible-content">
+						<p class="hint-text" style="margin-top: 0;">Sets the color of uncolored (default) text. Leave empty to use the theme default.</p>
+						<div class="color-mode-row">
+							<div class="color-mode-col">
+								<span class="mode-label">Light Mode</span>
+								<input type="color" bind:value={textColorLight} class="color-input" />
+								<Input type="text" bind:value={textColorLight} placeholder="#000000" class="color-text-input" />
+							</div>
+							<div class="color-mode-col">
+								<span class="mode-label">Dark Mode</span>
+								<input type="color" bind:value={textColorDark} class="color-input" />
+								<Input type="text" bind:value={textColorDark} placeholder="#e2e8f0" class="color-text-input" />
+							</div>
 						</div>
 					</div>
-				</div>
+				</details>
 
 				<Button type="submit" class="w-full" disabled={saving || !title.trim()}>
 					{#if saving}
@@ -527,12 +685,12 @@
 					{/if}
 				</Button>
 
-				{#if form?.error}
-					<p class="error-message">{form.error}</p>
+				{#if errorMessage}
+					<p class="error-message">{errorMessage}</p>
 				{/if}
 
-				{#if form?.success}
-					<p class="success-message">Page saved successfully!</p>
+				{#if successMessage}
+					<p class="success-message">{successMessage}</p>
 				{/if}
 			</aside>
 
@@ -542,20 +700,33 @@
 					{#if hasPreviewOverlay}
 						<div class="preview-overlay" style={previewOverlayStyle()}></div>
 					{/if}
-					<EdraEditor
-						bind:editor
-						content={data.page?.content ?? undefined}
-						editable={true}
-						autofocus={true}
-						supabase={data.supabase}
-						user={data.session?.user}
-						{siteId}
-					/>
+					<div class="prose prose-lg prose-invert mx-auto max-w-4xl">
+						<EdraEditor
+							bind:editor
+							content={data.page?.content ?? undefined}
+							editable={true}
+							autofocus={true}
+							supabase={data.supabase}
+							user={data.session?.user}
+							{siteId}
+							mediaTable="media_assets"
+							mediaBucket="media_library"
+							{customExtensions}
+						/>
+					</div>
 				</div>
 			</main>
 		</form>
 	</div>
 </div>
+
+<SharePostDialog
+	bind:open={showShareDialog}
+	{title}
+	slug={data.slug}
+	{metaDescription}
+	pageId={data.page?.id}
+/>
 
 <style>
 	.editor-page {
@@ -565,65 +736,67 @@
 		background-color: var(--dashboard-bg);
 	}
 
-	.editor-header {
+	/* Consolidated Editor Navbar */
+	.editor-navbar {
 		display: flex;
-		flex-direction: column;
-		border-bottom: 1px solid var(--dashboard-border);
-		background-color: var(--dashboard-surface);
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.375rem 1rem;
+		background: rgba(15, 23, 42, 0.85);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-bottom: 1px solid rgba(51, 65, 85, 0.4);
 		position: sticky;
 		top: 0;
 		z-index: 50;
 	}
 
-	.header-row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0.75rem 1rem;
-	}
-
-	.toolbar-row {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		border-top: 1px solid var(--dashboard-border);
-		padding: 0.25rem 0.5rem;
-		overflow-x: auto;
-	}
-
-	.toolbar-row :global(.edra-toolbar) {
-		flex: 1;
-	}
-
-	.header-left {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.header-right {
+	.navbar-left {
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
 	}
 
-	.page-info {
+	.navbar-right {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 0.25rem;
+	}
+
+	.nav-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.375rem;
+		color: #94a3b8;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		transition: color 0.15s ease;
+	}
+
+	.nav-btn:hover {
+		color: var(--accent-primary);
+	}
+
+	.divider {
+		width: 1px;
+		height: 1rem;
+		background-color: rgba(51, 65, 85, 0.6);
+		margin: 0 0.25rem;
 	}
 
 	.slug {
-		font-family: monospace;
-		font-size: 0.875rem;
+		font-size: 0.75rem;
 		color: var(--dashboard-text-muted);
 	}
 
 	.badge {
-		padding: 0.25rem 0.5rem;
-		font-size: 0.75rem;
-		font-weight: 500;
+		padding: 0.125rem 0.375rem;
+		font-size: 0.625rem;
+		font-weight: 600;
 		text-transform: uppercase;
+		letter-spacing: 0.025em;
 	}
 
 	.badge.new {
@@ -644,6 +817,47 @@
 	.badge.archived {
 		background-color: #6b7280;
 		color: white;
+	}
+
+	.preview-btn {
+		margin-left: 0.25rem;
+	}
+
+	.nav-link {
+		padding: 0.25rem 0.5rem;
+		font-size: 0.75rem;
+		color: #94a3b8;
+		text-decoration: none;
+		transition: color 0.15s ease;
+	}
+
+	.nav-link:hover {
+		color: var(--accent-primary);
+	}
+
+	/* Toolbar Row */
+	.toolbar-row {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.25rem 0.5rem;
+		background-color: var(--dashboard-surface);
+		border-bottom: 1px solid var(--dashboard-border);
+		overflow-x: auto;
+	}
+
+	.toolbar-row :global(.edra-toolbar) {
+		flex: 1;
+	}
+
+	/* Ensure color picker popover displays as grid */
+	.toolbar-row :global([data-radix-popper-content-wrapper]) {
+		z-index: 100 !important;
+	}
+
+	.toolbar-row :global(.grid-cols-5) {
+		display: grid !important;
+		grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
 	}
 
 	.editor-container {
@@ -805,7 +1019,7 @@
 	.editor-content {
 		flex: 1;
 		overflow-y: auto;
-		padding: 2rem;
+		padding: 3rem 1.5rem;
 		background-color: var(--dashboard-bg);
 		position: relative;
 	}
@@ -908,6 +1122,7 @@
 		background: var(--dashboard-border);
 		cursor: pointer;
 		-webkit-appearance: none;
+		appearance: none;
 	}
 
 	.range-input::-webkit-slider-thumb {
@@ -916,6 +1131,40 @@
 		height: 16px;
 		background: var(--accent-primary);
 		cursor: pointer;
+	}
+
+	.hint-text {
+		margin-top: 0.25rem;
+		font-size: 0.75rem;
+		color: var(--dashboard-text-muted);
+	}
+
+	/* Custom insert buttons */
+	.custom-insert-buttons {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		margin-left: 0.25rem;
+		padding-left: 0.5rem;
+		border-left: 1px solid var(--dashboard-border);
+	}
+
+	.insert-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.25rem 0.375rem;
+		color: var(--dashboard-text-muted);
+		background: transparent;
+		border: 1px solid transparent;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.insert-btn:hover {
+		color: var(--accent-primary);
+		border-color: var(--dashboard-border);
+		background-color: var(--dashboard-bg);
 	}
 
 	/* Responsive */

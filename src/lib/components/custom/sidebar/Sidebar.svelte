@@ -118,7 +118,12 @@
 	let showUserDropdown = $state(false);
 
 	// Track previous sidebar state to detect changes
-	let previousIsOpen = $state(isOpen);
+	let previousIsOpen = $state(false);
+
+	// Sync with initial isOpen value
+	$effect(() => {
+		previousIsOpen = isOpen;
+	});
 
 	// Collapse all expanded items when sidebar state changes
 	$effect(() => {
@@ -177,7 +182,7 @@
 	];
 
 	// Combine footer items
-	const allFooterItems = [...footerItems, ...defaultFooterItems];
+	const allFooterItems = $derived([...footerItems, ...defaultFooterItems]);
 
 	// Filter items based on visibility and admin status
 	const visibleItems = $derived(

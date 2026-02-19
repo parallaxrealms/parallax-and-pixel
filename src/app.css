@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Rubik:ital,wght@0,300..900;1,300..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
 @import 'tailwindcss';
 @import "tw-animate-css";
 
@@ -13,6 +11,7 @@
 /* CRITICAL: Scan component packages for Tailwind classes */
 @source "node_modules/@parallaxrealms/components-core/src/**/*.{html,js,svelte,ts}";
 @source "node_modules/@parallaxrealms/components-ecom/src/**/*.{html,js,svelte,ts}";
+@source "node_modules/@parallaxrealms/components-edda/src/**/*.{html,js,svelte,ts}";
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
@@ -271,30 +270,30 @@
     font-family: 'Space Mono', monospace;
   }
 
-  /* Rubik Glitch - for main titles */
+  /* Rubik Glitch - for glitch effect on hover */
   .font-pixel {
     font-family: 'Rubik Glitch', system-ui;
     letter-spacing: 0.02em;
   }
 
-  /* Rubik Bold - for section headers (secondary word) */
+  /* Share Tech Mono Bold - for section headers */
   .font-fade {
-    font-family: 'Rubik', system-ui;
+    font-family: 'Share Tech Mono', monospace;
     font-weight: 700;
     letter-spacing: 0.02em;
   }
 
-  /* Rubik Black - for title default state */
+  /* Share Tech Mono - for title default state */
   .font-rubik {
-    font-family: 'Rubik', system-ui;
-    font-weight: 900;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 400;
     letter-spacing: 0.02em;
   }
 
-  /* Rubik Semi-Bold - for card headers */
+  /* Share Tech Mono - for card headers */
   .font-rubik-card {
-    font-family: 'Rubik', system-ui;
-    font-weight: 600;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 400;
     letter-spacing: 0.01em;
   }
 

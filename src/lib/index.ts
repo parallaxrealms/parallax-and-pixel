@@ -3,7 +3,13 @@ export type * from '@parallaxrealms/types-core';
 export type * from '@parallaxrealms/types-auth';
 export type * from '@parallaxrealms/types-ecom';
 export type * from '@parallaxrealms/types-rune';
-export type * from '@parallaxrealms/types-edda';
+export type { Page as BasePage } from '@parallaxrealms/types-edda';
+
+// Extend Page type with local fields
+import type { Page as BasePage } from '@parallaxrealms/types-edda';
+export interface Page extends BasePage {
+	category?: string | null;
+}
 
 // Re-export utils
 export * from '@parallaxrealms/utils-core';

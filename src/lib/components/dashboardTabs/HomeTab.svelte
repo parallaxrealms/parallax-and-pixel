@@ -4,6 +4,7 @@
 	import { Button, Card, Badge } from '@parallaxrealms/components-core';
 	import { selectedTab } from '@parallaxrealms/stores-core';
 	import { goto } from '$app/navigation';
+	import { navigating } from '$app/stores';
 	import DiamondSpinner from '$lib/components/custom/loader/DiamondSpinner.svelte';
 
 	let { supabase } = $props<{
@@ -14,6 +15,12 @@
 	let isLoading = $state(true);
 	let pages = $state<any[]>([]);
 	let error = $state<string | null>(null);
+
+	// Social stats
+	let socialPostsTotal = $state(0);
+	let socialPostsSuccess = $state(0);
+	let socialPostsFailed = $state(0);
+	let integrationCount = $state(0);
 
 	// Computed stats
 	let totalPosts = $derived(pages.length);
@@ -27,14 +34,34 @@
 
 		isLoading = true;
 		try {
-			const { data, error: fetchError } = await supabase
-				.schema('pxp')
-				.from('pages')
-				.select('*')
-				.order('updated_at', { ascending: false });
+			const [pagesRes, socialRes, integrationsRes] = await Promise.all([
+				supabase
+					.schema('pxp')
+					.from('pages')
+					.select('*')
+					.order('updated_at', { ascending: false }),
+				fetch('/api/social/history?limit=1').then((r) => r.ok ? r.json() : null).catch(() => null),
+				fetch('/api/social/integrations').then((r) => r.ok ? r.json() : null).catch(() => null)
+			]);
 
-			if (fetchError) throw fetchError;
-			pages = data || [];
+			if (pagesRes.error) throw pagesRes.error;
+			pages = pagesRes.data || [];
+
+			// Social stats
+			if (socialRes) {
+				socialPostsTotal = socialRes.total || 0;
+			}
+			if (integrationsRes) {
+				integrationCount = (integrationsRes.integrations || []).filter((i: any) => i.is_enabled && i.has_credentials).length;
+			}
+
+			// Get success/failed counts separately
+			const [successRes, failedRes] = await Promise.all([
+				fetch('/api/social/history?limit=1&status=success').then((r) => r.ok ? r.json() : null).catch(() => null),
+				fetch('/api/social/history?limit=1&status=failed').then((r) => r.ok ? r.json() : null).catch(() => null)
+			]);
+			socialPostsSuccess = successRes?.total || 0;
+			socialPostsFailed = failedRes?.total || 0;
 		} catch (err) {
 			console.error('Error loading pages:', err);
 			error = err instanceof Error ? err.message : 'Failed to load pages';
@@ -108,10 +135,47 @@
 			</div>
 		</div>
 
+		<!-- Social Stats -->
+		{#if socialPostsTotal > 0 || integrationCount > 0}
+			<div class="social-stats-section">
+				<h2 class="font-fade section-title">
+					<span class="text-accent-primary">Social</span> Media
+				</h2>
+				<div class="stats-grid stats-grid-4">
+					<div class="stat-card stat-social-platforms">
+						<div class="stat-content">
+							<span class="font-terminal stat-number">{integrationCount}</span>
+							<span class="font-terminal stat-label">Platforms</span>
+						</div>
+					</div>
+					<div class="stat-card stat-social-total">
+						<div class="stat-content">
+							<span class="font-terminal stat-number">{socialPostsTotal}</span>
+							<span class="font-terminal stat-label">Posts Sent</span>
+						</div>
+					</div>
+					<div class="stat-card stat-social-success">
+						<div class="stat-content">
+							<span class="font-terminal stat-number">{socialPostsSuccess}</span>
+							<span class="font-terminal stat-label">Delivered</span>
+						</div>
+					</div>
+					<div class="stat-card stat-social-failed">
+						<div class="stat-content">
+							<span class="font-terminal stat-number">{socialPostsFailed}</span>
+							<span class="font-terminal stat-label">Failed</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		{/if}
+
 		<!-- Quick Actions -->
 		<div class="actions-section">
-			<button type="button" onclick={() => goto('/editor/new')} class="cta-button">
-				<span class="font-terminal">+ New Post</span>
+			<button type="button" onclick={() => goto('/editor/new')} class="cta-button" disabled={!!$navigating}>
+				<span class="font-terminal">
+					{#if $navigating?.to?.url.pathname === '/editor/new'}Loading...{:else}+ New Post{/if}
+				</span>
 			</button>
 			<button type="button" onclick={goToPages} class="secondary-button">
 				<span class="font-terminal">Manage Pages</span>
@@ -154,8 +218,9 @@
 									onclick={() => editPage(post.slug)}
 									class="action-btn edit-btn font-terminal text-xs"
 									aria-label="Edit post"
+									disabled={!!$navigating}
 								>
-									Edit
+									{#if $navigating?.to?.url.pathname === `/editor/${post.slug}`}<span class="loading-dots">...</span>{:else}Edit{/if}
 								</button>
 								{#if post.status === 'published'}
 									<button
@@ -277,10 +342,6 @@
 		border-color: var(--accent-primary);
 	}
 
-	.stat-total .stat-icon {
-		color: var(--accent-primary);
-	}
-
 	.stat-total .stat-number {
 		color: var(--accent-primary);
 	}
@@ -289,20 +350,12 @@
 		border-color: var(--accent-highlight);
 	}
 
-	.stat-published .stat-icon {
-		color: var(--accent-highlight);
-	}
-
 	.stat-published .stat-number {
 		color: var(--accent-highlight);
 	}
 
 	.stat-drafts {
 		border-color: var(--accent-secondary);
-	}
-
-	.stat-drafts .stat-icon {
-		color: var(--accent-secondary);
 	}
 
 	.stat-drafts .stat-number {
@@ -324,6 +377,56 @@
 		color: #94a3b8; /* slate-400 */
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
+	}
+
+	.stats-grid-4 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@media (min-width: 640px) {
+		.stats-grid-4 {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	.social-stats-section {
+		margin-top: -0.5rem;
+	}
+
+	.social-stats-section .section-title {
+		margin-bottom: 1rem;
+	}
+
+	.stat-social-platforms {
+		border-color: #8b5cf6;
+	}
+
+	.stat-social-platforms .stat-number {
+		color: #8b5cf6;
+	}
+
+	.stat-social-total {
+		border-color: var(--accent-primary);
+	}
+
+	.stat-social-total .stat-number {
+		color: var(--accent-primary);
+	}
+
+	.stat-social-success {
+		border-color: var(--accent-highlight);
+	}
+
+	.stat-social-success .stat-number {
+		color: var(--accent-highlight);
+	}
+
+	.stat-social-failed {
+		border-color: #ef4444;
+	}
+
+	.stat-social-failed .stat-number {
+		color: #ef4444;
 	}
 
 	/* Actions */
@@ -485,6 +588,22 @@
 	.view-btn:hover {
 		background: rgba(255, 0, 255, 0.1);
 		border-color: var(--accent-highlight);
+	}
+
+	.action-btn:disabled,
+	.cta-button:disabled {
+		cursor: wait;
+		pointer-events: none;
+	}
+
+	.loading-dots {
+		color: var(--accent-primary);
+		animation: pulse-dots 1s ease-in-out infinite;
+	}
+
+	@keyframes pulse-dots {
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0.3; }
 	}
 
 </style>

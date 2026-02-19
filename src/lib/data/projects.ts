@@ -8,6 +8,7 @@ export interface Project {
 	techStack: string[];
 	liveUrl?: string;
 	repoUrl?: string;
+	devlogUrl?: string;
 	featured: boolean;
 	category: 'web' | 'game';
 }
@@ -16,46 +17,69 @@ export interface Project {
 export const webProjects: Project[] = [
 	{
 		id: 'web-1',
-		title: 'E-Commerce Platform',
-		slug: 'ecommerce-platform',
-		description: 'A full-featured e-commerce platform with payment processing, inventory management, and real-time order tracking. Built with SvelteKit and Supabase.',
-		image: '/images/projects/placeholder-web-1.jpg',
-		techStack: ['SvelteKit', 'TypeScript', 'Supabase', 'Stripe', 'Tailwind CSS'],
-		liveUrl: 'https://example.com',
-		repoUrl: 'https://github.com/example/project',
+		title: 'Satori Digital',
+		slug: 'satori-digital',
+		description: 'Web, App & Branding Company I work for. We work with local individuals and businesses to get their ideas off the ground and build a digital presence.',
+		image: '/preview/satori-digital.webp',
+		techStack: ['SvelteKit', 'TypeScript', 'Custom Components/Animations'],
+		liveUrl: 'https://satoridigital.io',
 		featured: true,
 		category: 'web'
 	},
 	{
 		id: 'web-2',
-		title: 'Dashboard Analytics',
-		slug: 'dashboard-analytics',
-		description: 'Real-time analytics dashboard with interactive charts, data visualization, and customizable widgets. Features dark mode and responsive design.',
-		image: '/images/projects/placeholder-web-2.jpg',
-		techStack: ['React', 'D3.js', 'Node.js', 'PostgreSQL', 'Chart.js'],
-		liveUrl: 'https://example.com',
+		title: 'The Peoples Place AVL',
+		slug: 'the-peoples-place-avl',
+		description: 'A collective space for learning, imagining, nourishing, healing, and engaging in meaningful conversations.',
+		image: '/preview/ppl-avl.webp',
+		techStack: ['E-commerce', 'Community', 'App', 'Blog'],
+		liveUrl: 'https://peoplesplaceavl.com',
 		featured: true,
 		category: 'web'
 	},
 	{
 		id: 'web-3',
-		title: 'CMS Content Editor',
-		slug: 'cms-content-editor',
-		description: 'A rich text content management system with drag-and-drop editing, media uploads, and multi-tenant support.',
-		image: '/images/projects/placeholder-web-3.jpg',
-		techStack: ['SvelteKit', 'TipTap', 'Supabase', 'TypeScript'],
-		repoUrl: 'https://github.com/example/project',
+		title: 'Custom AVL',
+		slug: 'custom-avl',
+		description: 'Custom AVL is a local Asheville, NC business bringing creative visions to life through high-quality custom printing and apparel. Complete merchandise solutions for businesses, bands, breweries, and organizations. From concept to delivery, we handle it all.',
+		image: '/preview/custom-avl.webp',
+		techStack: ['E-commerce', 'Client-focused', 'Bulk Orders', 'Apparel Customization'],
+		liveUrl: 'https://www.customavl.com',
 		featured: true,
 		category: 'web'
 	},
 	{
 		id: 'web-4',
-		title: 'API Integration Hub',
-		slug: 'api-integration-hub',
-		description: 'Centralized API management platform for connecting third-party services, webhooks, and data synchronization.',
-		image: '/images/projects/placeholder-web-4.jpg',
-		techStack: ['Node.js', 'Express', 'Redis', 'MongoDB', 'Docker'],
+		title: 'LIVE FREE DYE HARD',
+		slug: 'live-free-dye-hard',
+		description: 'Online Shop for one-of-a-kind hand-dyed tie-dye apparel.',
+		image: '/preview/lfdh.webp',
+		techStack: ['E-commerce', 'Hand-crafted Goods'],
+		liveUrl: 'https://www.livefreedyehard.com/',
 		featured: false,
+		category: 'web'
+	},
+	{
+		id: 'web-6',
+		title: 'Veilwriter',
+		slug: 'veilwriter',
+		description: 'Veilwriter is a minimalist, privacy-first web app for writing and protecting personal text — journal entries, notes, or ideas — without accounts, ads, or tracking. Everything happens client-side. Users type into a simple text area that can instantly mask content behind symbols, keeping screens private.',
+		image: '/preview/veilwriter.webp',
+		techStack: ['App', 'Fun', 'Utility'],
+		liveUrl: 'https://veilwriter.yggdrasil.quest/',
+		featured: false,
+		category: 'web'
+	},
+	{
+		id: 'web-7',
+		title: 'Guessemon',
+		slug: 'web game',
+		description: 'A fun project to learn new things. Wordle meets Pokémon! Challenges players to guess the name of a randomly selected Pokémon. On page load, a random Pokémon is fetched from PokéAPI , and its name is set as the answer to the word puzzle. Three leagues to play based on your knowledge of the Pokemon Generations.',
+		image: '/preview/guessemon.webp',
+		techStack: ['Svelte 5', 'TypeScript', 'Node.js', 'PokéAPI'],
+		liveUrl: 'https://guessemon.com',
+		repoUrl: 'https://github.com/parallaxrealms/guessemon-sv5',
+		featured: true,
 		category: 'web'
 	}
 ];
@@ -64,44 +88,45 @@ export const webProjects: Project[] = [
 export const gameProjects: Project[] = [
 	{
 		id: 'game-1',
-		title: 'Pixel Dungeon Explorer',
-		slug: 'pixel-dungeon-explorer',
-		description: 'A roguelike dungeon crawler with procedurally generated levels, pixel art graphics, and permadeath mechanics. Features retro chiptune soundtrack.',
-		image: '/images/projects/placeholder-game-1.jpg',
-		techStack: ['Godot', 'GDScript', 'Aseprite', 'FMOD'],
-		liveUrl: 'https://itch.io/example',
+		title: 'Project Cursed Palemire',
+		slug: 'project-cursed-palemire',
+		description: 'A roguelike RPG dungeon crawler I am currently working on. Playable build not available yet but stay tuned via the devlog.',
+		image: '/preview/cursed-palemire.webp',
+		devlogUrl: '/blog/',
+		techStack: ['Godot', 'GDScript', 'Aseprite', 'Blender'],
 		featured: true,
 		category: 'game'
 	},
 	{
 		id: 'game-2',
-		title: 'Space Commander',
-		slug: 'space-commander',
-		description: 'Top-down space shooter with wave-based combat, ship upgrades, and boss battles. Built with Unity and optimized for web browsers.',
-		image: '/images/projects/placeholder-game-2.jpg',
-		techStack: ['Unity', 'C#', 'WebGL', 'Photoshop'],
-		liveUrl: 'https://example.com/play',
-		repoUrl: 'https://github.com/example/game',
+		title: 'Pull Yourself Together',
+		slug: 'pull-yourself-together',
+		description: 'A 2D platformer I made for a Metroidvania-based game jam in 2022 with some unique body-part swapping mechanics. Every asset in this game is hand-made in aseprite from scratch. skittlegirlsound provided background music for the levels ,and menu/credits music is by Luke Holizna. I spent a few months extra polishing the gameplay demo, but it remains a demo still. You play an easily-broken robot who must keep themselves together while trying to escape danger in an underground cave system.',
+		image: '/preview/pull-yourself-together.webp',
+		techStack: ['Unity', 'Aseprite', 'C#', '2D Platformer', 'Metroidvania'],
+		liveUrl: 'https://parallaxpixels.itch.io/pull-yourself-together',
 		featured: true,
 		category: 'game'
 	},
 	{
 		id: 'game-3',
-		title: 'Puzzle Quest 3D',
-		slug: 'puzzle-quest-3d',
-		description: 'First-person puzzle game with physics-based mechanics, atmospheric environments, and mind-bending challenges.',
-		image: '/images/projects/placeholder-game-3.jpg',
-		techStack: ['Unreal Engine', 'Blueprints', 'Blender'],
+		title: 'The Providence Phenomenon',
+		slug: 'the-providence-phenomenon',
+		description: 'Horror adventure game with puzzles and dialogue. Based on old-school PC point and click adventure games. This was made in just 2 weeks for an Adventure Game Jam in 2023. Another developer (John Kruchowski) helped with level design, puzzles and bug fixing. I made the 2D assets such as portraits, UI elements, in-game environment textures and wrote all of the dialogue.',
+		image: '/preview/providence-phenomenon.webp',
+		techStack: ['Unity', 'C#', 'First-Person', '3D/2D Assets', 'Horror Atmosphere'],
+		liveUrl: 'https://parallaxpixels.itch.io/the-providence-phenomenon',
 		featured: true,
 		category: 'game'
 	},
 	{
 		id: 'game-4',
-		title: 'Retro Racing',
-		slug: 'retro-racing',
-		description: 'Arcade-style racing game inspired by 90s classics. Features multiple tracks, vehicle customization, and local multiplayer.',
-		image: '/images/projects/placeholder-game-4.jpg',
-		techStack: ['Godot', 'Blender', 'GIMP'],
+		title: 'Glowbug',
+		slug: 'glowbug',
+		description: 'A very simple arcade-y game I made for another game jam in 2022 called Low Res Jam. The challenge was to build a game with only 64x64 pixels in the entire screen. You move around and must eat smaller/equal sized bugs to grow bigger, while avoiding bigger bugs.',
+		image: '/preview/glowbug.webp',
+		liveUrl: 'https://parallaxpixels.itch.io/glowbug64',
+		techStack: ['Unity', 'Aseprite', 'C#'],
 		featured: false,
 		category: 'game'
 	}

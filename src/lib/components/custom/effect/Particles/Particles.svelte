@@ -50,7 +50,7 @@
 		return [red, green, blue];
 	}
 
-	const rgb = hexToRgb(color);
+	const rgb = $derived(hexToRgb(color));
 
 	function circleParams() {
 		const x = Math.floor(Math.random() * canvasSize.w);
@@ -125,6 +125,8 @@
 		return remapped > 0 ? remapped : 0;
 	}
 
+	let animationFrameId: number;
+
 	function animate() {
 		clearContext();
 		circles.forEach((circle, i) => {
@@ -162,7 +164,7 @@
 				drawCircle(newCircle);
 			}
 		});
-		window.requestAnimationFrame(animate);
+		animationFrameId = window.requestAnimationFrame(animate);
 	}
 
 	function onMouseMove(event: MouseEvent) {
@@ -191,6 +193,7 @@
 		return () => {
 			window.removeEventListener('resize', resizeCanvas);
 			window.removeEventListener('mousemove', onMouseMove);
+			if (animationFrameId) cancelAnimationFrame(animationFrameId);
 		};
 	});
 

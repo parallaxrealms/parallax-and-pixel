@@ -9,6 +9,7 @@
 	import DiamondSpinner from '$lib/components/custom/loader/DiamondSpinner.svelte';
 	// No icons - text-only design
 	import { goto } from '$app/navigation';
+	import { navigating } from '$app/stores';
 
 	interface Props {
 		supabase: SupabaseClient;
@@ -250,8 +251,9 @@
 										onclick={() => goto(`/editor/${page.slug}`)}
 										class="action-btn edit font-terminal text-xs"
 										aria-label="Edit"
+										disabled={!!$navigating}
 									>
-										Edit
+										{#if $navigating?.to?.url.pathname === `/editor/${page.slug}`}<span class="loading-dots">...</span>{:else}Edit{/if}
 									</button>
 									{#if page.status === 'published'}
 										<button
@@ -636,6 +638,11 @@
 		transition: all 0.2s;
 	}
 
+	.action-btn:disabled {
+		cursor: wait;
+		pointer-events: none;
+	}
+
 	.action-btn.edit {
 		color: var(--accent-primary);
 	}
@@ -817,5 +824,15 @@
 	:global(.light) .page-title,
 	:global(.light) .link-name {
 		color: #171717;
+	}
+
+	.loading-dots {
+		color: var(--accent-primary);
+		animation: pulse-dots 1s ease-in-out infinite;
+	}
+
+	@keyframes pulse-dots {
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0.3; }
 	}
 </style>
