@@ -15,24 +15,23 @@ export { GET, POST } from '@parallaxrealms/api-auth/routes/api/email-preview/+se
 
 /**
  * Usage Examples:
- * 
+ *
  * GET /api/email-preview
  * Returns: { success: true, templates: EmailTemplate[] }
  *
  * POST /api/email-preview
  * Body: {
  *   to: "user@example.com",
- *   templateId: "d-abc123xyz",
+ *   templateId: "contact-form",
  *   dynamicTemplateData: {
  *     name: "John Doe",
- *     confirmationUrl: "https://mysite.com/confirm/xyz"
+ *     email: "john@example.com"
  *   },
  *   from: "noreply@mysite.com",  // Optional, defaults to FROM_EMAIL env var
- *   sandbox: false  // Optional, true for testing without sending
  * }
  * Returns: { success: true }
- * 
+ *
  * Environment Variables Required:
- * - SENDGRID_API_KEY: Your SendGrid API key
+ * - RESEND_API_KEY: Your Resend API key
  * - FROM_EMAIL: Default sender email (optional, can be overridden per request)
  */

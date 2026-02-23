@@ -23,6 +23,6 @@ export const load = async ({ fetch, data, depends }) => {
 		supabase,
 		session,
 		navbarLinks: data.navbarLinks,
-		siteOptions: data.siteOptions
+		website: data.website
 	}
 }

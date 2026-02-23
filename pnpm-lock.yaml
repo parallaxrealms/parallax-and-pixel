@@ -21,20 +21,20 @@ importers:
         specifier: ^0.546.0
         version: 0.546.0(svelte@5.53.0)
       '@parallaxrealms/api-auth':
-        specifier: ^1.0.4
-        version: 1.0.4(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)
+        specifier: ^1.0.5
+        version: 1.0.5(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)
       '@parallaxrealms/api-core':
-        specifier: ^1.0.30
-        version: 1.0.30(@parallaxrealms/utils-core@1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(zod@3.25.67)
+        specifier: ^1.0.34
+        version: 1.0.34(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)
       '@parallaxrealms/api-ecom':
-        specifier: ^1.0.23
-        version: 1.0.23(@parallaxrealms/utils-core@1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/node@24.10.13)(svelte@5.53.0)(zod@3.25.67)
+        specifier: ^1.0.25
+        version: 1.0.25(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/node@24.10.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)
       '@parallaxrealms/api-edda':
         specifier: ^1.0.7
-        version: 1.0.7(@parallaxrealms/utils-core@1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)
+        version: 1.0.7(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)
       '@parallaxrealms/components-core':
-        specifier: ^1.0.51
-        version: 1.0.51(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)
+        specifier: ^1.0.52
+        version: 1.0.52(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)
       '@parallaxrealms/components-ecom':
         specifier: ^1.0.45
         version: 1.0.45(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)
@@ -54,11 +54,11 @@ importers:
         specifier: ^1.0.34
         version: 1.0.34(svelte@5.53.0)
       '@parallaxrealms/types-core':
-        specifier: ^1.0.29
-        version: 1.0.29(svelte@5.53.0)
+        specifier: ^1.0.31
+        version: 1.0.31(svelte@5.53.0)
       '@parallaxrealms/types-ecom':
-        specifier: ^1.0.47
-        version: 1.0.47(svelte@5.53.0)
+        specifier: ^1.0.48
+        version: 1.0.48(svelte@5.53.0)
       '@parallaxrealms/types-edda':
         specifier: ^1.0.2
         version: 1.0.2
@@ -66,8 +66,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(svelte@5.53.0)
       '@parallaxrealms/utils-core':
-        specifier: ^1.0.44
-        version: 1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
+        specifier: ^1.0.45
+        version: 1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
       '@parallaxrealms/utils-ecom':
         specifier: ^1.0.25
         version: 1.0.25(svelte@5.53.0)
@@ -125,6 +125,9 @@ importers:
       mode-watcher:
         specifier: ^1.1.0
         version: 1.1.0(svelte@5.53.0)
+      node-cron:
+        specifier: ^4.2.1
+        version: 4.2.1
       papaparse:
         specifier: ^5.5.3
         version: 5.5.3
@@ -205,6 +208,9 @@ importers:
       '@types/node':
         specifier: ^24.10.9
         version: 24.10.13
+      '@types/node-cron':
+        specifier: ^3.0.11
+        version: 3.0.11
       '@types/papaparse':
         specifier: ^5.5.2
         version: 5.5.2
@@ -720,20 +726,20 @@ packages:
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
 
-  '@parallaxrealms/api-auth@1.0.4':
-    resolution: {integrity: sha512-bw5hseuQiIxnb/5HolK5BdNJu+d8K3cZzW1C0qUweuD8mA/fOvpYueMocx0nKMhAjZTyPzdvftcdqNzI/yRzyQ==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/api-auth/1.0.4/9e451e2ee920d42f9020e4a19f250cb30eb4e1ec}
+  '@parallaxrealms/api-auth@1.0.5':
+    resolution: {integrity: sha512-7WmM37BchqFX+58zsh8XESxk9EVtwbWQ9ZDAeRTpP9aAEbwUqOuMdSucPexthoWPL2LhTzlKq68XpJZb0ow7Tw==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/api-auth/1.0.5/b6e7bd0276b401969bfa73caf2b4a14568b82f2d}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
-  '@parallaxrealms/api-core@1.0.30':
-    resolution: {integrity: sha512-pP++yz1MYedF+X6k9QIP9EbiAL5E2qcRhuCb4ihNa9a4WCm/767qqLMzoFdYfm51yyiMcJIFlIXvP9d8q3E2fA==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/api-core/1.0.30/cd58bea76e73d1dfb5450af00b2b463f1adcf1cc}
+  '@parallaxrealms/api-core@1.0.34':
+    resolution: {integrity: sha512-2xrP1EZ5Zkfbs0jCcMbgTWuRLAkoMqaD9doxep+Ws+CWWmY3qJuF4PeKuCCCoVq+ShuoKvHvAo5H5dTtl4lGLA==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/api-core/1.0.34/37c3564f2a5fd9a4a92991153333877827bcfdf9}
     peerDependencies:
-      '@parallaxrealms/utils-core': ^1.0.44
+      '@parallaxrealms/utils-core': ^1.0.45
       '@sveltejs/kit': ^2.0.0
       zod: ^3.22.0
 
-  '@parallaxrealms/api-ecom@1.0.23':
-    resolution: {integrity: sha512-KoOVxCSWwQOdse6uwBXBZQYSV8rjk2mpSsFTjNK3c7m7/EKDFbEmQnaypzmr3BxFmHgh4m00FSBzUZzw9kV1wQ==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/api-ecom/1.0.23/26ed4cf24900ac270f7d779cb098202db03b7381}
+  '@parallaxrealms/api-ecom@1.0.25':
+    resolution: {integrity: sha512-G8uYb9/WyDJvwjDwzcVuJ8Dkw8CrnUHfFUU3bY2v/m62OkwIutHC7d2rmHKIyb5jkaWZjAjeGWseoJjImowrmA==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/api-ecom/1.0.25/13f4412a99231dabd7dad325d6e67c4453c5804c}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
@@ -742,8 +748,8 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
-  '@parallaxrealms/components-core@1.0.51':
-    resolution: {integrity: sha512-ELXQ6N6CvlOVKmJUYFMwhGFNGrm01CMYTlo01WFF9uXT9iAkJv9ad54LP9MeOc8NRFtDKVsJmLKOxtbX+t54rQ==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/components-core/1.0.51/13732b33a1b7af655b3b5ec78fb9a165b04ed4f9}
+  '@parallaxrealms/components-core@1.0.52':
+    resolution: {integrity: sha512-9uCGNkYQFAieEuS8uCOXOja92r/pV9WLiHBoyb1a7WjacdzPfzURWbpBvvezaLaiJPu3engutAFmPyU4NM6XeQ==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/components-core/1.0.52/9a11d56c477d2199249a354b0bdaeb6f45a18144}
     peerDependencies:
       '@supabase/supabase-js': ^2.74.0
       '@sveltejs/kit': ^2.0.0
@@ -793,8 +799,8 @@ packages:
     peerDependencies:
       svelte: ^5.39.5
 
-  '@parallaxrealms/types-core@1.0.29':
-    resolution: {integrity: sha512-QYqnk3KxOxg7ghb4/gAzX/ZO2JxdVFUm2SugDJweYtCkyr+deLcG64LfEVv3woozC5FwRxI6+C4PvijuKCZeFA==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/types-core/1.0.29/d42a9b107fb8de1728e0f16f32b0c18a05e4253b}
+  '@parallaxrealms/types-core@1.0.31':
+    resolution: {integrity: sha512-ivT0ro3+QPy1gaJaW2mNxyV+u/t2DtNjtoOyUeAwj8C7X6oTtY+yxyGvhmTZFhmVqbu6ZOIzsdbDl9LI+4TxZQ==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/types-core/1.0.31/4300b5541764ab7b525698d7a6471ce4360b2415}
     peerDependencies:
       svelte: ^5.39.5
 
@@ -803,8 +809,8 @@ packages:
     peerDependencies:
       svelte: ^5.39.5
 
-  '@parallaxrealms/types-ecom@1.0.47':
-    resolution: {integrity: sha512-w+8T9zd50ZnNZAMA/o70rNcBYGX+3fk5mEtKxEn79AOPt/Ktgvjerb1HHQx5/Whi01SmsdE8dd6Hq/xkMOyzWQ==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/types-ecom/1.0.47/bb21a54efe58c087daa45260cc1cf7ae1f1c3e7a}
+  '@parallaxrealms/types-ecom@1.0.48':
+    resolution: {integrity: sha512-alOjasPWOFW5HdWrIccH4HCpJm+47IxBqfp9tYUYfUGKNY0Nw+sDDY0LEUd7KLVzb7YwYbIekyqS6v0PbUUbIw==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/types-ecom/1.0.48/810902b1056f408f7b7380c82a84dea637d266cc}
 
   '@parallaxrealms/types-edda@1.0.2':
     resolution: {integrity: sha512-g/zBMez73kEJ4apQz4ZV/RwFGQ5s6gpASjBJkeo+tEXS5i2kdOBKeTWRfQtKOxbjsd7ikig6MffcSXxItdjh6Q==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/types-edda/1.0.2/fcb4a78bd99df0f3ac3cc0baf256c712ea04a8eb}
@@ -817,8 +823,8 @@ packages:
   '@parallaxrealms/types-rune@1.0.4':
     resolution: {integrity: sha512-z7xrbBpovPLVM0Kh3cMxZ3x6FZB4DRKfDVcCMWBSSGu6vxAgTolwWmRmRJHPspWQvcXfj79dFy7V0WL1uEVyeA==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/types-rune/1.0.4/7f40eab29b81c38e15a4bac12fd8fa0d8340e7d1}
 
-  '@parallaxrealms/utils-core@1.0.44':
-    resolution: {integrity: sha512-bvBDRPRZ9a2XyM9YOXIL+Q+M+E+hoD82dR+Lz0ws97z+3e4JhIQ4Hbfe2g+DiW3Kw32qEhiMQsGynaltEdaIKw==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/utils-core/1.0.44/6f73df57cc177e2e009ce85d62ade39b8fbc2a51}
+  '@parallaxrealms/utils-core@1.0.45':
+    resolution: {integrity: sha512-TLn+yDsVBmTWP+zPNd9lsSigVS3NpA2gyh7xPiP3vVKwg9AX53dBETED54JFWEG3Ek52KhQiwElPleNDC3xIZA==, tarball: https://npm.pkg.github.com/download/@parallaxrealms/utils-core/1.0.45/6d6287024ddd663331f342bb7dbcaab73e626d89}
     peerDependencies:
       '@supabase/supabase-js': ^2.74.0
       '@sveltejs/kit': ^2.43.2
@@ -845,6 +851,13 @@ packages:
 
   '@poppinss/macroable@1.1.0':
     resolution: {integrity: sha512-y/YKzZDuG8XrpXpM7Z1RdQpiIc0MAKyva24Ux1PB4aI7RiSI/79K8JVDcdyubriTm7vJ1LhFs8CrZpmPnx/8Pw==}
+
+  '@react-email/render@1.1.2':
+    resolution: {integrity: sha512-RnRehYN3v9gVlNMehHPHhyp2RQo7+pSkHDtXPvg3s0GbzM9SQMW4Qrf8GRNvtpLC4gsI+Wt0VatNRUFqjvevbw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^18.0 || ^19.0 || ^19.0.0-rc
 
   '@remirror/core-constants@3.0.0':
     resolution: {integrity: sha512-42aWfPrimMfDKDi4YegyS7x+/0tlzaqwPQCULLanv3DMIlu96KTJR0fM5isWX2UViOqlGnX6YFgqWepcX+XMNg==}
@@ -1009,6 +1022,9 @@ packages:
     resolution: {integrity: sha512-mxRFDdHIWRxg3UfIIAwCm6NzvxG0jDX/wBN6KsQFTvKFqqg9vTrWUE68qEjHt19A5wwx5X5aUi2zuZT7YR0jrA==}
     cpu: [x64]
     os: [win32]
+
+  '@selderee/plugin-htmlparser2@0.11.0':
+    resolution: {integrity: sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ==}
 
   '@sendgrid/client@8.1.6':
     resolution: {integrity: sha512-/BHu0hqwXNHr2aLhcXU7RmmlVqrdfrbY9KpaNj00KZHlVOVoRxRVrpOCabIB+91ISXJ6+mLM9vpaVUhK6TwBWA==}
@@ -1469,6 +1485,9 @@ packages:
   '@types/mdurl@2.0.0':
     resolution: {integrity: sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==}
 
+  '@types/node-cron@3.0.11':
+    resolution: {integrity: sha512-0ikrnug3/IyneSHqCBeslAhlK2aBfYek1fGo4bP4QnZPmiqSGRK+Oy7ZMisLWkesffJvQ1cqAcBnJC+8+nxIAg==}
+
   '@types/node@14.18.63':
     resolution: {integrity: sha512-fAtCfv4jJg+ExtXhvCkCqUKZ+4ok/JQk01qDKhL5BDDoS3AxKXhV5/MAVUZyQnSEd2GT92fkgZl0pz0Q0AzcIQ==}
 
@@ -1847,10 +1866,23 @@ packages:
   dlv@1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
 
+  dom-serializer@2.0.0:
+    resolution: {integrity: sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==}
+
+  domelementtype@2.3.0:
+    resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==}
+
   domexception@4.0.0:
     resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==}
     engines: {node: '>=12'}
     deprecated: Use your platform's native DOMException instead
+
+  domhandler@5.0.3:
+    resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
+    engines: {node: '>= 4'}
+
+  domutils@3.2.2:
+    resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
 
   dotenv@17.3.1:
     resolution: {integrity: sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA==}
@@ -1984,6 +2016,9 @@ packages:
     resolution: {integrity: sha512-h5+1OzzfCC3Ef7VbtKdcv7zsstUQwUDlYpUTvjeUsJAssPgLn7QzbboPtL5ro04Mq0rPOsMzl7q5hIbRs2wD1A==}
     engines: {node: '>=8.0.0'}
 
+  fast-deep-equal@2.0.1:
+    resolution: {integrity: sha512-bCK/2Z4zLidyB4ReuIsvALH6w31YfAQDmXMqMx6FyfHqvBxtjC0eRumeSu4Bs3XtXwpyIywtSTrVT99BxY1f9w==}
+
   fast-safe-stringify@2.1.1:
     resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
 
@@ -2113,6 +2148,13 @@ packages:
     resolution: {integrity: sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==}
     engines: {node: '>=12'}
 
+  html-to-text@9.0.5:
+    resolution: {integrity: sha512-qY60FjREgVZL03vJU6IfMV4GDjGBIoOyvuFdpBDIX9yTlDw0TjxVBQp+P8NvpdIXNJvfWBTNul7fsAQJq2FNpg==}
+    engines: {node: '>=14'}
+
+  htmlparser2@8.0.2:
+    resolution: {integrity: sha512-GYdjWKDkbRLkZ5geuHs5NY1puJ+PXwP7+fHPRz06Eirsb9ugf6d8kkXav6ADhcODhFFPMIXyxkxSuMf3D6NCFA==}
+
   http-proxy-agent@5.0.0:
     resolution: {integrity: sha512-n2hY8YdoRE1i7r6M0w9DIw5GgZN0G25P8zLCRQ8rjXtTU3vsNFBI/vWK/UIeE6g5MUUz6avwAPXmL6Fy9D/90w==}
     engines: {node: '>= 6'}
@@ -2206,6 +2248,9 @@ packages:
   kleur@4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
+
+  leac@0.6.0:
+    resolution: {integrity: sha512-y+SqErxb8h7nE/fiEX07jsbuhrpO9lL8eca7/Y1nuWV2moNlXhyd59iDGcRf6moVyDMbmTNzL40SUyrFU/yDpg==}
 
   libphonenumber-js@1.10.43:
     resolution: {integrity: sha512-M/iPACJGsTvEy8QmUY4K0SoIFB71X2j7y2JvUMYzUXUxCNmiU+NTfHdz7gt+dC48BVfBzZi2oO6s9TDGllCfxA==}
@@ -2439,6 +2484,10 @@ packages:
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
 
+  node-cron@4.2.1:
+    resolution: {integrity: sha512-lgimEHPE/QDgFlywTd8yTR61ptugX3Qer29efeyWw2rv259HtGBNn1vZVmp8lB9uo9wC0t/AT4iGqXxia+CJFg==}
+    engines: {node: '>=6.0.0'}
+
   node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
     engines: {node: 4.x || >=6.0.0}
@@ -2490,12 +2539,18 @@ packages:
   parse5@7.3.0:
     resolution: {integrity: sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==}
 
+  parseley@0.12.1:
+    resolution: {integrity: sha512-e6qHKe3a9HWr0oMRVDTRhKce+bRO8VGQR3NyVwcjwrbhMmFCX9KszEV35+rn4AdilFAq9VPxP/Fe1wC9Qjd2lw==}
+
   path-is-absolute@1.0.1:
     resolution: {integrity: sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==}
     engines: {node: '>=0.10.0'}
 
   path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
+
+  peberminta@0.9.0:
+    resolution: {integrity: sha512-XIxfHpEuSJbITd1H3EeQwpcZbTLHc+VVr8ANI9t5sit565tsI4/xK3KWTUFE2e6QiangUkh3B0jihzmGnNrRsQ==}
 
   phenomenon@1.6.0:
     resolution: {integrity: sha512-7h9/fjPD3qNlgggzm88cY58l9sudZ6Ey+UmZsizfhtawO6E3srZQXywaNm2lBwT72TbpHYRPy7ytIHeBUD/G0A==}
@@ -2709,6 +2764,18 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
+  react-dom@19.2.4:
+    resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
+    peerDependencies:
+      react: ^19.2.4
+
+  react-promise-suspense@0.3.4:
+    resolution: {integrity: sha512-I42jl7L3Ze6kZaq+7zXWSunBa3b1on5yfvUW6Eo/3fFOj6dZ5Bqmcd264nJbTK/gn1HjjILAjSwnZbV4RpSaNQ==}
+
+  react@19.2.4:
+    resolution: {integrity: sha512-9nfp2hYpCwOjAN+8TZFGhtWEwgvWHXqESH8qT89AT/lWklpLON22Lc8pEtnpsZz7VmawabSU0gCjnj8aC0euHQ==}
+    engines: {node: '>=0.10.0'}
+
   readable-stream@3.6.2:
     resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
     engines: {node: '>= 6'}
@@ -2730,6 +2797,10 @@ packages:
 
   requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
+
+  resend@4.8.0:
+    resolution: {integrity: sha512-R8eBOFQDO6dzRTDmaMEdpqrkmgSjPpVXt4nGfWsZdYOet0kqra0xgbvTES6HmCriZEXbmGk3e0DiGIaLFTFSHA==}
+    engines: {node: '>=18'}
 
   resolve@1.22.11:
     resolution: {integrity: sha512-RfqAvLnMl313r7c9oclB1HhUEAezcpLjz95wFH4LVuhk9JF/r22qmVP9AMmOU4vMX7Q8pN8jwNg/CSpdFnMjTQ==}
@@ -2786,6 +2857,12 @@ packages:
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
+
+  scheduler@0.27.0:
+    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
+
+  selderee@0.11.0:
+    resolution: {integrity: sha512-5TF+l7p4+OsnP8BCCvSyZiSPc4x4//p5uPwK8TCnVPJYRmU2aYKMpOXvw8zM5a5JvuuCGN1jmsMwuU2W02ukfA==}
 
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
@@ -3677,44 +3754,47 @@ snapshots:
 
   '@noble/hashes@1.8.0': {}
 
-  '@parallaxrealms/api-auth@1.0.4(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)':
+  '@parallaxrealms/api-auth@1.0.5(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)':
     dependencies:
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@sendgrid/mail': 8.1.6
+      '@parallaxrealms/api-core': 1.0.34(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
       '@supabase/supabase-js': 2.97.0
       '@sveltejs/kit': 2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1))
     transitivePeerDependencies:
+      - '@parallaxrealms/utils-core'
       - bufferutil
-      - debug
+      - react
+      - react-dom
       - svelte
       - utf-8-validate
+      - zod
 
-  '@parallaxrealms/api-core@1.0.30(@parallaxrealms/utils-core@1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(zod@3.25.67)':
+  '@parallaxrealms/api-core@1.0.34(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)':
     dependencies:
       '@parallaxrealms/types-auth': 1.0.34(svelte@5.53.0)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@parallaxrealms/types-ecom': 1.0.47(svelte@5.53.0)
-      '@parallaxrealms/utils-core': 1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
-      '@sendgrid/mail': 8.1.6
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
+      '@parallaxrealms/types-ecom': 1.0.48(svelte@5.53.0)
+      '@parallaxrealms/utils-core': 1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
       '@supabase/supabase-js': 2.97.0
       '@sveltejs/kit': 2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1))
+      resend: 4.8.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       zod: 3.25.67
     transitivePeerDependencies:
       - bufferutil
-      - debug
+      - react
+      - react-dom
       - svelte
       - utf-8-validate
 
-  '@parallaxrealms/api-ecom@1.0.23(@parallaxrealms/utils-core@1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/node@24.10.13)(svelte@5.53.0)(zod@3.25.67)':
+  '@parallaxrealms/api-ecom@1.0.25(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/node@24.10.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)':
     dependencies:
       '@easypost/api': 8.5.0
-      '@parallaxrealms/api-auth': 1.0.4(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)
-      '@parallaxrealms/api-core': 1.0.30(@parallaxrealms/utils-core@1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(zod@3.25.67)
+      '@parallaxrealms/api-auth': 1.0.5(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)
+      '@parallaxrealms/api-core': 1.0.34(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)
       '@parallaxrealms/types-auth': 1.0.34(svelte@5.53.0)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@parallaxrealms/types-ecom': 1.0.47(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
+      '@parallaxrealms/types-ecom': 1.0.48(svelte@5.53.0)
       '@parallaxrealms/utils-ecom': 1.0.25(svelte@5.53.0)
-      '@sendgrid/mail': 8.1.6
       '@supabase/supabase-js': 2.97.0
       '@sveltejs/kit': 2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1))
       square: 43.2.1
@@ -3725,16 +3805,18 @@ snapshots:
       - bufferutil
       - debug
       - encoding
+      - react
+      - react-dom
       - supports-color
       - svelte
       - utf-8-validate
       - zod
 
-  '@parallaxrealms/api-edda@1.0.7(@parallaxrealms/utils-core@1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)':
+  '@parallaxrealms/api-edda@1.0.7(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)':
     dependencies:
-      '@parallaxrealms/api-core': 1.0.30(@parallaxrealms/utils-core@1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(zod@3.25.67)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@parallaxrealms/types-ecom': 1.0.47(svelte@5.53.0)
+      '@parallaxrealms/api-core': 1.0.34(@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0))(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.53.0)(zod@3.25.67)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
+      '@parallaxrealms/types-ecom': 1.0.48(svelte@5.53.0)
       '@parallaxrealms/types-edda': 1.0.2
       '@supabase/supabase-js': 2.97.0
       '@sveltejs/kit': 2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1))
@@ -3742,16 +3824,17 @@ snapshots:
     transitivePeerDependencies:
       - '@parallaxrealms/utils-core'
       - bufferutil
-      - debug
+      - react
+      - react-dom
       - svelte
       - utf-8-validate
 
-  '@parallaxrealms/components-core@1.0.51(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)':
+  '@parallaxrealms/components-core@1.0.52(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)':
     dependencies:
       '@parallaxrealms/schemas': 1.0.6(svelte@5.53.0)
       '@parallaxrealms/stores-core': 1.0.6(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@parallaxrealms/utils-core': 1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
+      '@parallaxrealms/utils-core': 1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
       '@supabase/supabase-js': 2.97.0
       '@sveltejs/kit': 2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1))
       bits-ui: 2.16.0(@internationalized/date@3.11.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)
@@ -3772,13 +3855,13 @@ snapshots:
 
   '@parallaxrealms/components-ecom@1.0.45(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)':
     dependencies:
-      '@parallaxrealms/components-core': 1.0.51(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)
+      '@parallaxrealms/components-core': 1.0.52(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)
       '@parallaxrealms/stores-ecom': 1.0.43(svelte@5.53.0)
       '@parallaxrealms/types-auth': 1.0.34(svelte@5.53.0)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@parallaxrealms/types-ecom': 1.0.47(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
+      '@parallaxrealms/types-ecom': 1.0.48(svelte@5.53.0)
       '@parallaxrealms/types-rune': 1.0.4(svelte@5.53.0)
-      '@parallaxrealms/utils-core': 1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
+      '@parallaxrealms/utils-core': 1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
       '@parallaxrealms/utils-ecom': 1.0.25(svelte@5.53.0)
       '@parallaxrealms/utils-rune': 1.0.4(@supabase/supabase-js@2.97.0)(svelte@5.53.0)
       '@stripe/stripe-js': 8.7.0
@@ -3801,10 +3884,10 @@ snapshots:
   '@parallaxrealms/components-edda@1.0.41(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@tiptap/extension-code-block@3.20.0(@tiptap/core@3.20.0(@tiptap/pm@3.20.0))(@tiptap/pm@3.20.0))(highlight.js@11.11.1)(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)':
     dependencies:
       '@floating-ui/dom': 1.7.5
-      '@parallaxrealms/components-core': 1.0.51(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
+      '@parallaxrealms/components-core': 1.0.52(@internationalized/date@3.11.0)(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)(sveltekit-superforms@2.22.1(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(@types/json-schema@7.0.15)(svelte@5.53.0)(typescript@5.9.3))(tailwindcss@4.2.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
       '@parallaxrealms/types-edda': 1.0.2
-      '@parallaxrealms/utils-core': 1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
+      '@parallaxrealms/utils-core': 1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
       '@supabase/supabase-js': 2.97.0
       '@sveltejs/kit': 2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1))
       '@tiptap/core': 3.20.0(@tiptap/pm@3.20.0)
@@ -3849,8 +3932,8 @@ snapshots:
   '@parallaxrealms/schemas@1.0.6(svelte@5.53.0)':
     dependencies:
       '@parallaxrealms/types-auth': 1.0.34(svelte@5.53.0)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@parallaxrealms/types-ecom': 1.0.47(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
+      '@parallaxrealms/types-ecom': 1.0.48(svelte@5.53.0)
       libphonenumber-js: 1.12.37
       zod: 3.25.67
     transitivePeerDependencies:
@@ -3860,8 +3943,8 @@ snapshots:
 
   '@parallaxrealms/stores-core@1.0.6(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)':
     dependencies:
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@parallaxrealms/utils-core': 1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
+      '@parallaxrealms/utils-core': 1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)
       svelte: 5.53.0
     transitivePeerDependencies:
       - '@supabase/supabase-js'
@@ -3874,7 +3957,7 @@ snapshots:
   '@parallaxrealms/stores-ecom@1.0.43(svelte@5.53.0)':
     dependencies:
       '@parallaxrealms/types-auth': 1.0.34(svelte@5.53.0)
-      '@parallaxrealms/types-ecom': 1.0.47(svelte@5.53.0)
+      '@parallaxrealms/types-ecom': 1.0.48(svelte@5.53.0)
       '@parallaxrealms/types-rune': 1.0.4(svelte@5.53.0)
       '@supabase/supabase-js': 2.97.0
       svelte: 5.53.0
@@ -3892,7 +3975,7 @@ snapshots:
 
   '@parallaxrealms/types-auth@1.0.34(svelte@5.53.0)':
     dependencies:
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
     transitivePeerDependencies:
       - bufferutil
       - svelte
@@ -3906,7 +3989,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@parallaxrealms/types-core@1.0.29(svelte@5.53.0)':
+  '@parallaxrealms/types-core@1.0.31(svelte@5.53.0)':
     dependencies:
       '@supabase/supabase-js': 2.97.0
       svelte: 5.53.0
@@ -3923,10 +4006,10 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@parallaxrealms/types-ecom@1.0.47(svelte@5.53.0)':
+  '@parallaxrealms/types-ecom@1.0.48(svelte@5.53.0)':
     dependencies:
       '@parallaxrealms/types-auth': 1.0.34(svelte@5.53.0)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
     transitivePeerDependencies:
       - bufferutil
       - svelte
@@ -3946,17 +4029,17 @@ snapshots:
 
   '@parallaxrealms/types-rune@1.0.4(svelte@5.53.0)':
     dependencies:
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@parallaxrealms/types-ecom': 1.0.47(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
+      '@parallaxrealms/types-ecom': 1.0.48(svelte@5.53.0)
     transitivePeerDependencies:
       - bufferutil
       - svelte
       - utf-8-validate
 
-  '@parallaxrealms/utils-core@1.0.44(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)':
+  '@parallaxrealms/utils-core@1.0.45(@supabase/supabase-js@2.97.0)(@sveltejs/kit@2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(lucide-svelte@0.545.0(svelte@5.53.0))(svelte-sonner@1.0.7(svelte@5.53.0))(svelte@5.53.0)':
     dependencies:
       '@parallaxrealms/types-auth': 1.0.34(svelte@5.53.0)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
       '@supabase/supabase-js': 2.97.0
       '@sveltejs/kit': 2.52.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.53.0)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1))
       clsx: 2.1.1
@@ -3971,8 +4054,8 @@ snapshots:
   '@parallaxrealms/utils-ecom@1.0.25(svelte@5.53.0)':
     dependencies:
       '@parallaxrealms/types-auth': 1.0.34(svelte@5.53.0)
-      '@parallaxrealms/types-core': 1.0.29(svelte@5.53.0)
-      '@parallaxrealms/types-ecom': 1.0.47(svelte@5.53.0)
+      '@parallaxrealms/types-core': 1.0.31(svelte@5.53.0)
+      '@parallaxrealms/types-ecom': 1.0.48(svelte@5.53.0)
       svelte: 5.53.0
     transitivePeerDependencies:
       - bufferutil
@@ -3997,6 +4080,14 @@ snapshots:
 
   '@poppinss/macroable@1.1.0':
     optional: true
+
+  '@react-email/render@1.1.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      html-to-text: 9.0.5
+      prettier: 3.8.1
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      react-promise-suspense: 0.3.4
 
   '@remirror/core-constants@3.0.0': {}
 
@@ -4110,6 +4201,11 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.57.1':
     optional: true
+
+  '@selderee/plugin-htmlparser2@0.11.0':
+    dependencies:
+      domhandler: 5.0.3
+      selderee: 0.11.0
 
   '@sendgrid/client@8.1.6':
     dependencies:
@@ -4581,6 +4677,8 @@ snapshots:
 
   '@types/mdurl@2.0.0': {}
 
+  '@types/node-cron@3.0.11': {}
+
   '@types/node@14.18.63': {}
 
   '@types/node@24.10.13':
@@ -4972,10 +5070,28 @@ snapshots:
   dlv@1.1.3:
     optional: true
 
+  dom-serializer@2.0.0:
+    dependencies:
+      domelementtype: 2.3.0
+      domhandler: 5.0.3
+      entities: 4.5.0
+
+  domelementtype@2.3.0: {}
+
   domexception@4.0.0:
     dependencies:
       webidl-conversions: 7.0.0
     optional: true
+
+  domhandler@5.0.3:
+    dependencies:
+      domelementtype: 2.3.0
+
+  domutils@3.2.2:
+    dependencies:
+      dom-serializer: 2.0.0
+      domelementtype: 2.3.0
+      domhandler: 5.0.3
 
   dotenv@17.3.1: {}
 
@@ -5155,6 +5271,8 @@ snapshots:
       pure-rand: 6.1.0
     optional: true
 
+  fast-deep-equal@2.0.1: {}
+
   fast-safe-stringify@2.1.1: {}
 
   fdir@6.5.0(picomatch@4.0.3):
@@ -5289,6 +5407,21 @@ snapshots:
     dependencies:
       whatwg-encoding: 2.0.0
     optional: true
+
+  html-to-text@9.0.5:
+    dependencies:
+      '@selderee/plugin-htmlparser2': 0.11.0
+      deepmerge: 4.3.1
+      dom-serializer: 2.0.0
+      htmlparser2: 8.0.2
+      selderee: 0.11.0
+
+  htmlparser2@8.0.2:
+    dependencies:
+      domelementtype: 2.3.0
+      domhandler: 5.0.3
+      domutils: 3.2.2
+      entities: 4.5.0
 
   http-proxy-agent@5.0.0:
     dependencies:
@@ -5425,6 +5558,8 @@ snapshots:
       commander: 8.3.0
 
   kleur@4.1.5: {}
+
+  leac@0.6.0: {}
 
   libphonenumber-js@1.10.43: {}
 
@@ -5610,6 +5745,8 @@ snapshots:
   node-addon-api@7.1.1:
     optional: true
 
+  node-cron@4.2.1: {}
+
   node-fetch@2.7.0:
     dependencies:
       whatwg-url: 5.0.0
@@ -5655,10 +5792,17 @@ snapshots:
       entities: 6.0.1
     optional: true
 
+  parseley@0.12.1:
+    dependencies:
+      leac: 0.6.0
+      peberminta: 0.9.0
+
   path-is-absolute@1.0.1:
     optional: true
 
   path-parse@1.0.7: {}
+
+  peberminta@0.9.0: {}
 
   phenomenon@1.6.0: {}
 
@@ -5875,6 +6019,17 @@ snapshots:
       strip-json-comments: 2.0.1
     optional: true
 
+  react-dom@19.2.4(react@19.2.4):
+    dependencies:
+      react: 19.2.4
+      scheduler: 0.27.0
+
+  react-promise-suspense@0.3.4:
+    dependencies:
+      fast-deep-equal: 2.0.1
+
+  react@19.2.4: {}
+
   readable-stream@3.6.2:
     dependencies:
       inherits: 2.0.4
@@ -5898,6 +6053,13 @@ snapshots:
 
   requires-port@1.0.0:
     optional: true
+
+  resend@4.8.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      '@react-email/render': 1.1.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+    transitivePeerDependencies:
+      - react
+      - react-dom
 
   resolve@1.22.11:
     dependencies:
@@ -5980,6 +6142,12 @@ snapshots:
     dependencies:
       xmlchars: 2.2.0
     optional: true
+
+  scheduler@0.27.0: {}
+
+  selderee@0.11.0:
+    dependencies:
+      parseley: 0.12.1
 
   semver@6.3.1:
     optional: true

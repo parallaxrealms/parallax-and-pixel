@@ -47,6 +47,7 @@ export const actions: Actions = {
 		const metaDescription = formData.get('meta_description') as string;
 		const category = formData.get('category') as string;
 		const pageStylesData = formData.get('page_styles') as string;
+		const scheduledAt = formData.get('scheduled_at') as string;
 		const isNew = formData.get('is_new') === 'true';
 
 		if (!title?.trim()) {
@@ -90,14 +91,34 @@ export const actions: Actions = {
 			existingOptions = (existingPage?.page_options as Record<string, unknown>) ?? {};
 		}
 
+		// Validate scheduled status
+		if (status === 'scheduled') {
+			if (!scheduledAt) {
+				return fail(400, { error: 'Scheduled date is required' });
+			}
+			const scheduledDate = new Date(scheduledAt);
+			if (isNaN(scheduledDate.getTime())) {
+				return fail(400, { error: 'Invalid scheduled date' });
+			}
+			if (scheduledDate <= new Date()) {
+				return fail(400, { error: 'Scheduled date must be in the future' });
+			}
+		}
+
 		// Merge new styles into existing page_options
 		const pageOptions: Record<string, unknown> = {
 			...existingOptions,
 			...(pageStylesJson?.background !== undefined ? { background: pageStylesJson.background } : {}),
 			...(pageStylesJson?.textColorLight !== undefined ? { textColorLight: pageStylesJson.textColorLight } : {}),
 			...(pageStylesJson?.textColorDark !== undefined ? { textColorDark: pageStylesJson.textColorDark } : {}),
-			...(pageStylesJson?.scrollingText !== undefined ? { scrollingText: pageStylesJson.scrollingText } : {})
+			...(pageStylesJson?.scrollingText !== undefined ? { scrollingText: pageStylesJson.scrollingText } : {}),
+			...(pageStylesJson?.scheduled_at !== undefined ? { scheduled_at: pageStylesJson.scheduled_at } : {})
 		};
+
+		// Clear scheduled_at from page_options when not scheduling
+		if (status !== 'scheduled') {
+			delete pageOptions.scheduled_at;
+		}
 
 		const pageData = {
 			title: title.trim(),
@@ -107,7 +128,8 @@ export const actions: Actions = {
 			category: category?.trim() || null,
 			page_options: pageOptions,
 			last_modified_by: session.user.id,
-			...(status === 'published' ? { published_at: new Date().toISOString() } : {})
+			...(status === 'published' ? { published_at: new Date().toISOString() } : {}),
+			...(status === 'scheduled' ? { published_at: null } : {})
 		};
 
 		if (isNew) {
@@ -129,7 +151,7 @@ export const actions: Actions = {
 			}
 
 			// Refresh pages cache after successful create
-			const pagesConfig = EDDA_TABLE_CONFIGS.find((c: TableQueryConfig) => c.table === 'pages')!;
+			const pagesConfig = EDDA_TABLE_CONFIGS.find((c: TableQueryConfig) => c.table === 'website_pages')!;
 			await refreshTableCache(locals.supabase, '.cache', siteId, pagesConfig, session.user.id);
 
 			return { success: true, page: data };
@@ -150,7 +172,7 @@ export const actions: Actions = {
 			}
 
 			// Refresh pages cache after successful update
-			const pagesConfig = EDDA_TABLE_CONFIGS.find((c: TableQueryConfig) => c.table === 'pages')!;
+			const pagesConfig = EDDA_TABLE_CONFIGS.find((c: TableQueryConfig) => c.table === 'website_pages')!;
 			await refreshTableCache(locals.supabase, '.cache', siteId, pagesConfig, session.user.id);
 
 			return { success: true, page: data };

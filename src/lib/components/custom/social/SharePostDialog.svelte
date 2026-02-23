@@ -27,6 +27,9 @@
 	let postContent = $state('');
 	let selectedPlatforms = $state<Set<SocialPlatform>>(new Set());
 	let postResults = $state<{ platform: string; display_name: string; success: boolean; error?: string }[]>([]);
+	let scheduleMode = $state(false);
+	let scheduledAt = $state('');
+	let scheduling = $state(false);
 
 	let enabledIntegrations = $derived(integrations.filter((i) => i.is_enabled && i.has_credentials));
 	let enabledPlatforms = $derived([...new Set(enabledIntegrations.map((i) => i.platform))]);
@@ -47,6 +50,8 @@
 			postContent = `${title}\n\n${metaDescription || ''}\n\n${blogUrl}`.trim();
 			postResults = [];
 			selectedPlatforms = new Set();
+			scheduleMode = false;
+			scheduledAt = '';
 			loadIntegrations();
 		}
 	});
@@ -118,6 +123,50 @@
 		}
 	}
 
+	async function schedulePost() {
+		if (!postContent.trim() || selectedPlatforms.size === 0 || !scheduledAt) return;
+
+		scheduling = true;
+		postResults = [];
+
+		try {
+			const res = await fetch('/api/social/schedule', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					content: postContent,
+					platforms: Array.from(selectedPlatforms),
+					link_url: `https://parallaxandpixel.com/blog/${slug}`,
+					link_title: title,
+					page_id: pageId || undefined,
+					page_slug: slug,
+					scheduled_at: new Date(scheduledAt).toISOString()
+				})
+			});
+
+			if (!res.ok) {
+				const data = await res.json();
+				throw new Error(data.message || 'Failed to schedule');
+			}
+
+			postResults = [{
+				platform: 'system',
+				display_name: 'Scheduler',
+				success: true,
+				error: undefined
+			}];
+		} catch (e) {
+			postResults = [{
+				platform: 'error',
+				display_name: 'System',
+				success: false,
+				error: e instanceof Error ? e.message : 'Unexpected error'
+			}];
+		} finally {
+			scheduling = false;
+		}
+	}
+
 	function handleClose() {
 		open = false;
 		onClose?.();
@@ -181,6 +230,22 @@
 					</div>
 				</div>
 
+				<!-- Schedule toggle -->
+				<div class="share-schedule">
+					<label class="share-schedule-toggle font-terminal">
+						<input type="checkbox" bind:checked={scheduleMode} />
+						<span>Schedule for later</span>
+					</label>
+					{#if scheduleMode}
+						<input
+							type="datetime-local"
+							class="share-schedule-datetime"
+							bind:value={scheduledAt}
+							min={new Date().toISOString().slice(0, 16)}
+						/>
+					{/if}
+				</div>
+
 				<!-- Results -->
 				{#if postResults.length > 0}
 					<div class="share-results">
@@ -205,18 +270,33 @@
 				{postResults.length > 0 ? 'Close' : 'Cancel'}
 			</Button>
 			{#if postResults.length === 0}
-				<Button
-					onclick={sendPost}
-					disabled={posting || !postContent.trim() || selectedPlatforms.size === 0 || charsRemaining < 0}
-					class="primary-btn"
-				>
-					{#if posting}
-						<Loader2 class="h-4 w-4 mr-2 animate-spin" />
-						Sharing...
-					{:else}
-						Share
-					{/if}
-				</Button>
+				{#if scheduleMode}
+					<Button
+						onclick={schedulePost}
+						disabled={scheduling || !postContent.trim() || selectedPlatforms.size === 0 || charsRemaining < 0 || !scheduledAt}
+						class="primary-btn"
+					>
+						{#if scheduling}
+							<Loader2 class="h-4 w-4 mr-2 animate-spin" />
+							Scheduling...
+						{:else}
+							Schedule
+						{/if}
+					</Button>
+				{:else}
+					<Button
+						onclick={sendPost}
+						disabled={posting || !postContent.trim() || selectedPlatforms.size === 0 || charsRemaining < 0}
+						class="primary-btn"
+					>
+						{#if posting}
+							<Loader2 class="h-4 w-4 mr-2 animate-spin" />
+							Sharing...
+						{:else}
+							Share Now
+						{/if}
+					</Button>
+				{/if}
 			{/if}
 		</Dialog.Footer>
 	</Dialog.Content>
@@ -356,6 +436,41 @@
 	.share-error {
 		color: #ef4444;
 		flex-basis: 100%;
+	}
+
+	.share-schedule {
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+	}
+
+	.share-schedule-toggle {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		cursor: pointer;
+		font-size: 0.8125rem;
+		color: #a3a3a3;
+	}
+
+	.share-schedule-toggle input[type="checkbox"] {
+		accent-color: var(--accent-primary);
+	}
+
+	.share-schedule-datetime {
+		width: 100%;
+		padding: 0.5rem 0.625rem;
+		background: rgba(0, 0, 0, 0.3);
+		border: 1px solid #3f3f46;
+		border-radius: 0.375rem;
+		font-family: 'Space Mono', monospace;
+		font-size: 0.8125rem;
+		color: #fafafa;
+	}
+
+	.share-schedule-datetime:focus {
+		outline: none;
+		border-color: var(--accent-primary);
 	}
 
 	:global(.primary-btn) {

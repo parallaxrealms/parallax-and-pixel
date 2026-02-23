@@ -142,7 +142,7 @@
 		},
 		{
 			id: 'media',
-			label: 'Media',
+			label: 'MediaLibrary',
 			icon: Image,
 			tabId: 'media',
 			adminOnly: false

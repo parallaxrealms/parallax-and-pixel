@@ -5,7 +5,7 @@ import type { Page } from '@parallaxrealms/types-edda';
 export const load: PageServerLoad = async ({ locals, parent }) => {
 	const siteId = PUBLIC_SITE_ID || '5176';
 
-	// Get parent layout data (includes navbarLinks, siteOptions)
+	// Get parent layout data (includes navbarLinks, website)
 	const parentData = await parent();
 
 	// Fetch published pages directly from database for latest posts

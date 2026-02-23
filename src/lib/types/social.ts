@@ -30,7 +30,30 @@ export interface SocialIntegrationClient {
 	updated_at: string;
 }
 
-export type SocialPostStatus = 'pending' | 'success' | 'failed' | 'partial';
+export type SocialPostStatus = 'pending' | 'success' | 'failed' | 'partial' | 'scheduled';
+
+export type ScheduledPostStatus = 'scheduled' | 'processing' | 'completed' | 'failed' | 'cancelled';
+
+export interface ScheduledSocialPost {
+	id: string;
+	site_id: string;
+	content: string;
+	platforms: SocialPlatform[];
+	image_urls: string[];
+	link_url: string | null;
+	link_title: string | null;
+	page_id: string | null;
+	page_slug: string | null;
+	scheduled_at: string;
+	status: ScheduledPostStatus;
+	created_by: string;
+	created_at: string;
+	error_message: string | null;
+}
+
+export interface SchedulePostRequest extends ComposePostRequest {
+	scheduled_at: string;
+}
 
 export interface SocialPost {
 	id: string;

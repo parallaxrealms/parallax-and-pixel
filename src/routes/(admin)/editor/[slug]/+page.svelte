@@ -99,6 +99,9 @@
 	// Scrolling text for blog header ticker
 	let scrollingText = $state((pageOptions?.scrollingText as string) ?? '');
 
+	// Scheduled posting
+	let scheduledAt = $state((pageOptions?.scheduled_at as string) ?? '');
+
 	// For MediaSelector image URL binding
 	let selectedBgImageUrl = $state('');
 	$effect(() => {
@@ -137,7 +140,8 @@
 			background,
 			textColorLight: textColorLight || undefined,
 			textColorDark: textColorDark || undefined,
-			scrollingText
+			scrollingText,
+			scheduled_at: status === 'scheduled' && scheduledAt ? new Date(scheduledAt).toISOString() : undefined
 		});
 	});
 
@@ -363,6 +367,7 @@
 			<input type="hidden" name="content" value={contentJson()} />
 			<input type="hidden" name="is_new" value={data.isNew ? 'true' : 'false'} />
 			<input type="hidden" name="page_styles" value={pageStylesJson()} />
+			<input type="hidden" name="scheduled_at" value={scheduledAt} />
 
 			<!-- Page Settings Sidebar -->
 			<aside class="editor-sidebar">
@@ -381,14 +386,33 @@
 					<input type="hidden" name="status" value={status} />
 					<Select.Root bind:value={status} type="single">
 						<Select.Trigger class="select-trigger w-full">
-							{status === 'draft' ? 'Draft' : status === 'published' ? 'Published' : 'Archived'}
+							{status === 'draft' ? 'Draft' : status === 'published' ? 'Published' : status === 'scheduled' ? 'Scheduled' : 'Archived'}
 						</Select.Trigger>
 						<Select.Content class="select-content">
 							<Select.Item value="draft" label="Draft">Draft</Select.Item>
 							<Select.Item value="published" label="Published">Published</Select.Item>
+							<Select.Item value="scheduled" label="Scheduled">Scheduled</Select.Item>
 							<Select.Item value="archived" label="Archived">Archived</Select.Item>
 						</Select.Content>
 					</Select.Root>
+
+					{#if status === 'scheduled'}
+						<div class="schedule-picker">
+							<Label for="scheduled_at">Publish Date & Time</Label>
+							<input
+								type="datetime-local"
+								id="scheduled_at"
+								class="datetime-input"
+								bind:value={scheduledAt}
+								min={new Date().toISOString().slice(0, 16)}
+							/>
+							{#if scheduledAt}
+								<p class="hint-text">Will publish at {new Date(scheduledAt).toLocaleString()}</p>
+							{:else}
+								<p class="hint-text" style="color: #ef4444;">Select a date and time to schedule</p>
+							{/if}
+						</div>
+					{/if}
 				</div>
 
 				<div class="sidebar-section">
@@ -675,7 +699,7 @@
 					</div>
 				</details>
 
-				<Button type="submit" class="w-full" disabled={saving || !title.trim()}>
+				<Button type="submit" class="w-full" disabled={saving || !title.trim() || (status === 'scheduled' && !scheduledAt)}>
 					{#if saving}
 						<Loader2 class="h-4 w-4 mr-2 animate-spin" />
 						Saving...
@@ -816,6 +840,11 @@
 
 	.badge.archived {
 		background-color: #6b7280;
+		color: white;
+	}
+
+	.badge.scheduled {
+		background-color: #8b5cf6;
 		color: white;
 	}
 
@@ -1137,6 +1166,29 @@
 		margin-top: 0.25rem;
 		font-size: 0.75rem;
 		color: var(--dashboard-text-muted);
+	}
+
+	.schedule-picker {
+		margin-top: 0.75rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.datetime-input {
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+		border: 1px solid var(--dashboard-border);
+		background-color: var(--dashboard-bg);
+		color: var(--dashboard-text);
+		font-size: 0.875rem;
+		font-family: 'Space Mono', monospace;
+	}
+
+	.datetime-input:focus {
+		outline: none;
+		border-color: var(--dashboard-focus-ring);
+		box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
 	}
 
 	/* Custom insert buttons */

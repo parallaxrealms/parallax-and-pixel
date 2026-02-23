@@ -117,6 +117,18 @@
 	let expandedItems = $state<string[]>([]);
 	let showUserDropdown = $state(false);
 
+	// Keep activeItem in sync with the selectedTab store
+	$effect(() => {
+		const tab = $selectedTab;
+		if (tab) {
+			// Find the item whose tabId matches the selected tab
+			const match = items.find((i: SidebarItemType) => i.tabId === tab);
+			if (match) {
+				activeItem = match.id;
+			}
+		}
+	});
+
 	// Track previous sidebar state to detect changes
 	let previousIsOpen = $state(false);
 

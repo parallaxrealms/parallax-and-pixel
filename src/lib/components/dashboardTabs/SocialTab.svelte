@@ -12,7 +12,8 @@
 		PLATFORM_CONFIGS,
 		type SocialPlatform,
 		type SocialIntegrationClient,
-		type SocialPost
+		type SocialPost,
+		type ScheduledSocialPost
 	} from '$lib/types/social';
 
 	// Dialog component aliases for MediaSelector
@@ -46,6 +47,12 @@
 	let posting = $state(false);
 	let postResults = $state<{ platform: string; display_name: string; success: boolean; error?: string }[]>([]);
 	let selectedImageUrl = $state('');
+
+	// ─── Schedule state ───
+	let scheduleMode = $state(false);
+	let scheduledAt = $state('');
+	let scheduling = $state(false);
+	let scheduledPosts = $state<ScheduledSocialPost[]>([]);
 
 	// ─── Integration config dialog ───
 	let showConfigDialog = $state(false);
@@ -167,6 +174,76 @@
 			posting = false;
 		}
 	}
+
+	async function schedulePost() {
+		if (!postContent.trim() || selectedPlatforms.size === 0 || !scheduledAt) return;
+
+		scheduling = true;
+		postResults = [];
+
+		try {
+			const res = await fetch('/api/social/schedule', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					content: postContent,
+					platforms: Array.from(selectedPlatforms),
+					image_urls: selectedImages.length > 0 ? selectedImages : undefined,
+					scheduled_at: new Date(scheduledAt).toISOString()
+				})
+			});
+
+			if (!res.ok) {
+				const data = await res.json();
+				throw new Error(data.message || 'Failed to schedule post');
+			}
+
+			postResults = [{
+				platform: 'system',
+				display_name: 'Scheduler',
+				success: true,
+				error: undefined
+			}];
+			await loadScheduledPosts();
+		} catch (e) {
+			postResults = [{
+				platform: 'error',
+				display_name: 'System',
+				success: false,
+				error: e instanceof Error ? e.message : 'Unexpected error'
+			}];
+		} finally {
+			scheduling = false;
+		}
+	}
+
+	async function loadScheduledPosts() {
+		try {
+			const res = await fetch('/api/social/schedule');
+			if (!res.ok) return;
+			const data = await res.json();
+			scheduledPosts = data.posts;
+		} catch {
+			// silent
+		}
+	}
+
+	async function cancelScheduledPost(id: string) {
+		if (!confirm('Cancel this scheduled post?')) return;
+		try {
+			await fetch(`/api/social/schedule?id=${id}`, { method: 'DELETE' });
+			await loadScheduledPosts();
+		} catch (e) {
+			console.error('Error cancelling scheduled post:', e);
+		}
+	}
+
+	// Load scheduled posts when compose section is active
+	$effect(() => {
+		if (activeSection === 'compose') {
+			loadScheduledPosts();
+		}
+	});
 
 	// ─── Integration config functions ───
 	function openConfig(platform: SocialPlatform) {
@@ -414,20 +491,54 @@
 					{/if}
 				</div>
 
-				<!-- Send button -->
-				<div class="compose-actions">
-					<Button
-						onclick={sendPost}
-						disabled={posting || !postContent.trim() || selectedPlatforms.size === 0 || charsRemaining < 0}
-						class="primary-btn"
-					>
-						{#if posting}
-							<Loader2 class="h-4 w-4 mr-2 animate-spin" />
-							Posting...
-						{:else}
-							Send Post
+				<!-- Schedule toggle -->
+				<div class="schedule-section">
+					<label class="schedule-toggle font-terminal">
+						<input type="checkbox" bind:checked={scheduleMode} />
+						<span>Schedule for later</span>
+					</label>
+					{#if scheduleMode}
+						<input
+							type="datetime-local"
+							class="schedule-datetime"
+							bind:value={scheduledAt}
+							min={new Date().toISOString().slice(0, 16)}
+						/>
+						{#if scheduledAt}
+							<p class="font-terminal text-xs text-slate-500">Will post at {new Date(scheduledAt).toLocaleString()}</p>
 						{/if}
-					</Button>
+					{/if}
+				</div>
+
+				<!-- Send / Schedule button -->
+				<div class="compose-actions">
+					{#if scheduleMode}
+						<Button
+							onclick={schedulePost}
+							disabled={scheduling || !postContent.trim() || selectedPlatforms.size === 0 || charsRemaining < 0 || !scheduledAt}
+							class="primary-btn"
+						>
+							{#if scheduling}
+								<Loader2 class="h-4 w-4 mr-2 animate-spin" />
+								Scheduling...
+							{:else}
+								Schedule Post
+							{/if}
+						</Button>
+					{:else}
+						<Button
+							onclick={sendPost}
+							disabled={posting || !postContent.trim() || selectedPlatforms.size === 0 || charsRemaining < 0}
+							class="primary-btn"
+						>
+							{#if posting}
+								<Loader2 class="h-4 w-4 mr-2 animate-spin" />
+								Posting...
+							{:else}
+								Send Post
+							{/if}
+						</Button>
+					{/if}
 				</div>
 
 				<!-- Results -->
@@ -442,6 +553,33 @@
 								{#if result.error}
 									<span class="font-terminal result-error text-xs">{result.error}</span>
 								{/if}
+							</div>
+						{/each}
+					</div>
+				{/if}
+
+				<!-- Scheduled posts queue -->
+				{#if scheduledPosts.length > 0}
+					<div class="scheduled-queue">
+						<h3 class="font-fade text-sm text-accent-secondary">Scheduled Posts</h3>
+						{#each scheduledPosts as post}
+							<div class="scheduled-item">
+								<div class="scheduled-item-info">
+									<span class="font-terminal text-sm">{post.content.length > 60 ? post.content.slice(0, 60) + '...' : post.content}</span>
+									<span class="font-terminal text-xs text-slate-500">{new Date(post.scheduled_at).toLocaleString()}</span>
+									<div class="scheduled-platforms">
+										{#each post.platforms as platform}
+											{@const config = PLATFORM_CONFIGS[platform]}
+											<span class="platform-dot" style="background-color: {config?.color || '#666'}" title={config?.name || platform}></span>
+										{/each}
+									</div>
+								</div>
+								<button
+									class="action-btn delete font-terminal text-xs"
+									onclick={() => cancelScheduledPost(post.id)}
+								>
+									Cancel
+								</button>
 							</div>
 						{/each}
 					</div>
@@ -564,6 +702,7 @@
 							<option value="success">Success</option>
 							<option value="failed">Failed</option>
 							<option value="partial">Partial</option>
+							<option value="scheduled">Scheduled</option>
 						</select>
 					</div>
 				</div>
@@ -1192,6 +1331,76 @@
 
 	:global(.cyber-input:focus) {
 		border-color: var(--accent-primary) !important;
+	}
+
+	/* ═══ SCHEDULE ═══ */
+	.schedule-section {
+		margin-bottom: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.schedule-toggle {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		cursor: pointer;
+		font-size: 0.8125rem;
+		color: #a3a3a3;
+	}
+
+	.schedule-toggle input[type="checkbox"] {
+		accent-color: var(--accent-primary);
+	}
+
+	.schedule-datetime {
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+		background: rgba(0, 0, 0, 0.3);
+		border: 1px solid #3f3f46;
+		border-radius: 0.375rem;
+		font-family: 'Space Mono', monospace;
+		font-size: 0.8125rem;
+		color: #fafafa;
+	}
+
+	.schedule-datetime:focus {
+		outline: none;
+		border-color: var(--accent-primary);
+	}
+
+	.scheduled-queue {
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid #3f3f46;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.scheduled-item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		padding: 0.5rem 0.75rem;
+		background: rgba(139, 92, 246, 0.05);
+		border: 1px solid rgba(139, 92, 246, 0.2);
+		border-radius: 0.375rem;
+	}
+
+	.scheduled-item-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		min-width: 0;
+		flex: 1;
+	}
+
+	.scheduled-platforms {
+		display: flex;
+		gap: 0.25rem;
 	}
 
 	:global(.primary-btn) {

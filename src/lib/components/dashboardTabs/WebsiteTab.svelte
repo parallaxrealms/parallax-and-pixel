@@ -190,6 +190,8 @@
 				return 'status-published';
 			case 'draft':
 				return 'status-draft';
+			case 'scheduled':
+				return 'status-scheduled';
 			default:
 				return 'status-default';
 		}
@@ -242,6 +244,9 @@
 									<div class="page-header">
 										<span class="font-terminal page-title">{page.title}</span>
 										<span class="status-badge {getStatusBadgeClass(page.status)}">{page.status}</span>
+										{#if page.status === 'scheduled' && page.page_options?.scheduled_at}
+											<span class="font-terminal text-xs text-slate-500">{new Date(page.page_options.scheduled_at as string).toLocaleString()}</span>
+										{/if}
 									</div>
 									<span class="font-terminal page-slug">/blog/{page.slug}</span>
 								</div>
@@ -612,6 +617,11 @@
 	.status-draft {
 		background: rgba(255, 191, 0, 0.2);
 		color: var(--accent-secondary);
+	}
+
+	.status-scheduled {
+		background: rgba(139, 92, 246, 0.2);
+		color: #a78bfa;
 	}
 
 	.status-default {

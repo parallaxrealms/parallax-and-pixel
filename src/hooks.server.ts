@@ -1,3 +1,4 @@
+import { initCronJobs } from '$lib/server/cron'
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public'
 import { createServerClient } from '@supabase/ssr'
 import { redirect, type Handle } from '@sveltejs/kit'
@@ -5,6 +6,9 @@ import { JWT_SECRET } from '$env/static/private'
 import { createRemoteJWKSet, jwtVerify } from 'jose'
 import type { Session } from '@supabase/supabase-js'
 import type { SupabaseJwt } from '@parallaxrealms/types-auth'
+
+// Initialize cron jobs (social post scheduler)
+initCronJobs()
 
 // Create JWKS for asymmetric JWT verification
 const SUPABASE_JWT_ISSUER = `${PUBLIC_SUPABASE_URL}/auth/v1`
