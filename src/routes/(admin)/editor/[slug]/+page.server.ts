@@ -11,10 +11,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	// Load page by slug
 	const { data: page, error: pageError } = await locals.supabase
-		.schema('pxp')
 		.from('pages')
 		.select('*')
-		.eq('site_id', siteId)
 		.eq('slug', slug)
 		.single();
 
@@ -82,10 +80,8 @@ export const actions: Actions = {
 		let existingOptions: Record<string, unknown> = {};
 		if (!isNew) {
 			const { data: existingPage } = await locals.supabase
-				.schema('pxp')
 				.from('pages')
 				.select('page_options')
-				.eq('site_id', siteId)
 				.eq('slug', params.slug)
 				.single();
 			existingOptions = (existingPage?.page_options as Record<string, unknown>) ?? {};
@@ -135,10 +131,8 @@ export const actions: Actions = {
 		if (isNew) {
 			// Create new page
 			const { data, error: insertError } = await locals.supabase
-				.schema('pxp')
 				.from('pages')
 				.insert({
-					site_id: siteId,
 					slug: params.slug,
 					...pageData
 				})
@@ -158,10 +152,8 @@ export const actions: Actions = {
 		} else {
 			// Update existing page
 			const { data, error: updateError } = await locals.supabase
-				.schema('pxp')
 				.from('pages')
 				.update(pageData)
-				.eq('site_id', siteId)
 				.eq('slug', params.slug)
 				.select()
 				.single();

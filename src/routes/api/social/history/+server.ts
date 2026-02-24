@@ -1,11 +1,8 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { PUBLIC_SITE_ID } from '$env/static/public';
 import { PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { createClient } from '@supabase/supabase-js';
-
-const siteId = PUBLIC_SITE_ID || 'unknown';
 
 function getServiceClient() {
 	return createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SATORI_KEY, {
@@ -22,7 +19,6 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 	// Verify admin role
 	const { data: role } = await supabase
-		.schema('pxp')
 		.from('user_roles')
 		.select('role')
 		.eq('user_id', session.user.id)
@@ -41,10 +37,8 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 	// Build query
 	let query = supabase
-		.schema('pxp')
 		.from('social_posts')
 		.select('*', { count: 'exact' })
-		.eq('site_id', siteId)
 		.order('posted_at', { ascending: false })
 		.range(offset, offset + limit - 1);
 

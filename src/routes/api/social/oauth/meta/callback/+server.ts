@@ -32,11 +32,9 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 	// Decode state
 	let platform: string;
-	let siteId: string;
 	try {
 		const state = JSON.parse(Buffer.from(stateParam, 'base64url').toString());
 		platform = state.platform;
-		siteId = state.site_id;
 	} catch {
 		throw error(400, 'Invalid state parameter');
 	}
@@ -117,11 +115,9 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 			});
 
 			await supabase
-				.schema('pxp')
 				.from('social_integrations')
 				.upsert(
 					{
-						site_id: siteId,
 						platform: 'instagram',
 						display_name: `Instagram (${pageName})`,
 						is_enabled: true,
@@ -131,7 +127,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 						created_by: session.user.id,
 						updated_at: new Date().toISOString()
 					},
-					{ onConflict: 'site_id,platform,display_name' }
+					{ onConflict: 'platform,display_name' }
 				);
 		} else {
 			// Facebook Page
@@ -141,11 +137,9 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 			});
 
 			await supabase
-				.schema('pxp')
 				.from('social_integrations')
 				.upsert(
 					{
-						site_id: siteId,
 						platform: 'facebook',
 						display_name: `Facebook (${pageName})`,
 						is_enabled: true,
@@ -155,7 +149,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 						created_by: session.user.id,
 						updated_at: new Date().toISOString()
 					},
-					{ onConflict: 'site_id,platform,display_name' }
+					{ onConflict: 'platform,display_name' }
 				);
 		}
 

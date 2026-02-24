@@ -35,7 +35,7 @@
 				</div>
 			{:else if $selectedTab === 'website'}
 				<div in:fade={{ duration: 150, delay: 200 }} out:fade={{ duration: 150 }}>
-					<WebsiteTab {supabase} {siteId} />
+					<WebsiteTab {supabase} />
 				</div>
 			{:else if $selectedTab === 'media'}
 				<div in:fade={{ duration: 150, delay: 200 }} out:fade={{ duration: 150 }}>

@@ -2,13 +2,10 @@ import cron from 'node-cron';
 import { createClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
-import { PUBLIC_SITE_ID } from '$env/static/public';
 import { decryptCredentials } from '$lib/server/crypto';
 import { postToPlatform } from '$lib/server/social/router';
-import type { SocialIntegration, SocialPlatform } from '$lib/types/social';
+import type { SocialIntegration } from '$lib/types/social';
 import type { PostPayload } from '$lib/server/social/types';
-
-const siteId = PUBLIC_SITE_ID || 'unknown';
 
 let initialized = false;
 
@@ -24,10 +21,8 @@ async function processScheduledSocialPosts() {
 	try {
 		// Find due posts
 		const { data: duePosts, error: fetchError } = await supabase
-			.schema('pxp')
 			.from('scheduled_social_posts')
 			.select('*')
-			.eq('site_id', siteId)
 			.eq('status', 'scheduled')
 			.lte('scheduled_at', new Date().toISOString());
 
@@ -36,7 +31,6 @@ async function processScheduledSocialPosts() {
 		for (const scheduledPost of duePosts) {
 			// Optimistic lock: mark as processing
 			const { error: lockError } = await supabase
-				.schema('pxp')
 				.from('scheduled_social_posts')
 				.update({ status: 'processing' })
 				.eq('id', scheduledPost.id)
@@ -47,16 +41,13 @@ async function processScheduledSocialPosts() {
 			try {
 				// Fetch integrations for the platforms
 				const { data: integrations, error: intError } = await supabase
-					.schema('pxp')
 					.from('social_integrations')
 					.select('*')
-					.eq('site_id', siteId)
 					.eq('is_enabled', true)
 					.in('platform', scheduledPost.platforms);
 
 				if (intError || !integrations?.length) {
 					await supabase
-						.schema('pxp')
 						.from('scheduled_social_posts')
 						.update({ status: 'failed', error_message: 'No enabled integrations found' })
 						.eq('id', scheduledPost.id);
@@ -81,10 +72,8 @@ async function processScheduledSocialPosts() {
 
 						// Log to social_posts audit table
 						await supabase
-							.schema('pxp')
 							.from('social_posts')
 							.insert({
-								site_id: siteId,
 								integration_id: integration.id,
 								platform: integration.platform,
 								content: scheduledPost.content,
@@ -109,7 +98,6 @@ async function processScheduledSocialPosts() {
 
 				// Mark scheduled post as completed or failed
 				await supabase
-					.schema('pxp')
 					.from('scheduled_social_posts')
 					.update({
 						status: anySuccess ? 'completed' : 'failed',
@@ -119,7 +107,6 @@ async function processScheduledSocialPosts() {
 			} catch (e) {
 				console.error('[cron] Error processing scheduled post:', e);
 				await supabase
-					.schema('pxp')
 					.from('scheduled_social_posts')
 					.update({
 						status: 'failed',

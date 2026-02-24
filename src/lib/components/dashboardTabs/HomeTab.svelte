@@ -36,7 +36,6 @@
 		try {
 			const [pagesRes, socialRes, integrationsRes] = await Promise.all([
 				supabase
-					.schema('pxp')
 					.from('pages')
 					.select('*')
 					.order('updated_at', { ascending: false }),

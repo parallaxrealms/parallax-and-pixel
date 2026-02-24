@@ -1,7 +1,7 @@
 import { redirect, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { META_APP_ID, META_APP_SECRET, PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SITE_ID } from '$env/static/public';
+import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { createClient } from '@supabase/supabase-js';
 
 /**
@@ -24,7 +24,6 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 		auth: { persistSession: false }
 	});
 	const { data: role } = await supabase
-		.schema('pxp')
 		.from('user_roles')
 		.select('role')
 		.eq('user_id', session.user.id)
@@ -48,8 +47,8 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 			? 'instagram_basic,instagram_content_publish,pages_show_list,pages_read_engagement'
 			: 'pages_manage_posts,pages_read_engagement,pages_show_list';
 
-	// State encodes platform + site_id for the callback
-	const state = JSON.stringify({ platform, site_id: PUBLIC_SITE_ID });
+	// State encodes platform for the callback
+	const state = JSON.stringify({ platform });
 	const encodedState = Buffer.from(state).toString('base64url');
 
 	const authUrl = new URL('https://www.facebook.com/v21.0/dialog/oauth');

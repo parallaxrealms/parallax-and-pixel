@@ -13,10 +13,9 @@
 
 	interface Props {
 		supabase: SupabaseClient;
-		siteId: string;
 	}
 
-	let { supabase, siteId }: Props = $props();
+	let { supabase }: Props = $props();
 
 	// State
 	let pages = $state<Page[]>([]);
@@ -65,10 +64,8 @@
 		try {
 			// Load pages
 			const { data: pagesData, error: pagesError } = await supabase
-				.schema('pxp')
 				.from('pages')
 				.select('*')
-				.eq('site_id', siteId)
 				.order('index_num', { ascending: true });
 
 			if (pagesError) throw pagesError;
@@ -89,10 +86,8 @@
 			const maxIndex = pages.reduce((max, p) => Math.max(max, p.index_num), -1);
 
 			const { data, error: insertError } = await supabase
-				.schema('pxp')
 				.from('pages')
 				.insert({
-					site_id: siteId,
 					title: newPageTitle.trim(),
 					slug: newPageSlug.trim(),
 					status: 'draft',
@@ -136,7 +131,6 @@
 
 		try {
 			const { error: updateError } = await supabase
-				.schema('pxp')
 				.from('pages')
 				.update({
 					meta_description: editPageMetaDescription.trim() || null
@@ -170,7 +164,6 @@
 
 		try {
 			const { error: deleteError } = await supabase
-				.schema('pxp')
 				.from('pages')
 				.delete()
 				.eq('id', page.id);

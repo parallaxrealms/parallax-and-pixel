@@ -1,6 +1,5 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { PUBLIC_SITE_ID } from '$env/static/public';
 import { PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { createClient } from '@supabase/supabase-js';
@@ -8,8 +7,6 @@ import { decryptCredentials } from '$lib/server/crypto';
 import { postToPlatform } from '$lib/server/social/router';
 import type { ComposePostRequest, SocialIntegration, SocialPlatform } from '$lib/types/social';
 import type { PostPayload } from '$lib/server/social/types';
-
-const siteId = PUBLIC_SITE_ID || 'unknown';
 
 function getServiceClient() {
 	return createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SATORI_KEY, {
@@ -25,7 +22,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	// Verify admin role
 	const { data: role } = await supabase
-		.schema('pxp')
 		.from('user_roles')
 		.select('role')
 		.eq('user_id', session.user.id)
@@ -43,10 +39,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	// Fetch matching integrations
 	const { data: integrations, error: dbError } = await supabase
-		.schema('pxp')
 		.from('social_integrations')
 		.select('*')
-		.eq('site_id', siteId)
 		.eq('is_enabled', true)
 		.in('platform', platforms);
 
@@ -71,10 +65,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 			// Log to social_posts table
 			await supabase
-				.schema('pxp')
 				.from('social_posts')
 				.insert({
-					site_id: siteId,
 					integration_id: integration.id,
 					platform: integration.platform,
 					content,

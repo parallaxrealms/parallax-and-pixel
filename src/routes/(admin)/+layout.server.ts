@@ -16,13 +16,6 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, getSession },
 
 	const userId = session.user.id;
 
-	// Set site context for RLS policies (required for multi-tenant queries)
-	// See ref/DATA-LOADING.md for why this is critical
-	await supabase.rpc('set_config', {
-		setting: 'app.site_id',
-		value: PUBLIC_SITE_ID
-	});
-
 	// Parallel fetch on server (auth guaranteed, no client-side race conditions)
 	const [roleResult, profileResult, notificationsResult, ticketsResult] = await Promise.all([
 		supabase.from('user_roles').select('role').eq('user_id', userId).single(),

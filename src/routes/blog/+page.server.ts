@@ -1,8 +1,5 @@
 import type { PageServerLoad } from './$types';
 import type { Page } from '$lib';
-import { PUBLIC_SITE_ID } from '$env/static/public';
-
-const siteId = PUBLIC_SITE_ID || 'default';
 
 // Extract plain text from TipTap/Edda JSON content (server-side)
 function extractTextFromContent(content: unknown, maxLength: number = 150): string {
@@ -25,10 +22,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 	// Fetch all distinct categories for the filter
 	const { data: categoriesData } = await locals.supabase
-		.schema('pxp')
 		.from('pages')
 		.select('category')
-		.eq('site_id', siteId)
 		.eq('status', 'published')
 		.not('category', 'is', null);
 
@@ -41,10 +36,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 	// Build query for published blog posts
 	let query = locals.supabase
-		.schema('pxp')
 		.from('pages')
 		.select('id, title, slug, meta_description, banner_image_url, created_at, updated_at, category, content')
-		.eq('site_id', siteId)
 		.eq('status', 'published')
 		.order('created_at', { ascending: false });
 
@@ -73,10 +66,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 	// Fetch 5 most recent posts for sidebar (unfiltered)
 	const { data: recentPosts } = await locals.supabase
-		.schema('pxp')
 		.from('pages')
 		.select('id, title, slug, created_at')
-		.eq('site_id', siteId)
 		.eq('status', 'published')
 		.order('created_at', { ascending: false })
 		.limit(5);

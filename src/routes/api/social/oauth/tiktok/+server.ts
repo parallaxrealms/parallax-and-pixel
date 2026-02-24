@@ -1,7 +1,7 @@
 import { redirect, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { TIKTOK_CLIENT_KEY, PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SITE_ID } from '$env/static/public';
+import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { createClient } from '@supabase/supabase-js';
 
 /**
@@ -19,7 +19,6 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 		auth: { persistSession: false }
 	});
 	const { data: role } = await supabase
-		.schema('pxp')
 		.from('user_roles')
 		.select('role')
 		.eq('user_id', session.user.id)
@@ -37,7 +36,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 	const redirectUri = `${origin}/api/social/oauth/tiktok/callback`;
 
 	const state = Buffer.from(
-		JSON.stringify({ site_id: PUBLIC_SITE_ID })
+		JSON.stringify({ ts: Date.now() })
 	).toString('base64url');
 
 	// TikTok uses their own auth domain

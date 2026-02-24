@@ -27,14 +27,6 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 		throw error(400, 'Missing code or state parameter');
 	}
 
-	let siteId: string;
-	try {
-		const state = JSON.parse(Buffer.from(stateParam, 'base64url').toString());
-		siteId = state.site_id;
-	} catch {
-		throw error(400, 'Invalid state parameter');
-	}
-
 	const origin = url.origin;
 	const redirectUri = `${origin}/api/social/oauth/tiktok/callback`;
 
@@ -90,11 +82,9 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 		});
 
 		await supabase
-			.schema('pxp')
 			.from('social_integrations')
 			.upsert(
 				{
-					site_id: siteId,
 					platform: 'tiktok',
 					display_name: `TikTok (${displayName})`,
 					is_enabled: true,
@@ -104,7 +94,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 					created_by: session.user.id,
 					updated_at: new Date().toISOString()
 				},
-				{ onConflict: 'site_id,platform,display_name' }
+				{ onConflict: 'platform,display_name' }
 			);
 
 		throw redirect(302, '/dashboard?tab=social&connected=tiktok');

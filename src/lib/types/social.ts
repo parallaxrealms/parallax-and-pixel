@@ -4,7 +4,6 @@ export type SocialPlatform = 'discord' | 'bluesky' | 'instagram' | 'facebook' | 
 
 export interface SocialIntegration {
 	id: string;
-	site_id: string;
 	platform: SocialPlatform;
 	display_name: string;
 	is_enabled: boolean;
@@ -19,7 +18,6 @@ export interface SocialIntegration {
 /** Client-safe version - no credentials */
 export interface SocialIntegrationClient {
 	id: string;
-	site_id: string;
 	platform: SocialPlatform;
 	display_name: string;
 	is_enabled: boolean;
@@ -36,7 +34,6 @@ export type ScheduledPostStatus = 'scheduled' | 'processing' | 'completed' | 'fa
 
 export interface ScheduledSocialPost {
 	id: string;
-	site_id: string;
 	content: string;
 	platforms: SocialPlatform[];
 	image_urls: string[];
@@ -57,7 +54,6 @@ export interface SchedulePostRequest extends ComposePostRequest {
 
 export interface SocialPost {
 	id: string;
-	site_id: string;
 	integration_id: string;
 	platform: SocialPlatform;
 	content: string;
