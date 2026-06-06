@@ -31,7 +31,8 @@ import type {
 	ModelSceneHandle,
 	MaterialType,
 	ToneMappingMode,
-	DirectionalLightConfig
+	DirectionalLightConfig,
+	PrimitiveShape
 } from './types';
 import { cloneConfig } from './types';
 import { loadModel } from './loaders';
@@ -212,12 +213,31 @@ export function createModelScene(
 
 	let currentModelRoot: THREE.Object3D | null = null;
 	let fallbackRoot: THREE.Group | null = null;
-	let fallbackShell: THREE.Mesh | null = null;
+
+	function makeShapeGeometry(shape: PrimitiveShape): THREE.BufferGeometry {
+		switch (shape) {
+			case 'cube':
+				return new THREE.BoxGeometry(1.4, 1.4, 1.4);
+			case 'sphere':
+				return new THREE.SphereGeometry(1, 32, 16);
+			case 'torus':
+				return new THREE.TorusGeometry(0.85, 0.35, 16, 48);
+			case 'torusKnot':
+				return new THREE.TorusKnotGeometry(0.7, 0.25, 96, 16);
+			case 'cone':
+				return new THREE.ConeGeometry(1, 1.6, 24);
+			case 'icosahedron':
+			default:
+				return new THREE.IcosahedronGeometry(1, 1);
+		}
+	}
 
 	function createFallback(): THREE.Group {
-		// Intentional-looking placeholder: a faceted dark-slate icosahedron with
-		// aqua emissive + the P&P fresnel rim, wrapped by a slowly counter-
-		// rotating additive mint wireframe shell.
+		// Intentional-looking primitive (config.model.shape): faceted dark-slate
+		// core with aqua emissive + the P&P fresnel rim. The additive wireframe
+		// shell around it is NOT built here — it's the config-driven shell
+		// system below (config.model.wireframeShell), shared with loaded models.
+		const shape = current.model.shape ?? 'icosahedron';
 		const group = new THREE.Group();
 		group.name = 'pnp-fallback';
 
@@ -230,23 +250,10 @@ export function createModelScene(
 			flatShading: true
 		});
 		patchFresnel(coreMat);
-		const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 1), coreMat);
+		const core = new THREE.Mesh(makeShapeGeometry(shape), coreMat);
 		core.userData.pnpOriginalMaterial = coreMat;
 
-		const shellMat = new THREE.MeshBasicMaterial({
-			color: new THREE.Color('#9fffcb'),
-			wireframe: true,
-			transparent: true,
-			opacity: 0.16,
-			blending: THREE.AdditiveBlending,
-			depthWrite: false
-		});
-		const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(1.22, 1), shellMat);
-		// Decorations are never touched by the material override pass.
-		shell.userData.pnpDecoration = true;
-
-		group.add(core, shell);
-		fallbackShell = shell;
+		group.add(core);
 		return group;
 	}
 
@@ -256,6 +263,127 @@ export function createModelScene(
 	}
 	function hideFallback() {
 		if (fallbackRoot?.parent) modelGroup.remove(fallbackRoot);
+	}
+
+	/** Rebuild the fallback when config.model.shape changes. */
+	function rebuildFallback() {
+		if (!fallbackRoot) return; // not built yet — next showFallback uses the new shape
+		const wasVisible = !!fallbackRoot.parent;
+		if (wasVisible) modelGroup.remove(fallbackRoot);
+		disposeObjectTree(fallbackRoot, overrideMat);
+		fallbackRoot = null;
+		if (wasVisible) {
+			showFallback();
+			syncMaterials(true);
+		}
+	}
+
+	// ----- wireframe shell (config.model.wireframeShell) -----------------------
+	// One additive wireframe duplicate wrapped around whatever is on screen —
+	// a deep clone of the loaded model, or a fresh primitive matching the
+	// fallback shape. Lives INSIDE modelGroup so it inherits the model
+	// transform; its own (relative) transform is applied per frame.
+	//
+	// Disposal rules:
+	//   - model-clone shells SHARE geometries with the live model → never
+	//     dispose their geometries (shellOwnsGeometry = false);
+	//   - primitive shells own their geometry → dispose it on teardown;
+	//   - shellMat is shared/reused across rebuilds and only disposed with
+	//     the engine.
+	const shellMat = new THREE.MeshBasicMaterial({
+		wireframe: true,
+		transparent: true,
+		blending: THREE.AdditiveBlending,
+		depthWrite: false
+	});
+	let shellRoot: THREE.Group | null = null;
+	let shellOwnsGeometry = false;
+	/** Model root the shell was cloned from (null when primitive-sourced). */
+	let shellSourceModel: THREE.Object3D | null = null;
+	/** Shape the shell was built from (null when model-sourced). */
+	let shellSourceShape: PrimitiveShape | null = null;
+	let shellSpinAngle = 0;
+
+	function teardownShell() {
+		if (!shellRoot) return;
+		modelGroup.remove(shellRoot);
+		if (shellOwnsGeometry) {
+			// Primitive shells own their geometry.
+			shellRoot.traverse((obj) => {
+				const mesh = obj as THREE.Mesh;
+				if (mesh.isMesh) mesh.geometry?.dispose();
+			});
+		}
+		// Model-clone shells share geometries with the live model — leave them
+		// alone. shellMat is shared and survives for cheap re-enable.
+		shellRoot = null;
+		shellOwnsGeometry = false;
+		shellSourceModel = null;
+		shellSourceShape = null;
+	}
+
+	function buildShell() {
+		teardownShell();
+		const ws = current.model.wireframeShell;
+		if (!ws?.on) return;
+
+		const group = new THREE.Group();
+		group.name = 'pnp-wireframe-shell';
+		group.userData.pnpDecoration = true;
+
+		if (currentModelRoot) {
+			// Deep clone: geometries are SHARED with the live model, materials
+			// are all swapped for the one shared shell material.
+			const clone = currentModelRoot.clone(true);
+			clone.traverse((obj) => {
+				obj.userData.pnpDecoration = true;
+				const mesh = obj as THREE.Mesh;
+				if (mesh.isMesh) {
+					mesh.material = shellMat;
+					delete mesh.userData.pnpOriginalMaterial;
+				}
+			});
+			group.add(clone);
+			shellOwnsGeometry = false;
+			shellSourceModel = currentModelRoot;
+			shellSourceShape = null;
+		} else {
+			const shape = current.model.shape ?? 'icosahedron';
+			const mesh = new THREE.Mesh(makeShapeGeometry(shape), shellMat);
+			mesh.userData.pnpDecoration = true;
+			group.add(mesh);
+			shellOwnsGeometry = true;
+			shellSourceModel = null;
+			shellSourceShape = shape;
+		}
+
+		// Pose immediately so the first painted frame is already correct.
+		group.position.set(ws.x, ws.y, ws.z);
+		group.rotation.set(ws.rotationX, ws.rotationY + shellSpinAngle, ws.rotationZ);
+		group.scale.setScalar(ws.scale);
+		modelGroup.add(group);
+		shellRoot = group;
+	}
+
+	/**
+	 * Cheap idempotent sync (called from applyConfig and after model/fallback
+	 * swaps). Color/opacity mutate the shared material in place; the shell is
+	 * rebuilt only when it's missing or its source no longer matches what's
+	 * on screen. Missing `wireframeShell` config counts as off.
+	 */
+	function syncShell() {
+		const ws = current.model.wireframeShell;
+		if (!ws?.on) {
+			teardownShell();
+			return;
+		}
+		shellMat.color.set(ws.color);
+		shellMat.opacity = ws.opacity;
+		const sourceMatches =
+			shellRoot &&
+			shellSourceModel === currentModelRoot &&
+			(currentModelRoot !== null || shellSourceShape === (current.model.shape ?? 'icosahedron'));
+		if (!sourceMatches) buildShell();
 	}
 
 	// ----- material handling ---------------------------------------------------
@@ -437,6 +565,9 @@ export function createModelScene(
 
 	function removeCurrentModel() {
 		if (!currentModelRoot) return;
+		// A model-clone shell shares this model's geometries — detach it BEFORE
+		// the dispose pass below frees them out from under it.
+		if (shellSourceModel === currentModelRoot) teardownShell();
 		modelGroup.remove(currentModelRoot);
 		disposeObjectTree(currentModelRoot, overrideMat);
 		currentModelRoot = null;
@@ -450,6 +581,7 @@ export function createModelScene(
 		removeCurrentModel();
 		showFallback();
 		syncMaterials(true);
+		syncShell();
 
 		if (path === null) {
 			signalReady();
@@ -474,6 +606,7 @@ export function createModelScene(
 				modelGroup.add(obj);
 				currentModelRoot = obj;
 				syncMaterials(true);
+				syncShell(); // primitive-sourced shell no longer matches → model clone
 			})
 			.catch((err) => {
 				if (token === loadToken && !disposed) {
@@ -662,10 +795,17 @@ export function createModelScene(
 		modelGroup.rotation.set(m.rotationX, m.rotationY + spinAngle, m.rotationZ);
 		modelGroup.scale.setScalar(m.scale);
 
-		// Fallback shell very slowly counter-rotates against the core's spin.
-		if (fallbackShell && fallbackRoot?.parent) {
-			fallbackShell.rotation.y = -elapsed * 0.04;
-			fallbackShell.rotation.x = elapsed * 0.025;
+		// Wireframe shell: its own (relative) pose + spin + float on top of the
+		// inherited model transform. Spin accumulates like the model's so live
+		// spinSpeed edits never jump.
+		const ws = m.wireframeShell;
+		if (shellRoot && ws?.on) {
+			shellSpinAngle = (shellSpinAngle + ws.spinSpeed * dt) % (Math.PI * 2);
+			const shellFloat =
+				ws.floatAmplitude !== 0 ? Math.sin(elapsed * ws.floatSpeed) * ws.floatAmplitude : 0;
+			shellRoot.position.set(ws.x, ws.y + shellFloat, ws.z);
+			shellRoot.rotation.set(ws.rotationX, ws.rotationY + shellSpinAngle, ws.rotationZ);
+			shellRoot.scale.setScalar(ws.scale);
 		}
 
 		// Fresnel drift: slow aqua → mint → aqua sweep.
@@ -693,6 +833,7 @@ export function createModelScene(
 	function applyConfig(next: SceneConfig): void {
 		if (disposed) return;
 		const prevPath = current.model.path;
+		const prevShape = current.model.shape ?? 'icosahedron';
 		current = cloneConfig(next);
 
 		syncRenderer();
@@ -701,6 +842,14 @@ export function createModelScene(
 		syncFresnel();
 		syncMaterials();
 		syncPost();
+
+		// Shape change rebuilds the (cheap) procedural fallback.
+		if ((current.model.shape ?? 'icosahedron') !== prevShape) {
+			rebuildFallback();
+		}
+
+		// Shell: color/opacity in place; rebuilds only on on-flip/source change.
+		syncShell();
 
 		// Only a path change costs anything real — async reload behind a token.
 		if (current.model.path !== prevPath) {
@@ -719,12 +868,13 @@ export function createModelScene(
 		document.removeEventListener('visibilitychange', onVisibility);
 		ro?.disconnect();
 
+		teardownShell();
+		shellMat.dispose();
 		removeCurrentModel();
 		if (fallbackRoot) {
 			modelGroup.remove(fallbackRoot);
 			disposeObjectTree(fallbackRoot, overrideMat);
 			fallbackRoot = null;
-			fallbackShell = null;
 		}
 		overrideMat?.dispose();
 		overrideMat = null;

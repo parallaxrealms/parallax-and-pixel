@@ -11,20 +11,30 @@
 	 * src/lib/three/heroConfig.ts. Presets live in localStorage under
 	 * 'pxp-lab:presets' with a factory seed on first visit.
 	 */
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import ModelScene from '$lib/three/ModelScene.svelte';
 	import {
 		DEFAULT_SCENE_CONFIG,
 		cloneConfig,
+		normalizeConfig,
 		type SceneConfig,
-		type DirectionalLightConfig
+		type DirectionalLightConfig,
+		type PrimitiveShape
 	} from '$lib/three/types';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	// ─── The single source of truth ────────────────────────────────────────
-	let config = $state<SceneConfig>(cloneConfig(DEFAULT_SCENE_CONFIG));
+	// normalizeConfig guarantees model.shape + the overlay block exist, so
+	// every new knob can bind without optional-chaining gymnastics.
+	let config = $state<SceneConfig>(normalizeConfig(DEFAULT_SCENE_CONFIG));
+
+	// Safe alias for the overlay knobs — always present after normalizeConfig.
+	let overlay = $derived(config.overlay!);
+
+	// Safe alias for the wireframe shell knobs — same normalizeConfig invariant.
+	let shell = $derived(config.model.wireframeShell!);
 
 	// ─── Loading overlay ────────────────────────────────────────────────────
 	// Shown until the engine fires onReady (which also fires on load failure).
@@ -33,6 +43,11 @@
 
 	// ─── Panel collapse (button + H key) ────────────────────────────────────
 	let panelOpen = $state(true);
+
+	// H hides ALL fixed chrome (right panel + top-left jump nav, including
+	// their toggle buttons). Un-hiding restores the panel open; the jump
+	// nav's own collapsed/expanded state (navOpen) is preserved.
+	let chromeHidden = $state(false);
 
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key !== 'h' && e.key !== 'H') return;
@@ -43,20 +58,87 @@
 				return;
 			}
 		}
-		panelOpen = !panelOpen;
+		if (chromeHidden) {
+			chromeHidden = false;
+			panelOpen = true;
+		} else {
+			chromeHidden = true;
+		}
 	}
 
-	// ─── Model path (dropdown + free-text alternative) ──────────────────────
+	// ─── Accordion sections + jump navigation ───────────────────────────────
+	const SECTIONS = [
+		{ key: 'model', label: 'Model' },
+		{ key: 'lights', label: 'Lights' },
+		{ key: 'material', label: 'Material' },
+		{ key: 'fresnel', label: 'Fresnel rim' },
+		{ key: 'post', label: 'Post-processing' },
+		{ key: 'overlay', label: 'Overlay Settings' },
+		{ key: 'camera', label: 'Camera' },
+		{ key: 'renderer', label: 'Renderer' },
+		{ key: 'presets', label: 'Presets' }
+	] as const;
+
+	// All sections open on load; nothing persisted.
+	let open = $state<Record<string, boolean>>(
+		Object.fromEntries(SECTIONS.map((s) => [s.key, true]))
+	);
+
+	let navOpen = $state(false);
+
+	async function jumpTo(key: string) {
+		panelOpen = true;
+		open[key] = true;
+		await tick(); // panel/section may need to (re)render first
+		document
+			.getElementById(`sec-${key}`)
+			?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
+
+	// ─── Model source (shapes / static models / custom path) ────────────────
+	const SHAPES: { value: PrimitiveShape; label: string }[] = [
+		{ value: 'icosahedron', label: 'Icosahedron' },
+		{ value: 'cube', label: 'Cube' },
+		{ value: 'sphere', label: 'Sphere' },
+		{ value: 'torus', label: 'Torus' },
+		{ value: 'torusKnot', label: 'Torus Knot' },
+		{ value: 'cone', label: 'Cone' }
+	];
+
+	const CUSTOM_OPTION = '__custom__';
+
 	let customPath = $state('');
+	// True while the user has explicitly picked "custom model…" (even before
+	// applying a path). A loaded path not present in data.models also counts.
+	let customMode = $state(false);
 
 	let isCustomPath = $derived(
 		config.model.path !== null && !data.models.includes(config.model.path)
 	);
+	let showCustomInput = $derived(customMode || isCustomPath);
+
+	let modelSelectValue = $derived(
+		customMode || isCustomPath
+			? CUSTOM_OPTION
+			: config.model.path === null
+				? `shape:${config.model.shape ?? 'icosahedron'}`
+				: config.model.path
+	);
 
 	function onModelSelect(e: Event) {
 		const v = (e.currentTarget as HTMLSelectElement).value;
-		config.model.path = v === '' ? null : v;
-		customPath = v;
+		if (v === CUSTOM_OPTION) {
+			customMode = true;
+			customPath = config.model.path ?? '';
+			return;
+		}
+		customMode = false;
+		if (v.startsWith('shape:')) {
+			config.model.path = null;
+			config.model.shape = v.slice('shape:'.length) as PrimitiveShape;
+		} else {
+			config.model.path = v;
+		}
 	}
 
 	function applyCustomPath() {
@@ -77,11 +159,18 @@
 		try {
 			const raw = window.localStorage.getItem(PRESET_KEY);
 			if (raw) {
-				presets = JSON.parse(raw);
+				// Normalize every stored preset so configs saved before
+				// model.shape / overlay existed don't crash the new knobs.
+				const parsed = JSON.parse(raw) as Record<string, unknown>;
+				const next: Record<string, SceneConfig> = {};
+				for (const [name, cfg] of Object.entries(parsed)) {
+					next[name] = normalizeConfig(cfg);
+				}
+				presets = next;
 			} else {
 				// First visit only: seed a factory preset so the list is never
 				// empty. Never re-injected — deleting it sticks.
-				presets = { 'P&P Default': cloneConfig(DEFAULT_SCENE_CONFIG) };
+				presets = { 'P&P Default': normalizeConfig(DEFAULT_SCENE_CONFIG) };
 				writePresetsToStorage();
 			}
 		} catch (e) {
@@ -110,8 +199,10 @@
 	function loadPreset(name: string) {
 		const p = presets[name];
 		if (!p) return;
-		// Clone on load so knob edits never mutate the stored preset either.
-		config = cloneConfig(p);
+		// normalizeConfig deep-clones, so knob edits never mutate the stored
+		// preset — and legacy presets gain shape/overlay defaults.
+		config = normalizeConfig(p);
+		customMode = false;
 		customPath = config.model.path ?? '';
 		presetName = name;
 	}
@@ -144,7 +235,8 @@
 
 	// ─── Reset ───────────────────────────────────────────────────────────────
 	function resetAll() {
-		config = cloneConfig(DEFAULT_SCENE_CONFIG);
+		config = normalizeConfig(DEFAULT_SCENE_CONFIG);
+		customMode = false;
 		customPath = config.model.path ?? '';
 	}
 
@@ -175,6 +267,29 @@
 	</div>
 {/if}
 
+<!-- ── Section jump navigation (top-left) ── -->
+<!-- chromeHidden (H key) removes ALL fixed chrome, toggle buttons included. -->
+{#if !chromeHidden}
+<nav class="jump-nav" aria-label="Section navigation">
+	<button
+		type="button"
+		class="jump-toggle font-terminal"
+		onclick={() => (navOpen = !navOpen)}
+		aria-label={navOpen ? 'Hide section navigation' : 'Show section navigation'}
+	>
+		☰
+	</button>
+	{#if navOpen}
+		<div class="jump-list">
+			{#each SECTIONS as s (s.key)}
+				<button type="button" class="jump-item" onclick={() => jumpTo(s.key)}>
+					{s.label}
+				</button>
+			{/each}
+		</div>
+	{/if}
+</nav>
+
 <button
 	type="button"
 	class="panel-toggle font-terminal"
@@ -183,41 +298,130 @@
 >
 	{panelOpen ? '→' : '←'}
 </button>
+{/if}
 
-{#if panelOpen}
+{#if !chromeHidden && panelOpen}
 	<aside class="lab-panel" aria-label="Scene Lab controls">
 		<header class="panel-head">
 			<h1 class="title font-display">Scene Lab</h1>
 			<div class="hint font-terminal">press <kbd>H</kbd> to hide</div>
 		</header>
 
+		{#snippet secHead(label: string, key: string)}
+			<summary class="sec-head font-terminal">
+				<span class="caret" aria-hidden="true">{open[key] ? '▾' : '▸'}</span>
+				{label}
+			</summary>
+		{/snippet}
+
 		<!-- ── Model ── -->
-		<section class="group">
-			<h2 class="font-terminal">Model</h2>
+		<details class="group" id="sec-model" bind:open={open.model}>
+			{@render secHead('Model', 'model')}
 			<label class="row">
-				<span>file</span>
-				<select class="select" value={config.model.path ?? ''} onchange={onModelSelect}>
-					<option value="">(procedural fallback)</option>
-					{#each data.models as model (model)}
-						<option value={model}>{model}</option>
-					{/each}
-					{#if isCustomPath}
-						<option value={config.model.path}>{config.model.path} (custom)</option>
-					{/if}
+				<span>source</span>
+				<select class="select" value={modelSelectValue} onchange={onModelSelect}>
+					<optgroup label="shapes">
+						{#each SHAPES as shape (shape.value)}
+							<option value={`shape:${shape.value}`}>{shape.label}</option>
+						{/each}
+					</optgroup>
+					<optgroup label="static/models">
+						{#each data.models as model (model)}
+							<option value={model}>{model}</option>
+						{/each}
+					</optgroup>
+					<option value={CUSTOM_OPTION}>custom model…</option>
 				</select>
 				<output></output>
 			</label>
-			<div class="row" style="grid-template-columns: 1fr auto;">
-				<input
-					type="text"
-					class="text-input"
-					bind:value={customPath}
-					placeholder="/models/your-model.glb"
-					onkeydown={(e) => e.key === 'Enter' && applyCustomPath()}
-				/>
-				<button type="button" class="btn-ghost btn-small" onclick={applyCustomPath}>Load</button>
-			</div>
+			{#if showCustomInput}
+				<div class="row" style="grid-template-columns: 1fr auto;">
+					<input
+						type="text"
+						class="text-input"
+						bind:value={customPath}
+						placeholder="/models/your-model.glb"
+						onkeydown={(e) => e.key === 'Enter' && applyCustomPath()}
+					/>
+					<button type="button" class="btn-ghost btn-small" onclick={applyCustomPath}>Load</button>
+				</div>
+				<p class="hint-row">paths resolve under /static — press Enter or Load to apply</p>
+			{/if}
 			<p class="hint-row">drop .glb/.gltf/.obj/.fbx files into static/models/ and reload</p>
+
+			<label class="row toggle">
+				<input type="checkbox" bind:checked={shell.on} />
+				<span class="label">duplicate model to wireframe</span>
+			</label>
+			{#if shell.on}
+				<div class="sub">
+					<label class="row">
+						<span>color</span>
+						<input
+							type="color"
+							value={shell.color}
+							oninput={(e) => (shell.color = e.currentTarget.value)}
+						/>
+						<code>{shell.color}</code>
+					</label>
+					<label class="row">
+						<span>opacity</span>
+						<input type="range" min="0" max="1" step="0.01" bind:value={shell.opacity} />
+						<output>{shell.opacity.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>scale</span>
+						<input type="range" min="0.5" max="3" step="0.01" bind:value={shell.scale} />
+						<output>{shell.scale.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>x</span>
+						<input type="range" min="-3" max="3" step="0.01" bind:value={shell.x} />
+						<output>{shell.x.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>y</span>
+						<input type="range" min="-3" max="3" step="0.01" bind:value={shell.y} />
+						<output>{shell.y.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>z</span>
+						<input type="range" min="-3" max="3" step="0.01" bind:value={shell.z} />
+						<output>{shell.z.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>rot x</span>
+						<input type="range" min="-3.14" max="3.14" step="0.01" bind:value={shell.rotationX} />
+						<output>{shell.rotationX.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>rot y</span>
+						<input type="range" min="-3.14" max="3.14" step="0.01" bind:value={shell.rotationY} />
+						<output>{shell.rotationY.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>rot z</span>
+						<input type="range" min="-3.14" max="3.14" step="0.01" bind:value={shell.rotationZ} />
+						<output>{shell.rotationZ.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>spin speed</span>
+						<input type="range" min="-2" max="2" step="0.01" bind:value={shell.spinSpeed} />
+						<output>{shell.spinSpeed.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>float amp</span>
+						<input type="range" min="0" max="1" step="0.01" bind:value={shell.floatAmplitude} />
+						<output>{shell.floatAmplitude.toFixed(2)}</output>
+					</label>
+					<label class="row">
+						<span>float speed</span>
+						<input type="range" min="0" max="4" step="0.01" bind:value={shell.floatSpeed} />
+						<output>{shell.floatSpeed.toFixed(2)}</output>
+					</label>
+					<p class="hint-row">shell transform is relative to the model (1.22 = 22% larger)</p>
+				</div>
+			{/if}
 
 			<label class="row">
 				<span>scale</span>
@@ -269,7 +473,7 @@
 				<input type="range" min="0" max="4" step="0.01" bind:value={config.model.floatSpeed} />
 				<output>{config.model.floatSpeed.toFixed(2)}</output>
 			</label>
-		</section>
+		</details>
 
 		<!-- ── Lights ── -->
 		{#snippet dirLight(label: string, light: DirectionalLightConfig)}
@@ -285,7 +489,11 @@
 				</label>
 				<label class="row">
 					<span>color</span>
-					<input type="color" bind:value={light.color} />
+					<input
+						type="color"
+						value={light.color}
+						oninput={(e) => (light.color = e.currentTarget.value)}
+					/>
 					<code>{light.color}</code>
 				</label>
 				<label class="row">
@@ -306,8 +514,8 @@
 			</div>
 		{/snippet}
 
-		<section class="group">
-			<h2 class="font-terminal">Lights</h2>
+		<details class="group" id="sec-lights" bind:open={open.lights}>
+			{@render secHead('Lights', 'lights')}
 			{@render dirLight('Key', config.lights.key)}
 			{@render dirLight('Rim', config.lights.rim)}
 			{@render dirLight('Fill', config.lights.fill)}
@@ -324,15 +532,19 @@
 				</label>
 				<label class="row">
 					<span>color</span>
-					<input type="color" bind:value={config.lights.ambient.color} />
+					<input
+						type="color"
+						value={config.lights.ambient.color}
+						oninput={(e) => (config.lights.ambient.color = e.currentTarget.value)}
+					/>
 					<code>{config.lights.ambient.color}</code>
 				</label>
 			</div>
-		</section>
+		</details>
 
 		<!-- ── Material ── -->
-		<section class="group">
-			<h2 class="font-terminal">Material</h2>
+		<details class="group" id="sec-material" bind:open={open.material}>
+			{@render secHead('Material', 'material')}
 			<label class="row toggle">
 				<input type="checkbox" bind:checked={config.material.override} />
 				<span class="label">override imported materials</span>
@@ -352,7 +564,12 @@
 			</label>
 			<label class="row" class:disabled={!config.material.override}>
 				<span>base color</span>
-				<input type="color" bind:value={config.material.baseColor} disabled={!config.material.override} />
+				<input
+					type="color"
+					value={config.material.baseColor}
+					oninput={(e) => (config.material.baseColor = e.currentTarget.value)}
+					disabled={!config.material.override}
+				/>
 				<code>{config.material.baseColor}</code>
 			</label>
 			<label class="row" class:disabled={!config.material.override}>
@@ -372,7 +589,12 @@
 			</label>
 			<label class="row" class:disabled={!config.material.override}>
 				<span>emissive</span>
-				<input type="color" bind:value={config.material.emissiveColor} disabled={!config.material.override} />
+				<input
+					type="color"
+					value={config.material.emissiveColor}
+					oninput={(e) => (config.material.emissiveColor = e.currentTarget.value)}
+					disabled={!config.material.override}
+				/>
 				<code>{config.material.emissiveColor}</code>
 			</label>
 			<label class="row" class:disabled={!config.material.override}>
@@ -389,11 +611,11 @@
 				<span class="label">flat shading</span>
 			</label>
 			<p class="hint-row">override off = the model keeps its own imported materials</p>
-		</section>
+		</details>
 
 		<!-- ── Fresnel ── -->
-		<section class="group">
-			<h2 class="font-terminal">Fresnel rim</h2>
+		<details class="group" id="sec-fresnel" bind:open={open.fresnel}>
+			{@render secHead('Fresnel rim', 'fresnel')}
 			<label class="row toggle">
 				<input type="checkbox" bind:checked={config.fresnel.on} />
 				<span class="label">enabled</span>
@@ -404,7 +626,12 @@
 			</label>
 			<label class="row" class:disabled={config.fresnel.drift}>
 				<span>color</span>
-				<input type="color" bind:value={config.fresnel.color} disabled={config.fresnel.drift} />
+				<input
+					type="color"
+					value={config.fresnel.color}
+					oninput={(e) => (config.fresnel.color = e.currentTarget.value)}
+					disabled={config.fresnel.drift}
+				/>
 				<code>{config.fresnel.color}</code>
 			</label>
 			<label class="row">
@@ -418,11 +645,11 @@
 				<output>{config.fresnel.strength.toFixed(2)}</output>
 			</label>
 			<p class="hint-row">drift sweeps color + strength over time while on</p>
-		</section>
+		</details>
 
 		<!-- ── Post ── -->
-		<section class="group">
-			<h2 class="font-terminal">Post-processing</h2>
+		<details class="group" id="sec-post" bind:open={open.post}>
+			{@render secHead('Post-processing', 'post')}
 
 			<div class="sub">
 				<label class="row toggle">
@@ -486,11 +713,101 @@
 					<output>{config.post.noise.opacity.toFixed(3)}</output>
 				</label>
 			</div>
-		</section>
+		</details>
+
+		<!-- ── Overlay (DOM stack above the canvas) ── -->
+		<details class="group" id="sec-overlay" bind:open={open.overlay}>
+			{@render secHead('Overlay Settings', 'overlay')}
+			<label class="row toggle">
+				<input type="checkbox" bind:checked={overlay.on} />
+				<span class="label">enabled</span>
+			</label>
+			<label class="row" class:disabled={overlay.gradient.on}>
+				<span>tint</span>
+				<input
+					type="color"
+					value={overlay.color}
+					oninput={(e) => (overlay.color = e.currentTarget.value)}
+					disabled={overlay.gradient.on}
+				/>
+				<code>{overlay.color}</code>
+			</label>
+			<label class="row">
+				<span>opacity</span>
+				<input type="range" min="0" max="1" step="0.01" bind:value={overlay.opacity} />
+				<output>{overlay.opacity.toFixed(2)}</output>
+			</label>
+
+			<div class="sub">
+				<label class="row toggle">
+					<input type="checkbox" bind:checked={overlay.gradient.on} />
+					<span class="label">Gradient</span>
+				</label>
+				<label class="row">
+					<span>from</span>
+					<input
+						type="color"
+						value={overlay.gradient.from}
+						oninput={(e) => (overlay.gradient.from = e.currentTarget.value)}
+					/>
+					<code>{overlay.gradient.from}</code>
+				</label>
+				<label class="row">
+					<span>to</span>
+					<input
+						type="color"
+						value={overlay.gradient.to}
+						oninput={(e) => (overlay.gradient.to = e.currentTarget.value)}
+					/>
+					<code>{overlay.gradient.to}</code>
+				</label>
+				<label class="row">
+					<span>angle</span>
+					<input type="range" min="0" max="360" step="1" bind:value={overlay.gradient.angle} />
+					<output>{overlay.gradient.angle.toFixed(0)}°</output>
+				</label>
+				<p class="hint-row">gradient replaces the flat tint while on</p>
+			</div>
+
+			<div class="sub">
+				<label class="row toggle">
+					<input type="checkbox" bind:checked={overlay.vignette.on} />
+					<span class="label">Vignette</span>
+				</label>
+				<label class="row">
+					<span>strength</span>
+					<input type="range" min="0" max="1" step="0.01" bind:value={overlay.vignette.strength} />
+					<output>{overlay.vignette.strength.toFixed(2)}</output>
+				</label>
+				<label class="row">
+					<span>size</span>
+					<input type="range" min="0" max="100" step="1" bind:value={overlay.vignette.size} />
+					<output>{overlay.vignette.size.toFixed(0)}</output>
+				</label>
+				<p class="hint-row">size = how far corner darkening reaches inward</p>
+			</div>
+
+			<div class="sub">
+				<label class="row toggle">
+					<input type="checkbox" bind:checked={overlay.scanlines.on} />
+					<span class="label">Scanlines</span>
+				</label>
+				<label class="row">
+					<span>opacity</span>
+					<input type="range" min="0" max="1" step="0.01" bind:value={overlay.scanlines.opacity} />
+					<output>{overlay.scanlines.opacity.toFixed(2)}</output>
+				</label>
+				<label class="row">
+					<span>scale</span>
+					<input type="range" min="2" max="16" step="1" bind:value={overlay.scanlines.scale} />
+					<output>{overlay.scanlines.scale.toFixed(0)}px</output>
+				</label>
+			</div>
+		</details>
 
 		<!-- ── Camera ── -->
-		<section class="group">
-			<h2 class="font-terminal">Camera</h2>
+		<details class="group" id="sec-camera" bind:open={open.camera}>
+			{@render secHead('Camera', 'camera')}
 			<label class="row">
 				<span>fov</span>
 				<input type="range" min="18" max="90" step="0.5" bind:value={config.camera.fov} />
@@ -530,11 +847,11 @@
 				<input type="range" min="0.005" max="0.3" step="0.005" bind:value={config.camera.parallax.ease} disabled={!config.camera.parallax.on} />
 				<output>{config.camera.parallax.ease.toFixed(3)}</output>
 			</label>
-		</section>
+		</details>
 
 		<!-- ── Renderer ── -->
-		<section class="group">
-			<h2 class="font-terminal">Renderer</h2>
+		<details class="group" id="sec-renderer" bind:open={open.renderer}>
+			{@render secHead('Renderer', 'renderer')}
 			<label class="row">
 				<span>pixel ratio</span>
 				<input type="range" min="0.5" max="3" step="0.05" bind:value={config.renderer.pixelRatio} />
@@ -562,15 +879,20 @@
 			</label>
 			<label class="row" class:disabled={config.renderer.transparent}>
 				<span>clear color</span>
-				<input type="color" bind:value={config.renderer.clearColor} disabled={config.renderer.transparent} />
+				<input
+					type="color"
+					value={config.renderer.clearColor}
+					oninput={(e) => (config.renderer.clearColor = e.currentTarget.value)}
+					disabled={config.renderer.transparent}
+				/>
 				<code>{config.renderer.clearColor}</code>
 			</label>
 			<p class="hint-row">clear color only applies when transparent is off</p>
-		</section>
+		</details>
 
 		<!-- ── Presets ── -->
-		<section class="group">
-			<h2 class="font-terminal">Presets</h2>
+		<details class="group" id="sec-presets" bind:open={open.presets}>
+			{@render secHead('Presets', 'presets')}
 			<div class="row" style="grid-template-columns: 1fr auto;">
 				<input
 					type="text"
@@ -602,7 +924,7 @@
 					{/each}
 				</ul>
 			{/if}
-		</section>
+		</details>
 
 		<!-- ── Actions ── -->
 		<section class="actions">
@@ -675,6 +997,62 @@
 		color: #9fffcb;
 	}
 
+	/* ── Section jump navigation (top-left) ── */
+	.jump-nav {
+		position: fixed;
+		top: 5rem;
+		left: 1rem;
+		z-index: 60;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.jump-toggle {
+		background: rgba(2, 6, 23, 0.9);
+		color: #00a5cf;
+		border: 1px solid rgba(0, 165, 207, 0.45);
+		font-size: 1rem;
+		width: 2.25rem;
+		height: 2.25rem;
+		cursor: pointer;
+		display: grid;
+		place-items: center;
+	}
+	.jump-toggle:hover {
+		border-color: #9fffcb;
+		color: #9fffcb;
+	}
+	.jump-list {
+		margin-top: 0.25rem;
+		display: flex;
+		flex-direction: column;
+		background: rgba(2, 6, 23, 0.92);
+		border: 1px solid rgba(0, 165, 207, 0.35);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		min-width: 10rem;
+	}
+	.jump-item {
+		background: transparent;
+		border: 0;
+		border-radius: 0;
+		text-align: left;
+		font-family: 'Space Mono', monospace;
+		font-size: 0.64rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: #94a3b8;
+		padding: 0.35rem 0.6rem;
+		cursor: pointer;
+	}
+	.jump-item:hover {
+		color: #9fffcb;
+		background: rgba(0, 165, 207, 0.08);
+	}
+	.jump-item + .jump-item {
+		border-top: 1px solid rgba(0, 165, 207, 0.12);
+	}
+
 	/* ── Panel shell ── */
 	.lab-panel {
 		position: fixed;
@@ -720,19 +1098,45 @@
 		color: #00a5cf;
 	}
 
-	/* ── Groups + sub-cards ── */
+	/* ── Accordion groups + sub-cards ── */
 	.group {
-		margin-bottom: 1.5rem;
+		margin-bottom: 0.6rem;
 	}
-	.group h2 {
+	.group[open] {
+		margin-bottom: 1.25rem;
+	}
+	.sec-head {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		list-style: none;
+		cursor: pointer;
+		user-select: none;
 		font-size: 0.72rem;
 		font-weight: 700;
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 		color: #9fffcb;
-		margin: 0 0 0.6rem;
-		padding-bottom: 0.3rem;
-		border-bottom: 1px dashed rgba(37, 161, 142, 0.35);
+		padding: 0.32rem 0.55rem;
+		background: rgba(15, 23, 42, 0.7);
+		border: 1px solid rgba(37, 161, 142, 0.35);
+	}
+	.sec-head::-webkit-details-marker {
+		display: none;
+	}
+	.sec-head::marker {
+		content: '';
+	}
+	.sec-head:hover {
+		border-color: #9fffcb;
+	}
+	.group[open] > .sec-head {
+		margin-bottom: 0.6rem;
+	}
+	.caret {
+		color: #00a5cf;
+		font-size: 0.6rem;
+		line-height: 1;
 	}
 	.sub {
 		margin-bottom: 0.7rem;

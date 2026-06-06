@@ -18,6 +18,14 @@ export type MaterialType =
 
 export type ToneMappingMode = 'none' | 'linear' | 'reinhard' | 'cineon' | 'aces';
 
+export type PrimitiveShape =
+	| 'icosahedron'
+	| 'cube'
+	| 'sphere'
+	| 'torus'
+	| 'torusKnot'
+	| 'cone';
+
 export interface DirectionalLightConfig {
 	on: boolean;
 	intensity: number;
@@ -25,6 +33,42 @@ export interface DirectionalLightConfig {
 	x: number;
 	y: number;
 	z: number;
+}
+
+/**
+ * DOM overlay stack rendered by ModelScene.svelte on top of the canvas
+ * (tint/gradient → vignette → scanlines). Pure CSS — the engine ignores it.
+ */
+export interface OverlayConfig {
+	/** Master switch for the whole overlay stack. */
+	on: boolean;
+	/** Flat tint color (ignored while gradient.on). */
+	color: string;
+	/** 0-1 alpha applied to the tint or gradient layer. */
+	opacity: number;
+	/** Linear gradient replacing the flat tint. */
+	gradient: {
+		on: boolean;
+		from: string;
+		to: string;
+		/** CSS linear-gradient angle in degrees. */
+		angle: number;
+	};
+	/** Aspect-ratio-aware vignette darkening the corners only. */
+	vignette: {
+		on: boolean;
+		/** 0-1 max darkness at the corners. */
+		strength: number;
+		/** 0-100: how far the corner darkening reaches toward the center. */
+		size: number;
+	};
+	scanlines: {
+		on: boolean;
+		/** 0-1 line alpha. */
+		opacity: number;
+		/** Line period in px (the dark line is half the period). */
+		scale: number;
+	};
 }
 
 export interface SceneConfig {
@@ -36,6 +80,34 @@ export interface SceneConfig {
 		 * (wireframe-ish icosahedron) so the scene never breaks.
 		 */
 		path: string | null;
+		/**
+		 * Built-in primitive rendered when `path` is null (and while a model
+		 * loads / on load failure). Defaults to 'icosahedron'.
+		 */
+		shape?: PrimitiveShape;
+		/**
+		 * Additive wireframe duplicate wrapped around the model (or primitive).
+		 * Lives inside the model group, so it inherits the model transform;
+		 * its own transform/spin/float apply RELATIVE on top (scale 1.22 =
+		 * 22% larger than the model).
+		 */
+		wireframeShell?: {
+			on: boolean;
+			color: string;
+			/** 0-1 wireframe line alpha (additive blending). */
+			opacity: number;
+			scale: number;
+			x: number;
+			y: number;
+			z: number;
+			rotationX: number;
+			rotationY: number;
+			rotationZ: number;
+			/** Own Y spin in rad/s, on top of the model's spin. */
+			spinSpeed: number;
+			floatAmplitude: number;
+			floatSpeed: number;
+		};
 		scale: number;
 		x: number;
 		y: number;
@@ -92,6 +164,9 @@ export interface SceneConfig {
 		noise: { on: boolean; opacity: number };
 	};
 
+	/** DOM overlay stack above the canvas. Optional for older saved configs. */
+	overlay?: OverlayConfig;
+
 	camera: {
 		fov: number;
 		x: number;
@@ -140,6 +215,22 @@ export interface ModelSceneProps {
 export const DEFAULT_SCENE_CONFIG: SceneConfig = {
 	model: {
 		path: null,
+		shape: 'icosahedron',
+		wireframeShell: {
+			on: true,
+			color: '#9fffcb',
+			opacity: 0.16,
+			scale: 1.22,
+			x: 0,
+			y: 0,
+			z: 0,
+			rotationX: 0,
+			rotationY: 0,
+			rotationZ: 0,
+			spinSpeed: -0.04,
+			floatAmplitude: 0,
+			floatSpeed: 0
+		},
 		scale: 1,
 		x: 0,
 		y: 0,
@@ -182,6 +273,14 @@ export const DEFAULT_SCENE_CONFIG: SceneConfig = {
 		chromaticAberration: { on: false, offset: 0.0015 },
 		noise: { on: false, opacity: 0.05 }
 	},
+	overlay: {
+		on: true,
+		color: '#020617',
+		opacity: 0.35,
+		gradient: { on: false, from: '#020617', to: '#004e64', angle: 180 },
+		vignette: { on: true, strength: 0.75, size: 45 },
+		scanlines: { on: true, opacity: 0.18, scale: 4 }
+	},
 	camera: {
 		fov: 38,
 		x: 0,
@@ -202,4 +301,32 @@ export const DEFAULT_SCENE_CONFIG: SceneConfig = {
 /** Deep-clone helper so lab presets / knob state never share references. */
 export function cloneConfig(config: SceneConfig): SceneConfig {
 	return JSON.parse(JSON.stringify(config));
+}
+
+/**
+ * Fill in fields added to the contract after a config was saved (old lab
+ * presets, pasted heroConfigs): model.shape, the overlay block, etc.
+ * Safe to call on anything — non-objects fall back to the default config.
+ */
+export function normalizeConfig(raw: unknown): SceneConfig {
+	const base = cloneConfig(DEFAULT_SCENE_CONFIG);
+	if (!raw || typeof raw !== 'object') return base;
+	/* eslint-disable @typescript-eslint/no-explicit-any */
+	const cfg = cloneConfig(raw as SceneConfig) as any;
+	const out: any = { ...base, ...cfg };
+	out.model = {
+		...base.model,
+		...(cfg.model ?? {}),
+		wireframeShell: { ...base.model.wireframeShell, ...(cfg.model?.wireframeShell ?? {}) }
+	};
+	const ov = cfg.overlay ?? {};
+	const baseOv = base.overlay!;
+	out.overlay = {
+		...baseOv,
+		...ov,
+		gradient: { ...baseOv.gradient, ...(ov.gradient ?? {}) },
+		vignette: { ...baseOv.vignette, ...(ov.vignette ?? {}) },
+		scanlines: { ...baseOv.scanlines, ...(ov.scanlines ?? {}) }
+	};
+	return out as SceneConfig;
 }

@@ -96,22 +96,12 @@
 		class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,165,207,0.15),transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(159,255,203,0.1),transparent_50%),radial-gradient(ellipse_at_bottom_left,rgba(37,161,142,0.1),transparent_50%)]"
 	></div>
 
-	<!-- Three.js hero scene - full-bleed background layer behind the z-10 content -->
+	<!-- Three.js hero scene - full-bleed background layer behind the z-10 content.
+	     Tint/vignette/scanline overlays are rendered by ModelScene itself,
+	     driven by HERO_SCENE_CONFIG.overlay (tune in /lab). -->
 	<div aria-hidden="true" class="pointer-events-none absolute inset-0 z-[5]">
 		<ModelScene config={HERO_SCENE_CONFIG} />
 	</div>
-
-	<!-- Dim tint overlay - quiet vignette so content reads against the scene -->
-	<div
-		aria-hidden="true"
-		class="pointer-events-none absolute inset-0 z-[6] bg-[radial-gradient(ellipse_at_center,rgba(2,6,23,0.35)_0%,rgba(2,6,23,0.6)_60%,rgba(2,6,23,0.85)_100%)]"
-	></div>
-
-	<!-- Scanline overlay -->
-	<div
-		aria-hidden="true"
-		class="pointer-events-none absolute inset-0 z-[7] bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.18)_2px,rgba(0,0,0,0.18)_4px)] opacity-40"
-	></div>
 
 	<div class="relative z-10 flex min-h-screen items-center px-6">
 		<div class="mx-auto w-full max-w-6xl">
