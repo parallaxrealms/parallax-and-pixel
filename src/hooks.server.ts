@@ -2,13 +2,23 @@ import { initCronJobs } from '$lib/server/cron'
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public'
 import { createServerClient } from '@supabase/ssr'
 import { redirect, type Handle } from '@sveltejs/kit'
+import { sequence } from '@sveltejs/kit/hooks'
+import { building } from '$app/environment'
 import { JWT_SECRET } from '$env/static/private'
 import { createRemoteJWKSet, jwtVerify } from 'jose'
 import type { Session } from '@supabase/supabase-js'
 import type { SupabaseJwt } from '@parallaxrealms/pxp-types/auth'
+import { initTelemetry, otelHandle } from '@parallaxrealms/pxp-otel'
 
 // Initialize cron jobs (social post scheduler)
 initCronJobs()
+
+// OpenTelemetry → self-hosted pxp-otel-stack collector. No-op when
+// OTEL_EXPORTER_OTLP_ENDPOINT is unset (dev default). Guarded against the
+// build's analyse phase so Coolify build-time env can't start an exporter.
+if (!building) {
+  initTelemetry({ serviceName: process.env.OTEL_SERVICE_NAME ?? 'parallax-and-pixel' })
+}
 
 // Create JWKS for asymmetric JWT verification
 const SUPABASE_JWT_ISSUER = `${PUBLIC_SUPABASE_URL}/auth/v1`
@@ -16,7 +26,7 @@ const SUPABASE_JWT_KEYS = createRemoteJWKSet(
   new URL(`${SUPABASE_JWT_ISSUER}/.well-known/jwks.json`)
 )
 
-export const handle: Handle = async ({ event, resolve }) => {
+const mainHandle: Handle = async ({ event, resolve }) => {
   event.locals.supabase = createServerClient(
     PUBLIC_SUPABASE_URL,
     PUBLIC_SUPABASE_PUBLISHABLE_KEY,
@@ -109,3 +119,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     },
   })
 }
+
+// otelHandle wraps the whole request (auth + resolve) in a server span and
+// records http.server.request.duration. No-ops when telemetry is disabled.
+export const handle: Handle = sequence(otelHandle(), mainHandle)

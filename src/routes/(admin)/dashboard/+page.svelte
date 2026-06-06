@@ -6,6 +6,7 @@
 	import WebsiteTab from '$lib/components/dashboardTabs/WebsiteTab.svelte';
 	import MediaLibraryTab from '$lib/components/dashboardTabs/MediaLibraryTab.svelte';
 	import SocialTab from '$lib/components/dashboardTabs/SocialTab.svelte';
+	import TelemetryTab from '$lib/components/dashboardTabs/TelemetryTab.svelte';
 
 	let { data } = $props();
 	let supabase = $derived(data.supabase);
@@ -43,6 +44,10 @@
 			{:else if $selectedTab === 'social'}
 				<div>
 					<SocialTab {supabase} {siteId} />
+				</div>
+			{:else if $selectedTab === 'telemetry'}
+				<div>
+					<TelemetryTab {supabase} />
 				</div>
 			{/if}
 		{/if}

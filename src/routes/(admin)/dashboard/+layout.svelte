@@ -8,7 +8,7 @@
 	import Sidebar from '$lib/components/custom/sidebar/Sidebar.svelte';
 	import DashboardNav from '$lib/components/custom/nav/DashboardNav.svelte';
 	import { Button } from '@parallaxrealms/pxp-components';
-	import { Home, ArrowLeft, FileText, Image, Share2 } from 'lucide-svelte';
+	import { Home, ArrowLeft, FileText, Image, Share2, Activity } from 'lucide-svelte';
 	import { createSidebarConfig } from '@parallaxrealms/pxp-utils/core';
 
 	let { children, data } = $props();
@@ -152,6 +152,13 @@
 			label: 'Social',
 			icon: Share2,
 			tabId: 'social',
+			adminOnly: true
+		},
+		{
+			id: 'telemetry',
+			label: 'Telemetry',
+			icon: Activity,
+			tabId: 'telemetry',
 			adminOnly: true
 		}
 	];
