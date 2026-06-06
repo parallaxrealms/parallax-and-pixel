@@ -39,3 +39,5 @@ pnpm-debug.log*
 ref
 .mcp.json
 CLAUDE.md
+# local pxp tarballs (until packages publish to GitHub Packages)
+.pxp-local/

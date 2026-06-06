@@ -10,9 +10,9 @@ const config = {
 		alias: {
 			$lib: 'src/lib',   // built-in alias kept explicit
 			'@': 'src/lib',     // nice-to-have short alias
-			// Map @lib to components-core for shadcn components
-			'@lib': 'node_modules/@parallaxrealms/components-core/src/lib',
-			'@lib/*': 'node_modules/@parallaxrealms/components-core/src/lib/*'
+			// Map @lib to pxp-components for shadcn components
+			'@lib': 'node_modules/@parallaxrealms/pxp-components/src/lib',
+			'@lib/*': 'node_modules/@parallaxrealms/pxp-components/src/lib/*'
 		}
 	}
 };

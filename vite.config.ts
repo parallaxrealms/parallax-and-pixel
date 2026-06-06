@@ -8,16 +8,13 @@ export default defineConfig(async (): Promise<UserConfig> => {
 		plugins: [tailwindcss(), sveltekit()],
 		optimizeDeps: {
 			exclude: [
-				'@parallaxrealms/components-core',
-				'@parallaxrealms/components-ecom',
-				'@parallaxrealms/stores-ecom',
-				'@parallaxrealms/utils-core'
-				// DO NOT add components-edda here - it needs pre-bundling for highlight.js
+				'@parallaxrealms/pxp-components',
+				'@parallaxrealms/pxp-utils'
 			]
 		},
 		resolve: {
 			alias: {
-				'@lib': path.resolve('node_modules/@parallaxrealms/components-core/src/lib')
+				'@lib': path.resolve('node_modules/@parallaxrealms/pxp-components/src/lib')
 			}
 		},
 		server: {
@@ -27,13 +24,14 @@ export default defineConfig(async (): Promise<UserConfig> => {
 		},
 		ssr: {
 			noExternal: [
-				/^@parallaxrealms\//,
+				/^@parallaxrealms\/pxp-(?!otel)/,
 				'lucide-svelte',
 				'embla-carousel-svelte',
 				'svelte-sonner',
 				'vaul-svelte',
 				'bits-ui'
-			]
+			],
+			external: [/^@opentelemetry\//, '@parallaxrealms/pxp-otel']
 		},
 		build: {
 			rollupOptions: { external: [] }
