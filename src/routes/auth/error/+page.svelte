@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { SEO, InView } from '@parallaxrealms/components-core';
+	import { SEO } from '@parallaxrealms/components-core';
 	import { goto } from '$app/navigation';
 
 	let error = $derived(page.error);
@@ -23,7 +23,7 @@
 <div class="error-page">
 	<div class="error-background"></div>
 	<div class="error-content">
-		<InView animation="fade-up" duration={1000} class="error-container">
+		<div class="error-container">
 			<h1 class="error-code">
 				{statusCode}
 			</h1>
@@ -55,7 +55,7 @@
 					Go Home
 				</button>
 			</div>
-		</InView>
+		</div>
 	</div>
 </div>
 

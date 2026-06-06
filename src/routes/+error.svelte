@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { SEO, InView } from '@parallaxrealms/components-core';
+	import { SEO } from '@parallaxrealms/components-core';
 	import { MessageSquareWarning } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 
@@ -23,7 +23,7 @@
 
 <div class="home relative h-full w-full">
 	<div class="home-content absolute inset-0 z-30 flex flex-col items-center justify-center px-4">
-		<InView animation="fade-up" duration={1000} class="error-container w-full max-w-lg rounded-lg p-8">
+		<div class="error-container w-full max-w-lg rounded-lg p-8">
 			<h1
 				class="from-satori-red to-satori-purple mb-2 bg-gradient-to-r bg-clip-text text-6xl font-bold text-transparent"
 			>
@@ -60,7 +60,7 @@
 					<p class="text-lg font-semibold tracking-wider">Go Home</p>
 				</button>
 			</div>
-		</InView>
+		</div>
 	</div>
 </div>
 

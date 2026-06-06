@@ -1,0 +1,4 @@
+Contact: mailto:admin@parallaxandpixel.com
+Expires: 2027-06-06T00:00:00.000Z
+Canonical: https://www.parallaxandpixel.com/.well-known/security.txt
+Preferred-Languages: en

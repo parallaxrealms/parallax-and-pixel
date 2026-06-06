@@ -1,13 +1,15 @@
 <script lang="ts">
 	import type { Page } from '$lib';
-	import { SEO, InView } from '@parallaxrealms/components-core';
+	import { SEO } from '@parallaxrealms/components-core';
+	import JsonLd from '$lib/components/custom/seo/JsonLd.svelte';
 	import Nav from '$lib/components/custom/nav/Nav.svelte';
 	import Footer from '$lib/components/snippets/Footer.svelte';
 	import ProjectCard from '$lib/components/custom/ProjectCard.svelte';
 	import GradientText from '$lib/components/custom/effect/GradientText.svelte';
 	import GlitchText from '$lib/components/custom/effect/GlitchText.svelte';
 	import AboutTerminal from '$lib/components/custom/about/AboutTerminal.svelte';
-	import Orb from '$lib/components/custom/effect/Orb.svelte';
+	import ModelScene from '$lib/three/ModelScene.svelte';
+	import { HERO_SCENE_CONFIG } from '$lib/three/heroConfig';
 	import { getFeaturedProjects } from '$lib/data/projects';
 	import { Label } from '$lib/components/shadcn/ui/label';
 	import { Input } from '$lib/components/shadcn/ui/input';
@@ -73,6 +75,17 @@
 	ogImage="/preview/self_circle.webp"
 />
 
+<JsonLd
+	data={{
+		'@type': 'Person',
+		name: 'Parallax',
+		url: 'https://www.parallaxandpixel.com',
+		image: 'https://www.parallaxandpixel.com/preview/self_circle.webp',
+		jobTitle: 'Web & Game Developer',
+		sameAs: ['https://github.com/parallaxrealms', 'https://parallaxpixels.itch.io/']
+	}}
+/>
+
 <Nav {supabase} {data} variant="site" navbarLinks={data.navbarLinks} />
 
 <!-- SECTION 1: Hero -->
@@ -83,13 +96,9 @@
 		class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,165,207,0.15),transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(159,255,203,0.1),transparent_50%),radial-gradient(ellipse_at_bottom_left,rgba(37,161,142,0.1),transparent_50%)]"
 	></div>
 
-	<!-- Orb - behind content, in front of background -->
-	<div aria-hidden="true" class="absolute inset-x-0 -top-[50%] z-[5] flex justify-center">
-		<Orb
-			color={[0.05, 0.08, 0.12]}
-			glowColor={[0, 0.45, 0.55]}
-			class="min-w-[1200px] w-full"
-		/>
+	<!-- Three.js hero scene - full-bleed background layer behind the z-10 content -->
+	<div aria-hidden="true" class="pointer-events-none absolute inset-0 z-[5]">
+		<ModelScene config={HERO_SCENE_CONFIG} />
 	</div>
 
 	<!-- Scanline overlay -->
@@ -102,7 +111,7 @@
 		<div class="mx-auto w-full max-w-6xl">
 			<!-- Title - Full Width -->
 			<div class="mb-12 text-center">
-				<h1 class="hero-title mb-6 text-5xl tracking-wide md:text-7xl">
+				<h1 class="font-display mb-6 text-5xl tracking-wide md:text-7xl">
 					<span class="text-accent-primary">Parallax</span>
 					<span class="text-slate-50">&</span>
 					<span class="text-accent-highlight">Pixel</span>
@@ -190,253 +199,151 @@
 <!-- SECTION 3: Web Projects -->
 <section id="projects" class="bg-black py-24">
 	<div class="mx-auto w-full max-w-screen-2xl px-8">
-		<InView animation="fade-up">
-			<div class="mb-12 flex items-center justify-between">
-				<h2 class="text-4xl text-slate-100 md:text-5xl">
-					<span class="font-rubik text-accent-primary">Web</span>
-					<span class="font-fade">Projects</span>
-				</h2>
-				<a
-					href="/web"
-					class="font-terminal flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-accent-primary"
-				>
-					View All
-				</a>
-			</div>
+		<div class="mb-12 flex items-center justify-between">
+			<h2 class="text-4xl text-slate-100 md:text-5xl">
+				<span class="font-rubik text-accent-primary">Web</span>
+				<span class="font-fade">Projects</span>
+			</h2>
+			<a
+				href="/web"
+				class="font-terminal flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-accent-primary"
+			>
+				View All
+			</a>
+		</div>
 
-			<div class="grid gap-6 md:grid-cols-3">
-				{#each featuredWebProjects as project (project.id)}
-					<ProjectCard {project} variant="compact" />
-				{/each}
-			</div>
-		</InView>
+		<div class="grid gap-6 md:grid-cols-3">
+			{#each featuredWebProjects as project (project.id)}
+				<ProjectCard {project} variant="compact" />
+			{/each}
+		</div>
 	</div>
 </section>
 
 <!-- SECTION 5: Game Projects -->
 <section class="border-y border-slate-800 bg-slate-900/50 py-24">
 	<div class="mx-auto w-full max-w-screen-2xl px-8">
-		<InView animation="fade-up">
-			<div class="mb-12 flex items-center justify-between">
-				<h2 class="text-4xl text-slate-100 md:text-5xl">
-					<span class="font-rubik text-accent-highlight">Game</span>
-					<span class="font-fade">Projects</span>
-				</h2>
-				<a
-					href="/games"
-					class="font-terminal flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-accent-highlight"
-				>
-					View All
-				</a>
-			</div>
+		<div class="mb-12 flex items-center justify-between">
+			<h2 class="text-4xl text-slate-100 md:text-5xl">
+				<span class="font-rubik text-accent-highlight">Game</span>
+				<span class="font-fade">Projects</span>
+			</h2>
+			<a
+				href="/games"
+				class="font-terminal flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-accent-highlight"
+			>
+				View All
+			</a>
+		</div>
 
-			<div class="grid gap-6 md:grid-cols-3">
-				{#each featuredGameProjects as project (project.id)}
-					<ProjectCard {project} variant="compact" />
-				{/each}
-			</div>
-		</InView>
+		<div class="grid gap-6 md:grid-cols-3">
+			{#each featuredGameProjects as project (project.id)}
+				<ProjectCard {project} variant="compact" />
+			{/each}
+		</div>
 	</div>
 </section>
 
 <!-- SECTION 6: Contact -->
 <section id="contact" class="bg-black py-24">
 	<div class="mx-auto max-w-2xl px-6">
-		<InView animation="fade-up">
-			<div class="mb-12 text-center">
-				<h2 class="text-4xl text-slate-100 md:text-5xl">
-					<span class="font-rubik text-accent-primary">Get In</span>
-					<span class="font-fade">Touch</span>
-				</h2>
-			</div>
+		<div class="mb-12 text-center">
+			<h2 class="text-4xl text-slate-100 md:text-5xl">
+				<span class="font-rubik text-accent-primary">Get In</span>
+				<span class="font-fade">Touch</span>
+			</h2>
+		</div>
 
-			<form
-				onsubmit={handleSubmit}
-				class="border border-slate-800 bg-slate-900 p-8"
-			>
-				<!-- Status Message -->
-				{#if formStatus === 'success' || formStatus === 'error'}
-					<div
-						class="mb-6 p-4 text-center font-terminal text-sm {formStatus ===
-						'success'
-							? 'bg-accent-primary/10 text-accent-primary'
-							: 'bg-red-500/10 text-red-500'}"
-					>
-						{formMessage}
-					</div>
-				{/if}
-
-				<div class="space-y-6">
-					<div>
-						<Label for="name" class="font-terminal text-slate-300">Name</Label>
-						<Input
-							id="name"
-							type="text"
-							bind:value={contactForm.name}
-							required
-							class="mt-1 font-terminal"
-							placeholder="Your name"
-						/>
-					</div>
-
-					<div>
-						<Label for="email" class="font-terminal text-slate-300">Email</Label
-						>
-						<Input
-							id="email"
-							type="email"
-							bind:value={contactForm.email}
-							required
-							class="mt-1 font-terminal"
-							placeholder="your@email.com"
-						/>
-					</div>
-
-					<div>
-						<Label for="message" class="font-terminal text-slate-300"
-							>Message</Label
-						>
-						<Textarea
-							id="message"
-							bind:value={contactForm.message}
-							required
-							rows={5}
-							class="mt-1 resize-none font-terminal"
-							placeholder="Tell me about your project..."
-						/>
-					</div>
-
-					<Button
-						type="submit"
-						disabled={formStatus === 'sending'}
-						class="w-full bg-accent-primary font-terminal text-slate-900 hover:bg-accent-primary/80"
-					>
-						{#if formStatus === 'sending'}
-							Sending...
-						{:else}
-							Send Message
-						{/if}
-					</Button>
+		<form
+			onsubmit={handleSubmit}
+			class="border border-slate-800 bg-slate-900 p-8"
+		>
+			<!-- Status Message -->
+			{#if formStatus === 'success' || formStatus === 'error'}
+				<div
+					class="mb-6 p-4 text-center font-terminal text-sm {formStatus ===
+					'success'
+						? 'bg-accent-primary/10 text-accent-primary'
+						: 'bg-red-500/10 text-red-500'}"
+				>
+					{formMessage}
 				</div>
-			</form>
+			{/if}
 
-			<!-- Social Links -->
-			<div class="mt-8 flex flex-wrap justify-center gap-4">
-				<a
-					href="https://github.com/parallaxrealms"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="font-terminal border border-slate-700 px-4 py-2 text-sm text-slate-500 transition-colors hover:border-accent-primary hover:text-accent-primary"
+			<div class="space-y-6">
+				<div>
+					<Label for="name" class="font-terminal text-slate-300">Name</Label>
+					<Input
+						id="name"
+						type="text"
+						bind:value={contactForm.name}
+						required
+						class="mt-1 font-terminal"
+						placeholder="Your name"
+					/>
+				</div>
+
+				<div>
+					<Label for="email" class="font-terminal text-slate-300">Email</Label>
+					<Input
+						id="email"
+						type="email"
+						bind:value={contactForm.email}
+						required
+						class="mt-1 font-terminal"
+						placeholder="your@email.com"
+					/>
+				</div>
+
+				<div>
+					<Label for="message" class="font-terminal text-slate-300"
+						>Message</Label
+					>
+					<Textarea
+						id="message"
+						bind:value={contactForm.message}
+						required
+						rows={5}
+						class="mt-1 resize-none font-terminal"
+						placeholder="Tell me about your project..."
+					/>
+				</div>
+
+				<Button
+					type="submit"
+					disabled={formStatus === 'sending'}
+					class="w-full bg-accent-primary font-terminal text-slate-900 hover:bg-accent-primary/80"
 				>
-					GitHub
-				</a>
-				<a
-					href="https://parallaxpixels.itch.io/"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="font-terminal border border-slate-700 px-4 py-2 text-sm text-slate-500 transition-colors hover:border-accent-secondary hover:text-accent-secondary"
-				>
-					Itch.io
-				</a>
+					{#if formStatus === 'sending'}
+						Sending...
+					{:else}
+						Send Message
+					{/if}
+				</Button>
 			</div>
-		</InView>
+		</form>
+
+		<!-- Social Links -->
+		<div class="mt-8 flex flex-wrap justify-center gap-4">
+			<a
+				href="https://github.com/parallaxrealms"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="font-terminal border border-slate-700 px-4 py-2 text-sm text-slate-500 transition-colors hover:border-accent-primary hover:text-accent-primary"
+			>
+				GitHub
+			</a>
+			<a
+				href="https://parallaxpixels.itch.io/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="font-terminal border border-slate-700 px-4 py-2 text-sm text-slate-500 transition-colors hover:border-accent-secondary hover:text-accent-secondary"
+			>
+				Itch.io
+			</a>
+		</div>
 	</div>
 </section>
 
 <!-- SECTION 7: Footer -->
 <Footer />
-
-<style>
-	/* Hero title - Rubik default, Rubik Glitch on hover */
-	.hero-title {
-		position: relative;
-		font-family: 'Rubik', sans-serif;
-		font-weight: 900;
-		transition: text-shadow 0.1s ease;
-	}
-
-	.hero-title:hover {
-		font-family: 'Rubik Glitch', system-ui;
-		animation: glitch 1.2s ease-in-out infinite;
-	}
-
-	@keyframes glitch {
-		0% {
-			text-shadow:
-				-6px 0 rgba(0, 165, 207, 0.9),
-				6px 0 rgba(159, 255, 203, 0.9),
-				0 0 20px rgba(0, 165, 207, 0.3);
-			transform: translate(0);
-		}
-		10% {
-			text-shadow:
-				8px 2px rgba(159, 255, 203, 0.9),
-				-8px -2px rgba(0, 165, 207, 0.9),
-				0 0 30px rgba(159, 255, 203, 0.4);
-			transform: translate(-2px, 1px);
-		}
-		20% {
-			text-shadow:
-				-4px -3px rgba(0, 165, 207, 0.9),
-				4px 3px rgba(37, 161, 142, 0.9),
-				-8px 0 rgba(159, 255, 203, 0.5);
-			transform: translate(2px, -1px);
-		}
-		30% {
-			text-shadow:
-				10px 0 rgba(159, 255, 203, 0.9),
-				-10px 0 rgba(0, 165, 207, 0.9),
-				0 0 40px rgba(0, 165, 207, 0.5);
-			transform: translate(0, 2px);
-		}
-		40% {
-			text-shadow:
-				-5px 4px rgba(37, 161, 142, 0.9),
-				5px -4px rgba(159, 255, 203, 0.9),
-				8px 0 rgba(0, 165, 207, 0.6);
-			transform: translate(-1px, -2px);
-		}
-		50% {
-			text-shadow:
-				6px -2px rgba(0, 165, 207, 0.9),
-				-6px 2px rgba(159, 255, 203, 0.9),
-				0 0 25px rgba(37, 161, 142, 0.4);
-			transform: translate(1px, 0);
-		}
-		60% {
-			text-shadow:
-				-8px 0 rgba(159, 255, 203, 0.9),
-				8px 0 rgba(37, 161, 142, 0.9),
-				-4px 4px rgba(0, 165, 207, 0.5);
-			transform: translate(-2px, 1px);
-		}
-		70% {
-			text-shadow:
-				4px 3px rgba(0, 165, 207, 0.9),
-				-4px -3px rgba(159, 255, 203, 0.9),
-				0 0 35px rgba(159, 255, 203, 0.5);
-			transform: translate(0, -1px);
-		}
-		80% {
-			text-shadow:
-				-10px -1px rgba(37, 161, 142, 0.9),
-				10px 1px rgba(0, 165, 207, 0.9),
-				6px 0 rgba(159, 255, 203, 0.6);
-			transform: translate(2px, 2px);
-		}
-		90% {
-			text-shadow:
-				7px 0 rgba(159, 255, 203, 0.9),
-				-7px 0 rgba(0, 165, 207, 0.9),
-				0 0 20px rgba(0, 165, 207, 0.3);
-			transform: translate(-1px, 0);
-		}
-		100% {
-			text-shadow:
-				-6px 0 rgba(0, 165, 207, 0.9),
-				6px 0 rgba(159, 255, 203, 0.9),
-				0 0 20px rgba(0, 165, 207, 0.3);
-			transform: translate(0);
-		}
-	}
-</style>

@@ -1,9 +1,32 @@
 <script lang="ts">
 	import { SEO } from '@parallaxrealms/components-core';
+	import JsonLd from '$lib/components/custom/seo/JsonLd.svelte';
 	import { getAllProjects } from '$lib/data/projects';
-	import ProjectCard from '$lib/components/custom/ProjectCard.svelte';
+	import ProjectShowcaseRow from '$lib/components/custom/ProjectShowcaseRow.svelte';
 
 	const projects = getAllProjects('game');
+
+	const SITE_URL = 'https://www.parallaxandpixel.com';
+	const collectionSchema = {
+		'@type': 'CollectionPage',
+		name: 'Game Projects | Parallax&Pixel',
+		url: `${SITE_URL}/games`,
+		mainEntity: {
+			'@type': 'ItemList',
+			itemListElement: projects.map((project, i) => ({
+				'@type': 'ListItem',
+				position: i + 1,
+				name: project.title,
+				url:
+					project.liveUrl ??
+					(project.devlogUrl
+						? project.devlogUrl.startsWith('http')
+							? project.devlogUrl
+							: `${SITE_URL}${project.devlogUrl}`
+						: `${SITE_URL}/games`)
+			}))
+		}
+	};
 </script>
 
 <SEO
@@ -15,54 +38,76 @@
 	ogImage="/preview/self_circle.webp"
 />
 
+<JsonLd data={collectionSchema} />
+
 <div class="min-h-screen bg-slate-950">
 	<!-- Header -->
-	<header class="border-b border-slate-800 bg-slate-900/50 py-8">
-		<div class="mx-auto max-w-7xl px-6">
+	<header class="relative overflow-hidden border-b border-slate-800 bg-slate-950">
+		<div class="header-glow pointer-events-none absolute inset-0" aria-hidden="true"></div>
+		<div class="relative px-6 py-16 sm:px-10 lg:px-14 lg:py-24 xl:px-20">
 			<a
 				href="/"
-				class="mb-3 inline-block font-terminal text-sm text-slate-400 transition-colors hover:text-accent-highlight"
+				class="font-terminal mb-10 inline-block text-sm text-slate-500 transition-colors hover:text-accent-highlight"
 			>
-				Back to Home
+				../ back to home
 			</a>
 
-			<h1 class="font-fade mb-2 text-3xl text-slate-100 md:text-4xl">
-				<span class="text-accent-highlight">Game</span> Projects
-			</h1>
-			<p
-				class="font-terminal max-w-6xl text-lg text-slate-400 pb-1 leading-relaxed"
-			>
-				These are the games I'm most proud of that I've made in the past 5
-				years. I've been diving into game development and design on and off for
-				the past 15 years, both digital and tabletop.
+			<p class="font-terminal mb-4 text-xs tracking-[0.35em] text-accent-highlight uppercase">
+				portfolio // game index
 			</p>
-			<p
-				class="font-terminal max-w-6xl text-base text-slate-400 pt-1 leading-relaxed"
-			>
-				I started making flash games way back in the early 2000s and around the
-				same time began getting heavily into Dungeons & Dragons and other TTRPG
-				games. After that I spent time with the Unity Engine joining the
-				occasional game jam but never quite able to commit fully to my passion
-				project. These days I'm full-time with Godot and make assets primarily
-				with Blender, Photoshop and Aseprite.
+
+			<h1 class="font-display mb-6 text-5xl leading-tight text-slate-100 md:text-7xl">
+				Game <span class="text-accent-highlight">Projects</span>
+			</h1>
+
+			<div class="max-w-3xl space-y-4">
+				<p class="text-lg leading-relaxed text-slate-400">
+					These are the games I'm most proud of that I've made in the past 5
+					years. I've been diving into game development and design on and off
+					for the past 15 years, both digital and tabletop.
+				</p>
+				<p class="text-base leading-relaxed text-slate-500">
+					I started making flash games way back in the early 2000s and around
+					the same time began getting heavily into Dungeons & Dragons and other
+					TTRPG games. After that I spent time with the Unity Engine joining
+					the occasional game jam but never quite able to commit fully to my
+					passion project. These days I'm full-time with Godot and make assets
+					primarily with Blender, Photoshop and Aseprite.
+				</p>
+			</div>
+
+			<p class="font-terminal mt-10 text-xs tracking-[0.25em] text-slate-600 uppercase">
+				{projects.length} projects indexed
 			</p>
 		</div>
 	</header>
 
-	<!-- Projects Grid -->
-	<main class="mx-auto max-w-6xl px-6 py-12">
+	<!-- Project Showcase Rows -->
+	<main>
 		{#if projects.length === 0}
-			<div class="py-20 text-center">
+			<div class="py-24 text-center">
 				<p class="font-terminal text-lg text-slate-400">
 					Projects coming soon!
 				</p>
 			</div>
 		{:else}
-			<div class="grid gap-8 md:grid-cols-2">
-				{#each projects as project (project.id)}
-					<ProjectCard {project} hideViewDetails={true} />
-				{/each}
+			{#each projects as project, i (project.id)}
+				<ProjectShowcaseRow {project} index={i} accent="highlight" />
+			{/each}
+
+			<div class="px-6 py-12 text-center">
+				<span class="font-terminal text-xs tracking-[0.35em] text-slate-600 uppercase">
+					// end of index
+				</span>
 			</div>
 		{/if}
 	</main>
 </div>
+
+<style>
+	.header-glow {
+		background:
+			radial-gradient(ellipse 80% 60% at 15% 0%, rgba(159, 255, 203, 0.09), transparent 60%),
+			radial-gradient(ellipse 60% 50% at 90% 100%, rgba(37, 161, 142, 0.08), transparent 60%);
+	}
+</style>

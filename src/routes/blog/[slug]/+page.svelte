@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Page } from '$lib';
 	import { SEO } from '@parallaxrealms/components-core';
+	import JsonLd from '$lib/components/custom/seo/JsonLd.svelte';
 	import {
 		EdraEditor,
 		sanitizeEditorContent,
@@ -101,6 +102,40 @@
 			day: 'numeric',
 		});
 	}
+
+	// Structured data for this post
+	const SITE_URL = 'https://www.parallaxandpixel.com';
+	let postUrl = $derived(`${SITE_URL}/blog/${post.slug}`);
+	let postImage = $derived(
+		post.banner_image_url
+			? post.banner_image_url.startsWith('http')
+				? post.banner_image_url
+				: `${SITE_URL}${post.banner_image_url}`
+			: undefined
+	);
+	let blogPostingSchema = $derived({
+		'@type': 'BlogPosting',
+		headline: post.title,
+		datePublished: post.created_at,
+		dateModified: post.updated_at || post.created_at,
+		url: postUrl,
+		mainEntityOfPage: postUrl,
+		...(post.meta_description ? { description: post.meta_description } : {}),
+		...(postImage ? { image: postImage } : {}),
+		author: {
+			'@type': 'Person',
+			name: 'Parallax',
+			url: SITE_URL
+		}
+	});
+	let breadcrumbSchema = $derived({
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+			{ '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+			{ '@type': 'ListItem', position: 3, name: post.title, item: postUrl }
+		]
+	});
 </script>
 
 <SEO
@@ -111,6 +146,9 @@
 	author="Parallax"
 	ogImage={post.banner_image_url ?? '/preview/self_circle.webp'}
 />
+
+<JsonLd data={blogPostingSchema} />
+<JsonLd data={breadcrumbSchema} />
 
 <div class="min-h-screen bg-slate-950">
 	<!-- Article -->

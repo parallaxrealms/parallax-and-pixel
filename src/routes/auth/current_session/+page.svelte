@@ -2,7 +2,6 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import type { Session } from '@supabase/supabase-js';
-	import { InView } from '@parallaxrealms/components-core';
 
 	let { data } = $props<{ data: { session: Session | null; supabase: any } }>();
 
@@ -108,7 +107,7 @@
 <div class="session-page">
 	<div class="session-background"></div>
 	<div class="session-content">
-		<InView animation="fade-up" duration={1000} class="max-w-8xl w-full p-4">
+		<div class="max-w-8xl w-full p-4">
 			<h1 class="font-terminal my-2 text-4xl font-bold text-slate-100">Current Session Data</h1>
 
 			<!-- JWT Information Header -->
@@ -291,7 +290,7 @@
 					Go Home
 				</button>
 			</div>
-		</InView>
+		</div>
 	</div>
 </div>
 

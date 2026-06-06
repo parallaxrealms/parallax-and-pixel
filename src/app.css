@@ -214,6 +214,7 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Raleway', ui-sans-serif, system-ui, sans-serif;
   }
 
   /* Custom scrollbar styling (dark mode only) */
@@ -270,7 +271,18 @@
     font-family: 'Space Mono', monospace;
   }
 
-  /* Rubik Glitch - for glitch effect on hover */
+  /* Playfair Display Medium - site title & display headings */
+  .font-display {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+  }
+
+  /* Raleway - main body font for non-terminal content */
+  .font-body {
+    font-family: 'Raleway', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Rubik Glitch - decorative (dashboard only) */
   .font-pixel {
     font-family: 'Rubik Glitch', system-ui;
     letter-spacing: 0.02em;
@@ -414,43 +426,6 @@
 
   .bg-palette-light-green {
     background-color: var(--palette-light-green);
-  }
-
-  /* Glitch text animation utility */
-  .glitch-hover:hover {
-    animation: glitchText 0.3s infinite;
-  }
-
-  @keyframes glitchText {
-    0% {
-      text-shadow:
-        2px 0 var(--accent-primary),
-        -2px 0 var(--accent-highlight);
-    }
-
-    25% {
-      text-shadow:
-        -2px 0 var(--accent-primary),
-        2px 0 var(--accent-highlight);
-    }
-
-    50% {
-      text-shadow:
-        2px 0 var(--accent-highlight),
-        -2px 0 var(--accent-primary);
-    }
-
-    75% {
-      text-shadow:
-        -2px 0 var(--accent-highlight),
-        2px 0 var(--accent-primary);
-    }
-
-    100% {
-      text-shadow:
-        2px 0 var(--accent-primary),
-        -2px 0 var(--accent-highlight);
-    }
   }
 
   /* Scanline overlay */
