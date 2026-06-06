@@ -83,7 +83,7 @@
 				</div>
 
 				<!-- Title -->
-				<h2 class="showcase-title font-display mb-3 text-4xl leading-tight text-slate-100 md:text-5xl">
+				<h2 class="showcase-title mb-3 text-4xl leading-tight font-bold text-slate-100 md:text-5xl">
 					{project.title}
 				</h2>
 				<div class="title-bar mb-6 h-0.5 w-12" aria-hidden="true"></div>

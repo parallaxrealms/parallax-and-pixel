@@ -194,7 +194,7 @@
 
 			<!-- Title -->
 			<h1
-				class="font-terminal mb-4 text-3xl font-bold text-slate-300 md:text-4xl"
+				class="mb-4 text-3xl font-bold text-slate-300 md:text-4xl"
 			>
 				{post.title}
 			</h1>
@@ -241,7 +241,7 @@
 	{#if relatedPosts.length > 0}
 		<aside class="border-t border-slate-800 bg-slate-900/50 py-12">
 			<div class="mx-auto max-w-4xl px-6">
-				<h2 class="font-terminal mb-6 text-xl font-semibold text-slate-100">
+				<h2 class="mb-6 text-xl font-bold text-slate-100">
 					More Posts
 				</h2>
 

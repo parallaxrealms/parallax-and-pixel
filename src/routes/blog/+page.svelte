@@ -65,7 +65,7 @@
 			<h1 class="font-fade mb-2 text-3xl text-slate-100 md:text-4xl">
 				<span class="text-accent-primary">Blog</span>
 			</h1>
-			<p class="font-terminal text-base text-slate-400">
+			<p class="text-base text-slate-400">
 				Thoughts on web development, game design, and creative coding.
 			</p>
 
@@ -150,7 +150,7 @@
 
 										<div class="flex-1">
 											<div class="mb-2 flex items-center gap-2">
-												<h2 class="font-terminal text-xl font-semibold text-slate-100 transition-colors group-hover:text-accent-primary">
+												<h2 class="text-xl font-bold text-slate-100 transition-colors group-hover:text-accent-primary">
 													{post.title}
 												</h2>
 												{#if post.category}

@@ -44,23 +44,23 @@
 	<!-- Header -->
 	<header class="relative overflow-hidden border-b border-slate-800 bg-slate-950">
 		<div class="header-glow pointer-events-none absolute inset-0" aria-hidden="true"></div>
-		<div class="relative px-6 py-16 sm:px-10 lg:px-14 lg:py-24 xl:px-20">
+		<div class="relative px-5 py-5 sm:px-8 lg:px-10 lg:py-6">
 			<a
 				href="/"
-				class="font-terminal mb-10 inline-block text-sm text-slate-500 transition-colors hover:text-accent-highlight"
+				class="font-terminal mb-3 inline-block text-sm text-slate-500 transition-colors hover:text-accent-highlight"
 			>
 				../ back to home
 			</a>
 
-			<p class="font-terminal mb-4 text-xs tracking-[0.35em] text-accent-highlight uppercase">
+			<p class="font-terminal mb-1.5 text-xs tracking-[0.35em] text-accent-highlight uppercase">
 				portfolio // game index
 			</p>
 
-			<h1 class="font-display mb-6 text-5xl leading-tight text-slate-100 md:text-7xl">
+			<h1 class="mb-2 text-4xl leading-tight font-bold text-slate-100 md:text-5xl">
 				Game <span class="text-accent-highlight">Projects</span>
 			</h1>
 
-			<div class="max-w-3xl space-y-4">
+			<div class="space-y-2">
 				<p class="text-lg leading-relaxed text-slate-400">
 					These are the games I'm most proud of that I've made in the past 5
 					years. I've been diving into game development and design on and off
@@ -76,7 +76,7 @@
 				</p>
 			</div>
 
-			<p class="font-terminal mt-10 text-xs tracking-[0.25em] text-slate-600 uppercase">
+			<p class="font-terminal mt-3 text-xs tracking-[0.25em] text-slate-600 uppercase">
 				{projects.length} projects indexed
 			</p>
 		</div>

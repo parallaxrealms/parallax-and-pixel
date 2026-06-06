@@ -104,7 +104,7 @@
 			rgba(155, 255, 203, 0.07) 4px,
 			rgba(155, 255, 203, 0.07) 5px
 		);
-		animation: scanRain 40s linear infinite;
+		animation: scanRain 160s linear infinite;
 	}
 
 	@keyframes scanRain {

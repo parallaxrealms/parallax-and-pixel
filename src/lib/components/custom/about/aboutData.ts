@@ -32,4 +32,4 @@ export const bio = {
 	paragraph2: `In an age of AI slop and cookie cutter websites, I aim to build digital experiences that feel unique, hand-crafted and stand out among the noise.`
 };
 
-export const avatarSrc = '/preview/self_circle.webp';
+export const avatarSrc = '/parallax.webp';

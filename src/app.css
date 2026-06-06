@@ -288,25 +288,12 @@
     letter-spacing: 0.02em;
   }
 
-  /* Share Tech Mono Bold - for section headers */
-  .font-fade {
-    font-family: 'Share Tech Mono', monospace;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-  }
-
-  /* Share Tech Mono - for title default state */
-  .font-rubik {
-    font-family: 'Share Tech Mono', monospace;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-  }
-
-  /* Share Tech Mono - for card headers */
+  /* Header text - Raleway bold (legacy utility names kept for existing markup) */
+  .font-fade,
+  .font-rubik,
   .font-rubik-card {
-    font-family: 'Share Tech Mono', monospace;
-    font-weight: 400;
-    letter-spacing: 0.01em;
+    font-family: 'Raleway', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
   }
 
   /* Semantic accent color utilities */
