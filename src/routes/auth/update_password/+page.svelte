@@ -4,7 +4,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import type { ActionResult } from '@sveltejs/kit';
-	import { AnimatedButton, PasswordInput } from '@parallaxrealms/components-core';
+	import { AnimatedButton, PasswordInput } from '@parallaxrealms/pxp-components';
 
 	interface ActionData {
 		success?: boolean;

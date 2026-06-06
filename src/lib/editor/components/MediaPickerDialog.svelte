@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { MediaPicker } from '@parallaxrealms/components-edda';
-	import { getEditorContext } from '@parallaxrealms/components-edda';
+	import { MediaPicker } from '@parallaxrealms/pxp-components/editor';
+	import { getEditorContext } from '@parallaxrealms/pxp-components/editor';
 
 	interface Props {
 		open: boolean;

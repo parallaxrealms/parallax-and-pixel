@@ -1,7 +1,7 @@
 <!-- src/lib/components/custom/CatalogMockupGrids/RecentPurchasesGrid.svelte -->
 <script lang="ts">
-	import { Card, Button } from '@parallaxrealms/components-core';
-	import type { UserTemplate } from '@parallaxrealms/types-rune';
+	import { Card, Button } from '@parallaxrealms/pxp-components';
+	import type { UserTemplate } from '@parallaxrealms/pxp-types/rune';
 
 	let { items = [], onUseRecent } = $props<{
 		items: UserTemplate[];

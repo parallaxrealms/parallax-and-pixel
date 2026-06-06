@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { Canvas, Image as FabricImage, Rect } from 'fabric';
-	import type { CatalogVariant } from '@parallaxrealms/types-ecom';
-	import type { DesignData, ProductPrintAreas } from '@parallaxrealms/types-rune';
+	import type { CatalogVariant } from '@parallaxrealms/pxp-types/ecom';
+	import type { DesignData, ProductPrintAreas } from '@parallaxrealms/pxp-types/rune';
 
 	interface Props {
 		variant: CatalogVariant;

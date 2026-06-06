@@ -1,3 +1,3 @@
-import { handleAdminInvitePost } from '@parallaxrealms/api-core';
+import { handleAdminInvitePost } from '@parallaxrealms/pxp-utils/api-core';
 
 export const POST = handleAdminInvitePost;

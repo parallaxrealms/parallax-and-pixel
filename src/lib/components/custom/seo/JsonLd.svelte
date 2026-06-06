@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Renders a JSON-LD structured data script tag into <svelte:head>.
-	// Complements the base Website schema injected by @parallaxrealms/components-core SEO.
+	// Complements the base Website schema injected by @parallaxrealms/pxp-components SEO.
 	let { data }: { data: Record<string, unknown> } = $props();
 
 	// Escape `<` so dynamic content (e.g. post titles) can never close the script tag

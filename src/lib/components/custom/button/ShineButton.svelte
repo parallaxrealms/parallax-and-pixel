@@ -1,6 +1,6 @@
 <!-- src/lib/components/custom/ShineButton.svelte -->
 <script lang="ts">
-	import { cn } from '@parallaxrealms/utils-core';
+	import { cn } from '@parallaxrealms/pxp-utils/core';
 
 	type TColorProp = string | string[];
 

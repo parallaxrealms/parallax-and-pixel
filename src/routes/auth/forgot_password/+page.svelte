@@ -5,7 +5,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import type { ActionResult } from '@sveltejs/kit';
 	import { Input } from '$lib/components/shadcn/ui/input';
-	import { AnimatedButton } from '@parallaxrealms/components-core';
+	import { AnimatedButton } from '@parallaxrealms/pxp-components';
 
 	interface ActionData {
 		message?: string;

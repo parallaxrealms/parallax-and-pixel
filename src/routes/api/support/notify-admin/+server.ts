@@ -1,4 +1,4 @@
-import { createSupportNotifyAdminHandler } from '@parallaxrealms/api-auth';
+import { createSupportNotifyAdminHandler } from '@parallaxrealms/pxp-utils/api-auth';
 import { RESEND_API_KEY, ADMIN_EMAIL, FROM_EMAIL } from '$env/static/private';
 
 // Use factory pattern with custom configuration

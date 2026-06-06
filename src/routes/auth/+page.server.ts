@@ -2,9 +2,9 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate, message } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { loginSchema, magicLinkSchema, otpVerifySchema } from '@parallaxrealms/schemas';
+import { loginSchema, magicLinkSchema, otpVerifySchema } from '@parallaxrealms/pxp-types/schemas';
 import type { Provider } from '@supabase/supabase-js';
-import { Fail } from '@parallaxrealms/utils-core';
+import { Fail } from '@parallaxrealms/pxp-utils/core';
 
 export const load: PageServerLoad = async (event) => {
   const parentData = await event.parent();

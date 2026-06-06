@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import createGlobe from 'cobe';
 	import { spring } from 'svelte/motion';
-	import { cn } from '@parallaxrealms/utils-core';
+	import { cn } from '@parallaxrealms/pxp-utils/core';
 
 	interface Props {
 		color?: [number, number, number];

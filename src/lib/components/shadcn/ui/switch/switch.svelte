@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Switch as SwitchPrimitive } from 'bits-ui';
-	import { cn } from '@parallaxrealms/utils-core';
+	import { cn } from '@parallaxrealms/pxp-utils/core';
 
 	let {
 		ref = $bindable(null),

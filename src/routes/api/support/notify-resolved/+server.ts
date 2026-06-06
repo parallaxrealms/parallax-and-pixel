@@ -1,4 +1,4 @@
-import { createSupportNotifyResolvedHandler } from '@parallaxrealms/api-auth';
+import { createSupportNotifyResolvedHandler } from '@parallaxrealms/pxp-utils/api-auth';
 import { RESEND_API_KEY, PRIVATE_SUPABASE_SATORI_KEY, FROM_EMAIL } from '$env/static/private';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 

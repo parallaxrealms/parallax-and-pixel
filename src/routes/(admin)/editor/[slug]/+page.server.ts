@@ -2,7 +2,7 @@ import type { PageServerLoad, Actions } from './$types';
 import type { Page } from '$lib';
 import { PUBLIC_SITE_ID } from '$env/static/public';
 import { error, fail } from '@sveltejs/kit';
-import { refreshTableCache, EDDA_TABLE_CONFIGS, type TableQueryConfig } from '@parallaxrealms/api-auth';
+import { refreshTableCache, EDDA_TABLE_CONFIGS, type TableQueryConfig } from '@parallaxrealms/pxp-utils/api-auth';
 
 const siteId = PUBLIC_SITE_ID || 'default';
 

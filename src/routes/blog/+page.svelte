@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Page } from '$lib';
-	import { SEO } from '@parallaxrealms/components-core';
+	import { SEO } from '@parallaxrealms/pxp-components';
 	import { Input } from '$lib/components/shadcn/ui/input';
 	import { goto } from '$app/navigation';
 

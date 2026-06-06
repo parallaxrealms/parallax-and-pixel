@@ -3,14 +3,14 @@
 	import { goto } from '$app/navigation';
 	import { PUBLIC_SITE_ID } from '$env/static/public';
 	import type { Editor } from '@tiptap/core';
-	import { Button, ToggleFlip } from '@parallaxrealms/components-core';
-	import { Input } from '@parallaxrealms/components-core/shadcn/input';
-	import { Label } from '@parallaxrealms/components-core/shadcn/label';
-	import { Checkbox } from '@parallaxrealms/components-core/shadcn/checkbox';
-	import * as Dialog from '@parallaxrealms/components-core/shadcn/dialog';
+	import { Button, ToggleFlip } from '@parallaxrealms/pxp-components';
+	import { Input } from '@parallaxrealms/pxp-components/shadcn/input';
+	import { Label } from '@parallaxrealms/pxp-components/shadcn/label';
+	import { Checkbox } from '@parallaxrealms/pxp-components/shadcn/checkbox';
+	import * as Dialog from '@parallaxrealms/pxp-components/shadcn/dialog';
 	import * as Select from '$lib/components/shadcn/ui/select';
-	import { MediaSelector } from '@parallaxrealms/components-ecom';
-	import { EdraEditor, EdraToolBar } from '@parallaxrealms/components-edda';
+	import { MediaSelector } from '@parallaxrealms/pxp-components/ecom';
+	import { EdraEditor, EdraToolBar } from '@parallaxrealms/pxp-components/editor';
 	import {
 		ImageComparisonSliderNode,
 		ThumbnailGalleryNode,

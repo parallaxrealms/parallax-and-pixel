@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Button } from '@parallaxrealms/components-core';
-	import { Input } from '@parallaxrealms/components-core/shadcn/input';
-	import { Label } from '@parallaxrealms/components-core/shadcn/label';
-	import * as Dialog from '@parallaxrealms/components-core/shadcn/dialog';
+	import { Button } from '@parallaxrealms/pxp-components';
+	import { Input } from '@parallaxrealms/pxp-components/shadcn/input';
+	import { Label } from '@parallaxrealms/pxp-components/shadcn/label';
+	import * as Dialog from '@parallaxrealms/pxp-components/shadcn/dialog';
 	import { Loader2 } from 'lucide-svelte';
 	import {
 		PLATFORM_CONFIGS,

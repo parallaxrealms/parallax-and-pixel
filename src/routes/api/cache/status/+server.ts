@@ -1,4 +1,4 @@
-import { createCacheStatusHandler } from '@parallaxrealms/api-auth';
+import { createCacheStatusHandler } from '@parallaxrealms/pxp-utils/api-auth';
 import { PUBLIC_SITE_ID } from '$env/static/public';
 
 export const GET = createCacheStatusHandler({

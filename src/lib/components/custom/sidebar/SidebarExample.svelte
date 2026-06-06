@@ -1,9 +1,9 @@
 <!-- SidebarExample.svelte - Example usage of the new sidebar system -->
 <script lang="ts">
 	import Sidebar from './Sidebar.svelte';
-	import { sidebarActions, sidebarState } from '@parallaxrealms/stores-core';
-	import { createSidebarConfig, sidebarConfigs } from '@parallaxrealms/utils-core';
-	import { selectedTab } from '@parallaxrealms/stores-core';
+	import { sidebarActions, sidebarState } from '@parallaxrealms/pxp-utils/stores-core';
+	import { createSidebarConfig, sidebarConfigs } from '@parallaxrealms/pxp-utils/core';
+	import { selectedTab } from '@parallaxrealms/pxp-utils/stores-core';
 	import {
 		Home,
 		Users,

@@ -15,7 +15,7 @@
 </script>
 
 <script lang="ts">
-	import { Button, ToggleFlip } from '@parallaxrealms/components-core';
+	import { Button, ToggleFlip } from '@parallaxrealms/pxp-components';
 	import { browser } from '$app/environment';
 	import { invalidate } from '$app/navigation';
 	import { applyAction, enhance } from '$app/forms';

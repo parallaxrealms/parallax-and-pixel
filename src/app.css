@@ -2,16 +2,14 @@
 @import "tw-animate-css";
 
 /* Import component package CSS (theme tokens) */
-@import '@parallaxrealms/components-ecom/shadcn/css';
+@import '@parallaxrealms/pxp-components/ecom/shadcn/css';
 
 /* Tell Tailwind to scan source files */
 @source "./lib/**/*.{html,js,svelte,ts}";
 @source "./routes/**/*.{html,js,svelte,ts}";
 
 /* CRITICAL: Scan component packages for Tailwind classes */
-@source "node_modules/@parallaxrealms/components-core/src/**/*.{html,js,svelte,ts}";
-@source "node_modules/@parallaxrealms/components-ecom/src/**/*.{html,js,svelte,ts}";
-@source "node_modules/@parallaxrealms/components-edda/src/**/*.{html,js,svelte,ts}";
+@source "node_modules/@parallaxrealms/pxp-components/src/**/*.{html,js,svelte,ts}";
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';

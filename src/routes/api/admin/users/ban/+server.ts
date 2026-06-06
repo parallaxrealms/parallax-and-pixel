@@ -1,4 +1,4 @@
-import { handleAdminBanPost } from '@parallaxrealms/api-core';
+import { handleAdminBanPost } from '@parallaxrealms/pxp-utils/api-core';
 
 /**
  * POST /api/admin/users/ban

@@ -1,7 +1,7 @@
 import type { LayoutServerLoad } from './$types';
 import type { NavbarLink } from '$lib';
 import { PUBLIC_SITE_ID } from '$env/static/public';
-import { loadWithCacheFirst, EDDA_TABLE_CONFIGS } from '@parallaxrealms/api-auth';
+import { loadWithCacheFirst, EDDA_TABLE_CONFIGS } from '@parallaxrealms/pxp-utils/api-auth';
 
 export const load: LayoutServerLoad = async ({ locals: { getSession, supabase }, cookies }) => {
 	const session = await getSession();

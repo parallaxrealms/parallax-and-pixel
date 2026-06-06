@@ -1,7 +1,7 @@
 <!-- src/lib/components/custom/CatalogMockupGrids/UserTemplatesGrid.svelte -->
 <script lang="ts">
-	import { Card, Button } from '@parallaxrealms/components-core';
-	import type { DesignData, UserTemplate } from '@parallaxrealms/types-rune';
+	import { Card, Button } from '@parallaxrealms/pxp-components';
+	import type { DesignData, UserTemplate } from '@parallaxrealms/pxp-types/rune';
 
 	let { templates = [], onUseTemplate } = $props<{
 		templates: UserTemplate[];

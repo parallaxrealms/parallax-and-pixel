@@ -1,9 +1,9 @@
 <!-- src/lib/components/custom/CatalogMockupGrids/PublicCatalogGrid.svelte -->
 <script lang="ts">
-	import { Badge } from '@parallaxrealms/components-core';
-	import { CatalogMockupCard } from '@parallaxrealms/components-ecom';
-	import type { CatalogItem, CatalogVariant } from '@parallaxrealms/types-ecom';
-	import type { DesignData, UploadedDesign } from '@parallaxrealms/types-rune';
+	import { Badge } from '@parallaxrealms/pxp-components';
+	import { CatalogMockupCard } from '@parallaxrealms/pxp-components/ecom';
+	import type { CatalogItem, CatalogVariant } from '@parallaxrealms/pxp-types/ecom';
+	import type { DesignData, UploadedDesign } from '@parallaxrealms/pxp-types/rune';
 
 	type CatalogItemWithVariants = CatalogItem & { catalog_variants: CatalogVariant[] };
 

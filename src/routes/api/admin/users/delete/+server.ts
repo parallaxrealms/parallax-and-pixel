@@ -1,4 +1,4 @@
-import { handleAdminDeleteUser } from '@parallaxrealms/api-core';
+import { handleAdminDeleteUser } from '@parallaxrealms/pxp-utils/api-core';
 
 /**
  * DELETE /api/admin/users/delete

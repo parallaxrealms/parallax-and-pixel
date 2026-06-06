@@ -1,4 +1,4 @@
-import { handleAdminMfaDelete } from '@parallaxrealms/api-core';
+import { handleAdminMfaDelete } from '@parallaxrealms/pxp-utils/api-core';
 
 /**
  * DELETE /api/admin/users/mfa

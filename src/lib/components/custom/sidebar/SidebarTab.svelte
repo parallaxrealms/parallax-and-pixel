@@ -1,8 +1,8 @@
 <!-- SidebarTab.svelte - Real-time sidebar configuration editor -->
 <script lang="ts">
-	import { sidebarConfig, sidebarActions } from '@parallaxrealms/stores-core';
-	import { createSidebarConfig, sidebarConfigs } from '@parallaxrealms/utils-core';
-	import type { SidebarConfig } from '@parallaxrealms/types-core';
+	import { sidebarConfig, sidebarActions } from '@parallaxrealms/pxp-utils/stores-core';
+	import { createSidebarConfig, sidebarConfigs } from '@parallaxrealms/pxp-utils/core';
+	import type { SidebarConfig } from '@parallaxrealms/pxp-types/core';
 	import { onMount } from 'svelte';
 
 	// Local configuration state

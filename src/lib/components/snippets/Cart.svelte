@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { ShoppingCart, Plus, Minus, Trash2, X } from 'lucide-svelte';
-	import { Button, Badge } from '@parallaxrealms/components-core';
-	import { cart, cartPopoverOpen } from '@parallaxrealms/stores-ecom';
-	import type { CartItem } from '@parallaxrealms/types-ecom';
+	import { Button, Badge } from '@parallaxrealms/pxp-components';
+	import { cart, cartPopoverOpen } from '@parallaxrealms/pxp-utils/stores-ecom';
+	import type { CartItem } from '@parallaxrealms/pxp-types/ecom';
 	import { goto } from '$app/navigation';
 
 	let { class: className = '' } = $props<{

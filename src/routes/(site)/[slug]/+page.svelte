@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Page } from '$lib';
-	import { SEO } from '@parallaxrealms/components-core';
-	import { EdraEditor, sanitizeEditorContent } from '@parallaxrealms/components-edda';
+	import { SEO } from '@parallaxrealms/pxp-components';
+	import { EdraEditor, sanitizeEditorContent } from '@parallaxrealms/pxp-components/editor';
 	import { mode } from 'mode-watcher';
 	import Nav from '$lib/components/custom/nav/Nav.svelte';
 	import Footer from '$lib/components/snippets/Footer.svelte';

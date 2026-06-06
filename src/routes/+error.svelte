@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { SEO } from '@parallaxrealms/components-core';
+	import { SEO } from '@parallaxrealms/pxp-components';
 	import { MessageSquareWarning } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 

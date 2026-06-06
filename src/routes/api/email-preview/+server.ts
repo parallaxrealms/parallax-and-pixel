@@ -11,7 +11,12 @@
  * Used for: Transactional emails (welcome, reset password, order confirmation, etc.)
  */
 
-export { GET, POST } from '@parallaxrealms/api-auth/routes/api/email-preview/+server';
+// pxp-utils only exposes the api-auth barrel (no deep route subpaths in its exports map);
+// the barrel re-exports the same handlers as handleTemplatesGet/handleTemplatesPost.
+export {
+	handleTemplatesGet as GET,
+	handleTemplatesPost as POST
+} from '@parallaxrealms/pxp-utils/api-auth';
 
 /**
  * Usage Examples:

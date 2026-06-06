@@ -1,4 +1,4 @@
-import { handleAdminRolePost } from '@parallaxrealms/api-core';
+import { handleAdminRolePost } from '@parallaxrealms/pxp-utils/api-core';
 
 /**
  * POST /api/admin/users/role

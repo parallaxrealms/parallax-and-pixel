@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_SITE_ID } from '$env/static/public';
-	import { selectedTab } from '@parallaxrealms/stores-core';
-	import { dashboardReady } from '@parallaxrealms/stores-ecom';
+	import { selectedTab } from '@parallaxrealms/pxp-utils/stores-core';
+	import { dashboardReady } from '@parallaxrealms/pxp-utils/stores-ecom';
 	import HomeTab from '$lib/components/dashboardTabs/HomeTab.svelte';
 	import WebsiteTab from '$lib/components/dashboardTabs/WebsiteTab.svelte';
 	import MediaLibraryTab from '$lib/components/dashboardTabs/MediaLibraryTab.svelte';

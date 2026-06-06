@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import type { Page } from '$lib';
-	import { Button } from '@parallaxrealms/components-core';
-	import * as Card from '@parallaxrealms/components-core/shadcn/card';
-	import { Input } from '@parallaxrealms/components-core/shadcn/input';
-	import { Label } from '@parallaxrealms/components-core/shadcn/label';
-	import * as Dialog from '@parallaxrealms/components-core/shadcn/dialog';
+	import { Button } from '@parallaxrealms/pxp-components';
+	import * as Card from '@parallaxrealms/pxp-components/shadcn/card';
+	import { Input } from '@parallaxrealms/pxp-components/shadcn/input';
+	import { Label } from '@parallaxrealms/pxp-components/shadcn/label';
+	import * as Dialog from '@parallaxrealms/pxp-components/shadcn/dialog';
 	import DiamondSpinner from '$lib/components/custom/loader/DiamondSpinner.svelte';
 	// No icons - text-only design
 	import { goto } from '$app/navigation';

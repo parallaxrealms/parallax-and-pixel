@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Page } from '$lib';
-	import { SEO } from '@parallaxrealms/components-core';
+	import { SEO } from '@parallaxrealms/pxp-components';
 	import JsonLd from '$lib/components/custom/seo/JsonLd.svelte';
 	import Nav from '$lib/components/custom/nav/Nav.svelte';
 	import Footer from '$lib/components/snippets/Footer.svelte';
@@ -101,10 +101,16 @@
 		<ModelScene config={HERO_SCENE_CONFIG} />
 	</div>
 
+	<!-- Dim tint overlay - quiet vignette so content reads against the scene -->
+	<div
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-0 z-[6] bg-[radial-gradient(ellipse_at_center,rgba(2,6,23,0.35)_0%,rgba(2,6,23,0.6)_60%,rgba(2,6,23,0.85)_100%)]"
+	></div>
+
 	<!-- Scanline overlay -->
 	<div
 		aria-hidden="true"
-		class="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)] opacity-30"
+		class="pointer-events-none absolute inset-0 z-[7] bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.18)_2px,rgba(0,0,0,0.18)_4px)] opacity-40"
 	></div>
 
 	<div class="relative z-10 flex min-h-screen items-center px-6">

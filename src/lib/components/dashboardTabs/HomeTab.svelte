@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { browser } from '$app/environment';
-	import { Button, Card, Badge } from '@parallaxrealms/components-core';
-	import { selectedTab } from '@parallaxrealms/stores-core';
+	import { Button, Card, Badge } from '@parallaxrealms/pxp-components';
+	import { selectedTab } from '@parallaxrealms/pxp-utils/stores-core';
 	import { goto } from '$app/navigation';
 	import { navigating } from '$app/stores';
 	import DiamondSpinner from '$lib/components/custom/loader/DiamondSpinner.svelte';

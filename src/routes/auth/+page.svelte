@@ -3,10 +3,10 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { loginSchema, magicLinkSchema } from '@parallaxrealms/schemas';
+	import { loginSchema, magicLinkSchema } from '@parallaxrealms/pxp-types/schemas';
 	import { Button } from '$lib/components/shadcn/ui/button/index.js';
 	import { Input } from '$lib/components/shadcn/ui/input';
-	import { AnimatedButton, GradientText, PasswordInput } from '@parallaxrealms/components-core';
+	import { AnimatedButton, GradientText, PasswordInput } from '@parallaxrealms/pxp-components';
 
 	let { data }: { data: PageData } = $props();
 

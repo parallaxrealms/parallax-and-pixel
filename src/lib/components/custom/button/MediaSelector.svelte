@@ -23,7 +23,7 @@
 		Trash2,
 		Check
 	} from 'lucide-svelte';
-	import type { MediaRow, MediaItem } from '@parallaxrealms/types-auth';
+	import type { MediaRow, MediaItem } from '@parallaxrealms/pxp-types/auth';
 	import DiamondSpinner from '$lib/components/custom/loader/DiamondSpinner.svelte';
 
 	let { supabase } = $props<{ supabase: SupabaseClient }>();

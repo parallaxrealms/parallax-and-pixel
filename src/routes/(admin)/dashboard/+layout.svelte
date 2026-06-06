@@ -2,14 +2,14 @@
 <script lang="ts">
 	import '../../../app.css';
 	import { browser } from '$app/environment';
-	import { selectedTab } from '@parallaxrealms/stores-core';
-	import { hydrateDashboard, isAdmin as isAdminStore } from '@parallaxrealms/stores-ecom';
+	import { selectedTab } from '@parallaxrealms/pxp-utils/stores-core';
+	import { hydrateDashboard, isAdmin as isAdminStore } from '@parallaxrealms/pxp-utils/stores-ecom';
 	import { onMount } from 'svelte';
 	import Sidebar from '$lib/components/custom/sidebar/Sidebar.svelte';
 	import DashboardNav from '$lib/components/custom/nav/DashboardNav.svelte';
-	import { Button } from '@parallaxrealms/components-core';
+	import { Button } from '@parallaxrealms/pxp-components';
 	import { Home, ArrowLeft, FileText, Image, Share2 } from 'lucide-svelte';
-	import { createSidebarConfig } from '@parallaxrealms/utils-core';
+	import { createSidebarConfig } from '@parallaxrealms/pxp-utils/core';
 
 	let { children, data } = $props();
 

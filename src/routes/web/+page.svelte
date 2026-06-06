@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SEO } from '@parallaxrealms/components-core';
+	import { SEO } from '@parallaxrealms/pxp-components';
 	import JsonLd from '$lib/components/custom/seo/JsonLd.svelte';
 	import { getAllProjects } from '$lib/data/projects';
 	import ProjectShowcaseRow from '$lib/components/custom/ProjectShowcaseRow.svelte';

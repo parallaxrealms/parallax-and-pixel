@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { ChevronDown, ChevronRight } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
-	import type { SidebarItem as SidebarItemType, SidebarConfig } from '@parallaxrealms/types-core';
+	import type { SidebarItem as SidebarItemType, SidebarConfig } from '@parallaxrealms/pxp-types/core';
 
 	let {
 		item,

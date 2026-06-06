@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { SupabaseClient, User } from '@supabase/supabase-js';
-	import { Button } from '@parallaxrealms/components-core';
-	import { Input } from '@parallaxrealms/components-core/shadcn/input';
-	import { Label } from '@parallaxrealms/components-core/shadcn/label';
-	import { Checkbox } from '@parallaxrealms/components-core/shadcn/checkbox';
-	import * as Dialog from '@parallaxrealms/components-core/shadcn/dialog';
-	import { MediaSelector } from '@parallaxrealms/components-ecom';
+	import { Button } from '@parallaxrealms/pxp-components';
+	import { Input } from '@parallaxrealms/pxp-components/shadcn/input';
+	import { Label } from '@parallaxrealms/pxp-components/shadcn/label';
+	import { Checkbox } from '@parallaxrealms/pxp-components/shadcn/checkbox';
+	import * as Dialog from '@parallaxrealms/pxp-components/shadcn/dialog';
+	import { MediaSelector } from '@parallaxrealms/pxp-components/ecom';
 	import DiamondSpinner from '$lib/components/custom/loader/DiamondSpinner.svelte';
 	import { Loader2 } from 'lucide-svelte';
 	import {

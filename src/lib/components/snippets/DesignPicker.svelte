@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { Upload, X, Trash2, Save, LogIn } from 'lucide-svelte';
 	import { browser } from '$app/environment';
-	import { Card, Button, Badge } from '@parallaxrealms/components-core';
+	import { Card, Button, Badge } from '@parallaxrealms/pxp-components';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import type { UploadedDesign } from '@parallaxrealms/types-rune';
+	import type { UploadedDesign } from '@parallaxrealms/pxp-types/rune';
 	import { get } from 'svelte/store';
-	import { customProductStore } from '@parallaxrealms/stores-ecom';
+	import { customProductStore } from '@parallaxrealms/pxp-utils/stores-ecom';
 
 	type UploadHandler =
 		| ((file: File) => void | Promise<void>)

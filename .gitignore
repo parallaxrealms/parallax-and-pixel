@@ -38,3 +38,4 @@ pnpm-debug.log*
 .claude
 ref
 .mcp.json
+CLAUDE.md

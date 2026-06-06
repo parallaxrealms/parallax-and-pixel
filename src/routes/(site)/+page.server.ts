@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import type { Page } from '@parallaxrealms/types-edda';
+import type { Page } from '@parallaxrealms/pxp-types/edda';
 
 export const load: PageServerLoad = async ({ locals, parent }) => {
 	// Get parent layout data (includes navbarLinks, website)

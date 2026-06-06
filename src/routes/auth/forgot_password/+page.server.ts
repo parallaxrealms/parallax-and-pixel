@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate, message } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { updatePasswordSchema } from '@parallaxrealms/schemas';
+import { updatePasswordSchema } from '@parallaxrealms/pxp-types/schemas';
 
 export const load: PageServerLoad = async () => {
 const form = await superValidate(zod(updatePasswordSchema));

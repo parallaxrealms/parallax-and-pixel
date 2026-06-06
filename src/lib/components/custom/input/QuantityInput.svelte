@@ -1,7 +1,7 @@
 <!-- src/lib/components/custom/QuantityInput.svelte -->
 <script lang="ts">
 	import { Minus, Plus } from 'lucide-svelte';
-	import { cn } from '@parallaxrealms/utils-core';
+	import { cn } from '@parallaxrealms/pxp-utils/core';
 
 	interface Props {
 		value: number;

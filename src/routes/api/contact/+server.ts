@@ -1,5 +1,5 @@
 // src/routes/api/contact/+server.ts
-import { createContactHandler } from '@parallaxrealms/api-core';
+import { createContactHandler } from '@parallaxrealms/pxp-utils/api-core';
 import { CONTACT_EMAIL, FROM_EMAIL, RESEND_API_KEY } from '$env/static/private';
 
 /**

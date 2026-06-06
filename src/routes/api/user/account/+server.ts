@@ -2,7 +2,7 @@
 import {
   createAccountDeletionHandler,
   createAccountDeactivationHandler
-} from '@parallaxrealms/api-ecom';
+} from '@parallaxrealms/pxp-utils/api-ecom';
 
 /**
  * Account Management API endpoint using the configurable handler factories.

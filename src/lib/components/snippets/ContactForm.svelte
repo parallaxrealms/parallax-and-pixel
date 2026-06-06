@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { contactSchema } from '@parallaxrealms/schemas';
+	import { contactSchema } from '@parallaxrealms/pxp-types/schemas';
 	import { Label } from '$lib/components/shadcn/ui/label';
 	import { Button } from '$lib/components/shadcn/ui/button';
 	import { Input } from '$lib/components/shadcn/ui/input';
 	import { Textarea } from '$lib/components/shadcn/ui/textarea';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import type { ContactFormData } from '@parallaxrealms/schemas';
-	import { AnimatedButton, GradientText } from '@parallaxrealms/components-core';
+	import type { ContactFormData } from '@parallaxrealms/pxp-types/schemas';
+	import { AnimatedButton, GradientText } from '@parallaxrealms/pxp-components';
 
 	let {
 		data

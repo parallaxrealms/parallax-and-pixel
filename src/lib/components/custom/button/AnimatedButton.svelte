@@ -34,7 +34,7 @@
 </script>
 
 <script lang="ts">
-	import { cn } from '@parallaxrealms/utils-core';
+	import { cn } from '@parallaxrealms/pxp-utils/core';
 
 	let {
 		gradient = '',

@@ -1,4 +1,4 @@
 // Re-export utils
-export * from '@parallaxrealms/utils-core';
-export * from '@parallaxrealms/utils-ecom';
-export * from '@parallaxrealms/utils-rune';
+export * from '@parallaxrealms/pxp-utils/core';
+export * from '@parallaxrealms/pxp-utils/ecom';
+export * from '@parallaxrealms/pxp-utils/rune';

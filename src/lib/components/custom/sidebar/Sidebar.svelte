@@ -1,10 +1,10 @@
 <!-- Sidebar.svelte - Clean, configurable sidebar component -->
 <script lang="ts">
-	import { sidebarState, sidebarConfig, sidebarActions } from '@parallaxrealms/stores-core';
-	import { selectedTab } from '@parallaxrealms/stores-core';
+	import { sidebarState, sidebarConfig, sidebarActions } from '@parallaxrealms/pxp-utils/stores-core';
+	import { selectedTab } from '@parallaxrealms/pxp-utils/stores-core';
 	import SidebarItem from './SidebarItem.svelte';
-	import type { SidebarItem as SidebarItemType, SidebarConfig } from '@parallaxrealms/types-core';
-	import type { UserProfile } from '@parallaxrealms/types-auth';
+	import type { SidebarItem as SidebarItemType, SidebarConfig } from '@parallaxrealms/pxp-types/core';
+	import type { UserProfile } from '@parallaxrealms/pxp-types/auth';
 	import { ArrowLeft, User, Settings, ChevronDown, ChevronRight } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';

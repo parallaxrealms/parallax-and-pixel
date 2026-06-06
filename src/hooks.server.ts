@@ -5,7 +5,7 @@ import { redirect, type Handle } from '@sveltejs/kit'
 import { JWT_SECRET } from '$env/static/private'
 import { createRemoteJWKSet, jwtVerify } from 'jose'
 import type { Session } from '@supabase/supabase-js'
-import type { SupabaseJwt } from '@parallaxrealms/types-auth'
+import type { SupabaseJwt } from '@parallaxrealms/pxp-types/auth'
 
 // Initialize cron jobs (social post scheduler)
 initCronJobs()
