@@ -662,10 +662,10 @@ export function createModelScene(
 		modelGroup.rotation.set(m.rotationX, m.rotationY + spinAngle, m.rotationZ);
 		modelGroup.scale.setScalar(m.scale);
 
-		// Fallback shell slowly counter-rotates against the core's spin.
+		// Fallback shell very slowly counter-rotates against the core's spin.
 		if (fallbackShell && fallbackRoot?.parent) {
-			fallbackShell.rotation.y = -elapsed * 0.21;
-			fallbackShell.rotation.x = elapsed * 0.13;
+			fallbackShell.rotation.y = -elapsed * 0.04;
+			fallbackShell.rotation.x = elapsed * 0.025;
 		}
 
 		// Fresnel drift: slow aqua → mint → aqua sweep.

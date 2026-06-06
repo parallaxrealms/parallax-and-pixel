@@ -20,11 +20,16 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	const searchQuery = url.searchParams.get('q') || '';
 	const categoryFilter = url.searchParams.get('category') || '';
 
+	// Blog posts are page_type = 'blog_post' or unset; page_type = 'page' is a
+	// CMS page served at /(site)/[slug] and must not appear in blog listings.
+	const BLOG_FILTER = 'page_options->>page_type.neq.page,page_options->>page_type.is.null';
+
 	// Fetch all distinct categories for the filter
 	const { data: categoriesData } = await locals.supabase
 		.from('pages')
 		.select('category')
 		.eq('status', 'published')
+		.or(BLOG_FILTER)
 		.not('category', 'is', null);
 
 	// Extract unique categories
@@ -39,6 +44,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		.from('pages')
 		.select('id, title, slug, meta_description, banner_image_url, created_at, updated_at, category, content')
 		.eq('status', 'published')
+		.or(BLOG_FILTER)
 		.order('created_at', { ascending: false });
 
 	// Add search filter if query provided
@@ -69,6 +75,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		.from('pages')
 		.select('id, title, slug, created_at')
 		.eq('status', 'published')
+		.or(BLOG_FILTER)
 		.order('created_at', { ascending: false })
 		.limit(5);
 
