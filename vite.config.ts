@@ -31,7 +31,11 @@ export default defineConfig(async (): Promise<UserConfig> => {
 				'vaul-svelte',
 				'bits-ui'
 			],
-			external: [/^@opentelemetry\//, '@parallaxrealms/pxp-otel']
+			// pxp-otel must stay external (OTel's CJS loaders break when inlined
+			// into the SSR bundle). @opentelemetry/* needs no entry: anything not
+			// matched by noExternal is external by default, and vite's ssr.external
+			// type only accepts strings anyway.
+			external: ['@parallaxrealms/pxp-otel']
 		},
 		build: {
 			rollupOptions: { external: [] }
