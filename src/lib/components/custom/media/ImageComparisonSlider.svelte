@@ -130,7 +130,7 @@
 
 	<!-- Before label -->
 	<div
-		class="pointer-events-none absolute top-3 left-3 z-10 px-2 py-1 font-terminal text-xs text-slate-200"
+		class="pointer-events-none absolute top-3 left-3 z-10 px-2 py-1 text-xs text-slate-200"
 		style="background-color: rgba(2, 6, 23, 0.7);"
 	>
 		{beforeLabel}
@@ -138,7 +138,7 @@
 
 	<!-- After label -->
 	<div
-		class="pointer-events-none absolute top-3 right-3 z-10 px-2 py-1 font-terminal text-xs text-slate-200"
+		class="pointer-events-none absolute top-3 right-3 z-10 px-2 py-1 text-xs text-slate-200"
 		style="background-color: rgba(2, 6, 23, 0.7);"
 	>
 		{afterLabel}

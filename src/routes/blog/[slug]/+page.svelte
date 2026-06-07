@@ -159,11 +159,11 @@
 			<div class="mb-6 flex items-center justify-center gap-4">
 				<a
 					href="/blog"
-					class="font-terminal text-sm text-slate-400 transition-colors hover:text-accent-primary"
+					class="text-sm text-slate-300 transition-colors hover:text-accent-primary"
 				>
 					&larr; Back to Blog
 				</a>
-				<span class="text-slate-600">•</span>
+				<span class="text-slate-500">•</span>
 				<img
 					src="/preview/self_circle.webp"
 					alt="Parallax"
@@ -172,11 +172,11 @@
 					class="h-16 w-16 rounded-full object-cover"
 				/>
 				<div class="text-left">
-					<p class="font-terminal text-sm text-slate-400">Written by</p>
-					<p class="font-terminal text-slate-200">Parallax</p>
+					<p class="text-sm text-slate-300">Written by</p>
+					<p class="text-slate-200">Parallax</p>
 				</div>
-				<span class="text-slate-600">•</span>
-				<span class="font-terminal text-sm text-slate-500">
+				<span class="text-slate-500">•</span>
+				<span class="text-sm text-slate-400">
 					{formatDate(post.created_at)}
 				</span>
 			</div>
@@ -186,7 +186,7 @@
 				<div
 					class="ticker-container mb-6 overflow-hidden border-y border-slate-800 py-3"
 				>
-					<span class="ticker-text font-terminal text-sm text-slate-400">
+					<span class="ticker-text text-sm text-slate-300">
 						{scrollingText}
 					</span>
 				</div>
@@ -200,7 +200,7 @@
 			</h1>
 
 			{#if post.updated_at && post.updated_at !== post.created_at}
-				<p class="font-terminal text-xs text-slate-500">
+				<p class="text-xs text-slate-400">
 					Updated {formatDate(post.updated_at)}
 				</p>
 			{/if}
@@ -262,11 +262,11 @@
 								/>
 							{/if}
 							<h3
-								class="font-terminal mb-1 text-sm font-semibold text-slate-100 transition-colors group-hover:text-accent-primary"
+								class="mb-1 text-sm font-semibold text-slate-100 transition-colors group-hover:text-accent-primary"
 							>
 								{related.title}
 							</h3>
-							<p class="text-xs text-slate-500">
+							<p class="text-xs text-slate-400">
 								{formatDate(related.created_at)}
 							</p>
 						</a>

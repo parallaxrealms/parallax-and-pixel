@@ -20,151 +20,69 @@
 
 <SEO title="Error {statusCode}" />
 
-<div class="error-page">
-	<div class="error-background"></div>
-	<div class="error-content">
-		<div class="error-container">
-			<h1 class="error-code">
-				{statusCode}
-			</h1>
+<div class="w-full max-w-md">
+	<!-- Terminal panel (About-terminal CRT frame, translucent) -->
+	<div
+		class="w-full border border-cyan-800/40 bg-slate-900/60 p-6 text-center backdrop-blur-sm shadow-[inset_0_0_60px_rgba(0,165,207,0.04),0_0_30px_rgba(0,165,207,0.08)] sm:p-8"
+	>
+		<!-- Prompt -->
+		<div class="mb-6 text-left font-terminal text-sm text-accent-highlight">
+			<span class="text-slate-500">parallax@dev:~$</span> auth --status<span class="cursor-blink">_</span>
+		</div>
 
-			<h2 class="error-title">
-				{#if statusCode === 404}
-					Page Not Found
-				{:else if statusCode === 403}
-					Access Denied
-				{:else if statusCode === 401}
-					Unauthorized
-				{:else if statusCode === 500}
-					Server Error
-				{:else}
-					Something Went Wrong
-				{/if}
-			</h2>
+		<h1 class="mb-2 font-terminal text-6xl font-bold text-accent-primary sm:text-7xl">
+			{statusCode}
+		</h1>
 
-			<div class="error-message">
-				<p>{errorMessage}</p>
-			</div>
+		<h2 class="mb-6 text-2xl font-bold text-slate-100">
+			{#if statusCode === 404}
+				Page Not Found
+			{:else if statusCode === 403}
+				Access Denied
+			{:else if statusCode === 401}
+				Unauthorized
+			{:else if statusCode === 500}
+				Server Error
+			{:else}
+				Something Went Wrong
+			{/if}
+		</h2>
 
-			<div class="error-actions">
-				<button class="error-btn" onclick={goBack}>
-					Go Back
-				</button>
+		<div class="mb-8 border border-red-500/30 bg-red-500/10 p-4 font-terminal text-sm text-slate-400">
+			<p>{errorMessage}</p>
+		</div>
 
-				<button class="error-btn" onclick={goHome}>
-					Go Home
-				</button>
-			</div>
+		<div class="flex flex-col justify-center gap-4 sm:flex-row">
+			<button
+				class="w-full cursor-pointer border border-accent-primary bg-transparent px-6 py-3 font-terminal text-sm font-bold tracking-wide text-accent-primary transition-all hover:bg-accent-primary hover:text-slate-950 sm:w-auto"
+				onclick={goBack}
+			>
+				Go Back
+			</button>
+
+			<button
+				class="w-full cursor-pointer border border-accent-primary bg-transparent px-6 py-3 font-terminal text-sm font-bold tracking-wide text-accent-primary transition-all hover:bg-accent-primary hover:text-slate-950 sm:w-auto"
+				onclick={goHome}
+			>
+				Go Home
+			</button>
+		</div>
+
+		<!-- Footer prompt -->
+		<div class="mt-8 text-left font-terminal text-sm text-slate-500">
+			parallax@dev:~$ <span class="cursor-blink text-accent-highlight">_</span>
 		</div>
 	</div>
 </div>
 
 <style>
-	.error-page {
-		position: relative;
-		min-height: 100vh;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: #020617; /* slate-950 */
+	.cursor-blink {
+		animation: blink 1s step-end infinite;
 	}
 
-	.error-background {
-		position: absolute;
-		inset: 0;
-		background:
-			radial-gradient(circle at 50% 0%, rgba(0, 165, 207, 0.15) 0%, transparent 50%),
-			radial-gradient(circle at 0% 50%, rgba(37, 161, 142, 0.1) 0%, transparent 50%),
-			radial-gradient(circle at 100% 50%, rgba(159, 255, 203, 0.1) 0%, transparent 50%);
-		opacity: 0.6;
-	}
-
-	.error-content {
-		position: relative;
-		z-index: 10;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 1.5rem;
-	}
-
-	:global(.error-container) {
-		width: 100%;
-		max-width: 32rem;
-		background-color: #1e293b; /* slate-800 */
-		border: 1px solid #334155; /* slate-700 */
-		padding: 2rem;
-		text-align: center;
-	}
-
-	.error-code {
-		margin-bottom: 0.5rem;
-		background: linear-gradient(to right, #00a5cf, #9fffcb, #25a18e);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		font-size: 4rem;
-		font-weight: 700;
-		font-family: 'Space Mono', monospace;
-	}
-
-	.error-title {
-		margin-bottom: 1.5rem;
-		font-size: 1.5rem;
-		font-weight: 600;
-		color: #f1f5f9;
-		font-family: 'Space Mono', monospace;
-	}
-
-	.error-message {
-		margin-bottom: 2rem;
-		padding: 1rem;
-		background-color: rgba(239, 68, 68, 0.1);
-		border: 1px solid rgba(239, 68, 68, 0.3);
-		color: #94a3b8;
-		font-size: 0.875rem;
-	}
-
-	.error-actions {
-		display: flex;
-		gap: 1rem;
-		justify-content: center;
-	}
-
-	.error-btn {
-		padding: 0.75rem 1.5rem;
-		background-color: transparent;
-		border: 1px solid #00a5cf;
-		color: #00a5cf;
-		font-family: 'Space Mono', monospace;
-		font-size: 0.875rem;
-		font-weight: 600;
-		letter-spacing: 0.05em;
-		transition: all 200ms;
-		cursor: pointer;
-	}
-
-	.error-btn:hover {
-		background-color: #00a5cf;
-		color: #020617;
-	}
-
-	@media (max-width: 640px) {
-		.error-code {
-			font-size: 3rem;
-		}
-
-		.error-title {
-			font-size: 1.25rem;
-		}
-
-		.error-actions {
-			flex-direction: column;
-		}
-
-		.error-btn {
-			width: 100%;
+	@keyframes blink {
+		50% {
+			opacity: 0;
 		}
 	}
 </style>

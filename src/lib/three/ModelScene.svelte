@@ -4,8 +4,12 @@
 	 * engine (./engine.ts). The engine module is dynamically imported in
 	 * onMount so no three.js code ever evaluates during SSR.
 	 *
-	 * The canvas fills its container absolutely and shows the procedural
-	 * fallback immediately — no fade-in, no loading state.
+	 * Boot is DEFERRED to requestIdleCallback (setTimeout(200) fallback) so
+	 * the hero title/text/LCP paint before any three.js work starts. The
+	 * canvas itself starts at opacity 0 and fades in over ~1.2s ease-out
+	 * (0ms under prefers-reduced-motion) once the engine's `ready` resolves.
+	 * ONLY the canvas fades — the CSS overlay stack below renders instantly,
+	 * so the hero never looks empty.
 	 *
 	 * config.overlay renders a pure-CSS DOM stack above the canvas:
 	 * tint/gradient → corner vignette → scanlines. The engine never sees it.
@@ -19,25 +23,52 @@
 	let canvas: HTMLCanvasElement | null = $state(null);
 	let handle: ModelSceneHandle | null = $state(null);
 
+	// Canvas fade-in: flips once the engine reports ready.
+	let canvasVisible = $state(false);
+	let fadeMs = $state(1200);
+
 	onMount(() => {
 		if (!browser || !canvas) return;
 
 		let destroyed = false;
 		let local: ModelSceneHandle | null = null;
 
-		(async () => {
+		if (
+			typeof window.matchMedia === 'function' &&
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		) {
+			fadeMs = 0;
+		}
+
+		async function boot() {
+			if (destroyed || !canvas) return;
 			const { createModelScene } = await import('./engine');
 			if (destroyed || !canvas) return;
 			local = createModelScene(canvas, config);
 			handle = local;
 			onHandle?.(local);
 			local.ready.then(() => {
-				if (!destroyed) onReady?.();
+				if (destroyed) return;
+				canvasVisible = true;
+				onReady?.();
 			});
-		})();
+		}
+
+		// Defer the heavy import + engine creation until the main thread is
+		// idle so the title/text (LCP) paint first. The timeout keeps a
+		// perpetually-busy page from never booting.
+		let cancelBoot: () => void;
+		if (typeof window.requestIdleCallback === 'function') {
+			const id = window.requestIdleCallback(() => void boot(), { timeout: 1500 });
+			cancelBoot = () => window.cancelIdleCallback(id);
+		} else {
+			const id = window.setTimeout(() => void boot(), 200);
+			cancelBoot = () => window.clearTimeout(id);
+		}
 
 		return () => {
 			destroyed = true;
+			cancelBoot();
 			handle = null;
 			local?.dispose();
 		};
@@ -95,7 +126,11 @@
 </script>
 
 <div class="pointer-events-none absolute inset-0 overflow-hidden {className}">
-	<canvas bind:this={canvas} class="absolute inset-0 block h-full w-full"></canvas>
+	<canvas
+		bind:this={canvas}
+		class="absolute inset-0 block h-full w-full"
+		style="opacity: {canvasVisible ? 1 : 0}; transition: opacity {fadeMs}ms ease-out;"
+	></canvas>
 
 	{#if tintStyle}
 		<div aria-hidden="true" class="absolute inset-0" style={tintStyle}></div>

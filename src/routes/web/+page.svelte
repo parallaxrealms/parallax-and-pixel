@@ -41,12 +41,12 @@
 		<div class="relative px-5 py-5 sm:px-8 lg:px-10 lg:py-6">
 			<a
 				href="/"
-				class="font-terminal mb-3 inline-block text-sm text-slate-500 transition-colors hover:text-accent-primary"
+				class="mb-3 inline-block text-sm text-slate-400 transition-colors hover:text-accent-primary"
 			>
 				../ back to home
 			</a>
 
-			<p class="font-terminal mb-1.5 text-xs tracking-[0.35em] text-accent-primary uppercase">
+			<p class="mb-1.5 text-xs tracking-[0.35em] text-accent-primary uppercase">
 				portfolio // web index
 			</p>
 
@@ -54,13 +54,13 @@
 				Web <span class="text-accent-primary">Projects</span>
 			</h1>
 
-			<p class="text-lg leading-relaxed text-slate-400">
+			<p class="text-lg leading-relaxed text-slate-300">
 				Full-stack web applications, custom e-commerce platforms, APIs, and
 				interactive experiences. Built with modern frameworks and best
 				practices.
 			</p>
 
-			<p class="font-terminal mt-3 text-xs tracking-[0.25em] text-slate-600 uppercase">
+			<p class="mt-3 text-xs tracking-[0.25em] text-slate-500 uppercase">
 				{projects.length} projects indexed
 			</p>
 		</div>
@@ -70,7 +70,7 @@
 	<main>
 		{#if projects.length === 0}
 			<div class="py-24 text-center">
-				<p class="font-terminal text-lg text-slate-400">
+				<p class="text-lg text-slate-300">
 					Projects coming soon!
 				</p>
 			</div>
@@ -80,7 +80,7 @@
 			{/each}
 
 			<div class="px-6 py-12 text-center">
-				<span class="font-terminal text-xs tracking-[0.35em] text-slate-600 uppercase">
+				<span class="text-xs tracking-[0.35em] text-slate-500 uppercase">
 					// end of index
 				</span>
 			</div>

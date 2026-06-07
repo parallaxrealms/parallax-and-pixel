@@ -50,8 +50,26 @@
 	let chromeHidden = $state(false);
 
 	function onKeydown(e: KeyboardEvent) {
-		if (e.key !== 'h' && e.key !== 'H') return;
 		const t = e.target as HTMLElement | null;
+
+		// Undo / redo — Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y (metaKey too). Allowed
+		// while focus sits on range/checkbox/color inputs; skipped only in
+		// text-entry contexts so native field undo keeps working.
+		if (
+			(e.ctrlKey || e.metaKey) &&
+			(e.key === 'z' || e.key === 'Z' || e.key === 'y' || e.key === 'Y')
+		) {
+			if (isTextEntryTarget(t)) return;
+			e.preventDefault();
+			if (e.key === 'y' || e.key === 'Y' || e.shiftKey) {
+				redo();
+			} else {
+				undo();
+			}
+			return;
+		}
+
+		if (e.key !== 'h' && e.key !== 'H') return;
 		if (t) {
 			const tag = t.tagName;
 			if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable) {
@@ -240,10 +258,100 @@
 		customPath = config.model.path ?? '';
 	}
 
+	// ─── Undo / redo history ─────────────────────────────────────────────────
+	// Snapshot stack of serialized configs + pointer. A $effect watches
+	// JSON.stringify(config) (which tracks every nested knob) and DEBOUNCES
+	// the push so one slider drag lands as ONE entry, not 50. There is no
+	// guard flag: applying a snapshot sets config exactly equal to
+	// history[historyIndex], so the "differs from the current entry" check
+	// makes the capture effect a no-op by construction (data-driven guard).
+	const HISTORY_MAX = 100;
+	const HISTORY_DEBOUNCE_MS = 400;
+
+	// Seeded with the initial config so the very first edit is undoable
+	// back to the starting state. Capturing the INITIAL value is the point
+	// here — later config changes flow in via the capture $effect below.
+	// svelte-ignore state_referenced_locally
+	let history = $state<string[]>([JSON.stringify(config)]);
+	let historyIndex = $state(0);
+	let historyTimer: ReturnType<typeof setTimeout> | null = null;
+
+	let canUndo = $derived(historyIndex > 0);
+	let canRedo = $derived(historyIndex < history.length - 1);
+
+	$effect(() => {
+		const snapshot = JSON.stringify(config);
+		if (snapshot === history[historyIndex]) return;
+		if (historyTimer !== null) clearTimeout(historyTimer);
+		historyTimer = setTimeout(() => {
+			historyTimer = null;
+			commitHistory(snapshot);
+		}, HISTORY_DEBOUNCE_MS);
+	});
+
+	function commitHistory(snapshot: string) {
+		if (snapshot === history[historyIndex]) return;
+		// Pushing while mid-stack truncates the redo tail (standard behavior).
+		const next = history.slice(0, historyIndex + 1);
+		next.push(snapshot);
+		if (next.length > HISTORY_MAX) next.splice(0, next.length - HISTORY_MAX);
+		history = next;
+		historyIndex = next.length - 1;
+	}
+
+	// Commit any pending debounced edit NOW so a late timer can never fire
+	// after undo/redo and corrupt the stack — and so undo steps back to the
+	// state immediately before the in-flight edit.
+	function flushPendingHistory() {
+		if (historyTimer === null) return;
+		clearTimeout(historyTimer);
+		historyTimer = null;
+		commitHistory(JSON.stringify(config));
+	}
+
+	function applyHistoryEntry(index: number) {
+		const snapshot = history[index];
+		if (snapshot === undefined) return;
+		historyIndex = index;
+		// normalizeConfig keeps the lab's invariant (shape / overlay / shell
+		// always present) and deep-clones, so knob edits never mutate the
+		// stack entry. Sync customPath the same way loadPreset does.
+		config = normalizeConfig(JSON.parse(snapshot));
+		customMode = false;
+		customPath = config.model.path ?? '';
+	}
+
+	function undo() {
+		flushPendingHistory();
+		if (historyIndex > 0) applyHistoryEntry(historyIndex - 1);
+	}
+
+	function redo() {
+		flushPendingHistory(); // an uncommitted edit kills the redo tail
+		if (historyIndex < history.length - 1) applyHistoryEntry(historyIndex + 1);
+	}
+
+	// Text-entry contexts keep their native undo; range/checkbox/color
+	// inputs are fine to intercept for scene undo/redo.
+	function isTextEntryTarget(t: HTMLElement | null): boolean {
+		if (!t) return false;
+		if (t.isContentEditable) return true;
+		const tag = t.tagName;
+		if (tag === 'TEXTAREA' || tag === 'SELECT') return true;
+		if (tag === 'INPUT') {
+			const type = (t as HTMLInputElement).type;
+			return type !== 'range' && type !== 'checkbox' && type !== 'color';
+		}
+		return false;
+	}
+
 	onMount(() => {
 		loadPresetsFromStorage();
 		const loadFallback = setTimeout(() => (sceneLoading = false), 12000);
-		return () => clearTimeout(loadFallback);
+		return () => {
+			clearTimeout(loadFallback);
+			if (historyTimer !== null) clearTimeout(historyTimer);
+		};
 	});
 </script>
 
@@ -304,6 +412,25 @@
 	<aside class="lab-panel" aria-label="Scene Lab controls">
 		<header class="panel-head">
 			<h1 class="title font-display">Scene Lab</h1>
+			<div class="hist-controls">
+				<button
+					type="button"
+					class="hist-btn font-terminal"
+					onclick={undo}
+					disabled={!canUndo}
+					title="Undo (Ctrl+Z)"
+					aria-label="Undo (Ctrl+Z)">↩</button
+				>
+				<span class="hist-counter">{historyIndex + 1}/{history.length}</span>
+				<button
+					type="button"
+					class="hist-btn font-terminal"
+					onclick={redo}
+					disabled={!canRedo}
+					title="Redo (Ctrl+Shift+Z)"
+					aria-label="Redo (Ctrl+Shift+Z)">↪</button
+				>
+			</div>
 			<div class="hint font-terminal">press <kbd>H</kbd> to hide</div>
 		</header>
 
@@ -1096,6 +1223,48 @@
 		padding: 0.05rem 0.35rem;
 		font-family: inherit;
 		color: #00a5cf;
+	}
+
+	/* ── Undo/redo history controls (panel header) ── */
+	.hist-controls {
+		display: flex;
+		align-items: center;
+		align-self: center;
+		gap: 0.3rem;
+	}
+	.hist-btn {
+		background: transparent;
+		color: #00a5cf;
+		border: 1px solid rgba(0, 165, 207, 0.45);
+		border-radius: 0;
+		width: 1.7rem;
+		height: 1.7rem;
+		padding: 0;
+		font-size: 0.9rem;
+		line-height: 1;
+		cursor: pointer;
+		display: grid;
+		place-items: center;
+		transition:
+			color 0.2s ease,
+			border-color 0.2s ease;
+	}
+	.hist-btn:hover:not(:disabled) {
+		border-color: #9fffcb;
+		color: #9fffcb;
+	}
+	.hist-btn:disabled {
+		opacity: 0.35;
+		pointer-events: none;
+		cursor: default;
+	}
+	.hist-counter {
+		font-family: 'Space Mono', monospace;
+		font-size: 0.62rem;
+		color: #64748b;
+		letter-spacing: 0.04em;
+		min-width: 2.2rem;
+		text-align: center;
 	}
 
 	/* ── Accordion groups + sub-cards ── */

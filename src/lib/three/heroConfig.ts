@@ -141,7 +141,7 @@ export const HERO_SCENE_CONFIG: SceneConfig = {
 		}
 	},
 	renderer: {
-		pixelRatio: 3,
+		pixelRatio: 1.5,
 		toneMapping: 'aces',
 		exposure: 1,
 		transparent: true,

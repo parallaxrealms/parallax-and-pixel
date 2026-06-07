@@ -83,7 +83,7 @@
 				<button
 					type="button"
 					onclick={() => handleNav(link.href)}
-					class="nav-link font-terminal px-2.5 py-1 text-xs transition-all {isActive(link.href) ? 'text-accent-primary' : ''}"
+					class="nav-link px-2.5 py-1 text-xs transition-all {isActive(link.href) ? 'text-accent-primary' : ''}"
 				>
 					{link.name}
 				</button>
@@ -94,7 +94,7 @@
 				<button
 					type="button"
 					onclick={() => handleNav(link.url)}
-					class="nav-link font-terminal px-2.5 py-1 text-xs transition-all"
+					class="nav-link px-2.5 py-1 text-xs transition-all"
 				>
 					{link.name}
 				</button>
@@ -107,7 +107,7 @@
 			<button
 				type="button"
 				onclick={() => mobileMenuOpen = !mobileMenuOpen}
-				class="font-terminal px-2 py-0.5 text-xs text-slate-400 hover:text-accent-primary"
+				class="px-2 py-0.5 text-xs text-slate-300 hover:text-accent-primary"
 				aria-label="Toggle menu"
 			>
 				Menu
@@ -123,7 +123,7 @@
 					<button
 						type="button"
 						onclick={() => handleNav(link.href)}
-						class="font-terminal rounded px-3 py-1.5 text-left text-xs text-slate-400 transition-colors hover:bg-slate-800 hover:text-accent-primary {isActive(link.href) ? 'text-accent-primary' : ''}"
+						class="rounded px-3 py-1.5 text-left text-xs text-slate-300 transition-colors hover:bg-slate-800 hover:text-accent-primary {isActive(link.href) ? 'text-accent-primary' : ''}"
 					>
 						{link.name}
 					</button>
@@ -133,7 +133,7 @@
 					<button
 						type="button"
 						onclick={() => handleNav(link.url)}
-						class="font-terminal rounded px-3 py-1.5 text-left text-xs text-slate-400 transition-colors hover:bg-slate-800 hover:text-accent-primary"
+						class="rounded px-3 py-1.5 text-left text-xs text-slate-300 transition-colors hover:bg-slate-800 hover:text-accent-primary"
 					>
 						{link.name}
 					</button>
@@ -155,7 +155,7 @@
 
 	/* Nav Link Styles */
 	.nav-link {
-		color: #94a3b8; /* slate-400 */
+		color: #cbd5e1; /* slate-300 */
 		position: relative;
 	}
 

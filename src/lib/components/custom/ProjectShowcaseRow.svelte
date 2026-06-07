@@ -47,7 +47,7 @@
 				/>
 			{:else}
 				<div class="absolute inset-0 flex items-center justify-center">
-					<span class="font-terminal text-sm tracking-[0.3em] text-slate-600 uppercase">
+					<span class="text-sm tracking-[0.3em] text-slate-500 uppercase">
 						no preview
 					</span>
 				</div>
@@ -73,11 +73,11 @@
 			<div class="relative max-w-xl">
 				<!-- Index / metadata line -->
 				<div class="mb-6 flex items-baseline gap-4">
-					<span class="index-num font-terminal text-5xl leading-none font-bold text-slate-700 lg:text-6xl">
+					<span class="index-num text-5xl leading-none font-bold text-slate-700 lg:text-6xl">
 						{indexLabel}
 					</span>
 					<span class="h-px flex-1 bg-slate-800" aria-hidden="true"></span>
-					<span class="row-accent-text font-terminal text-xs tracking-[0.3em] uppercase">
+					<span class="row-accent-text text-xs tracking-[0.3em] uppercase">
 						{categoryLabel}{project.featured ? ' // featured' : ''}
 					</span>
 				</div>
@@ -89,7 +89,7 @@
 				<div class="title-bar mb-6 h-0.5 w-12" aria-hidden="true"></div>
 
 				<!-- Description -->
-				<p class="mb-8 text-base leading-relaxed text-slate-400">
+				<p class="mb-8 text-base leading-relaxed text-slate-300">
 					{project.description}
 				</p>
 
@@ -97,7 +97,7 @@
 				<div class="mb-10 flex flex-wrap gap-2">
 					{#each project.techStack as tech (tech)}
 						<span
-							class="tech-tag font-terminal border border-slate-700/80 bg-slate-900/60 px-2.5 py-1 text-xs tracking-wider text-slate-400"
+							class="tech-tag border border-slate-700/80 bg-slate-900/60 px-2.5 py-1 text-xs tracking-wider text-slate-300"
 						>
 							{tech}
 						</span>
@@ -111,7 +111,7 @@
 							href={project.liveUrl}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="action-primary font-terminal px-6 py-2.5 text-sm font-bold tracking-wider text-slate-950 uppercase"
+							class="action-primary px-6 py-2.5 text-sm font-bold tracking-wider text-slate-950 uppercase"
 						>
 							{liveLabel} &nearr;
 						</a>
@@ -121,7 +121,7 @@
 							href={project.repoUrl}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="action-secondary font-terminal border border-slate-700 px-6 py-2.5 text-sm tracking-wider text-slate-300 uppercase"
+							class="action-secondary border border-slate-700 px-6 py-2.5 text-sm tracking-wider text-slate-300 uppercase"
 						>
 							Source &nearr;
 						</a>
@@ -129,7 +129,7 @@
 					{#if project.devlogUrl}
 						<a
 							href={project.devlogUrl}
-							class="action-secondary font-terminal border border-slate-700 px-6 py-2.5 text-sm tracking-wider text-slate-300 uppercase"
+							class="action-secondary border border-slate-700 px-6 py-2.5 text-sm tracking-wider text-slate-300 uppercase"
 						>
 							Devlog &rarr;
 						</a>

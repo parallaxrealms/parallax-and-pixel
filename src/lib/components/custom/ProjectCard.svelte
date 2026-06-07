@@ -36,7 +36,7 @@
 				{#if !hideViewDetails}
 					<a
 						href="/games"
-						class="font-terminal bg-slate-100 px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+						class="bg-slate-100 px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
 					>
 						View Details
 					</a>
@@ -46,7 +46,7 @@
 						href={project.liveUrl}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="font-terminal bg-accent-primary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+						class="bg-accent-primary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
 					>
 						Play
 					</a>
@@ -58,7 +58,7 @@
 						href={project.liveUrl}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="font-terminal bg-accent-primary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+						class="bg-accent-primary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
 					>
 						View
 					</a>
@@ -68,7 +68,7 @@
 						href={project.repoUrl}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="font-terminal bg-slate-100 px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+						class="bg-slate-100 px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
 					>
 						Code
 					</a>
@@ -77,7 +77,7 @@
 			{#if project.devlogUrl}
 				<a
 					href={project.devlogUrl}
-					class="font-terminal bg-accent-secondary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
+					class="bg-accent-secondary px-4 py-2 text-sm text-slate-900 transition-transform hover:scale-105"
 				>
 					Devlog
 				</a>
@@ -87,23 +87,23 @@
 
 	<!-- Content -->
 	<div class="p-5">
-		<h3 class="font-terminal mb-2 text-xl font-bold text-slate-100">
+		<h3 class="mb-2 text-xl font-bold text-slate-100">
 			{project.title}
 		</h3>
 
-		<p class="mb-4 text-slate-400 {variant === 'compact' ? 'line-clamp-2 text-sm' : 'text-base'}">
+		<p class="mb-4 text-slate-300 {variant === 'compact' ? 'line-clamp-2 text-sm' : 'text-base'}">
 			{project.description}
 		</p>
 
 		<!-- Tech Stack -->
 		<div class="flex flex-wrap gap-1.5">
 			{#each project.techStack.slice(0, variant === 'compact' ? 3 : 5) as tech (tech)}
-				<span class="bg-slate-800 px-2 py-1 font-terminal text-sm text-slate-400">
+				<span class="bg-slate-800 px-2 py-1 text-sm text-slate-300">
 					{tech}
 				</span>
 			{/each}
 			{#if project.techStack.length > (variant === 'compact' ? 3 : 5)}
-				<span class="bg-slate-800 px-2 py-1 font-terminal text-sm text-slate-500">
+				<span class="bg-slate-800 px-2 py-1 text-sm text-slate-400">
 					+{project.techStack.length - (variant === 'compact' ? 3 : 5)}
 				</span>
 			{/if}

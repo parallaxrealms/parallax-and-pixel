@@ -65,7 +65,7 @@
 			<h1 class="font-fade mb-2 text-3xl text-slate-100 md:text-4xl">
 				<span class="text-accent-primary">Blog</span>
 			</h1>
-			<p class="text-base text-slate-400">
+			<p class="text-base text-slate-300">
 				Thoughts on web development, game design, and creative coding.
 			</p>
 
@@ -76,7 +76,6 @@
 						type="search"
 						placeholder="Search posts..."
 						bind:value={searchQuery}
-						class="font-terminal"
 					/>
 				</form>
 
@@ -84,14 +83,14 @@
 					<div class="flex flex-wrap items-center gap-2">
 						<button
 							onclick={() => handleCategoryClick('')}
-							class="font-terminal px-3 py-1 text-xs transition-colors {!categoryFilter ? 'bg-accent-primary text-slate-950' : 'border border-slate-700 text-slate-400 hover:border-accent-primary hover:text-accent-primary'}"
+							class="px-3 py-1 text-xs transition-colors {!categoryFilter ? 'bg-accent-primary text-slate-950' : 'border border-slate-700 text-slate-300 hover:border-accent-primary hover:text-accent-primary'}"
 						>
 							All
 						</button>
 						{#each categories as category (category)}
 							<button
 								onclick={() => handleCategoryClick(category)}
-								class="font-terminal px-3 py-1 text-xs transition-colors {categoryFilter === category ? 'bg-accent-primary text-slate-950' : 'border border-slate-700 text-slate-400 hover:border-accent-primary hover:text-accent-primary'}"
+								class="px-3 py-1 text-xs transition-colors {categoryFilter === category ? 'bg-accent-primary text-slate-950' : 'border border-slate-700 text-slate-300 hover:border-accent-primary hover:text-accent-primary'}"
 							>
 								{category}
 							</button>
@@ -103,7 +102,7 @@
 			{#if searchQuery || categoryFilter}
 				<button
 					onclick={clearFilters}
-					class="font-terminal mt-2 text-xs text-slate-500 hover:text-accent-primary"
+					class="mt-2 text-xs text-slate-400 hover:text-accent-primary"
 				>
 					Clear filters
 				</button>
@@ -118,7 +117,7 @@
 			<main>
 				{#if posts.length === 0}
 					<div class="py-20 text-center">
-						<p class="font-terminal text-lg text-slate-400">
+						<p class="text-lg text-slate-300">
 							{#if searchQuery || categoryFilter}
 								No posts found matching your filters
 							{:else}
@@ -154,23 +153,23 @@
 													{post.title}
 												</h2>
 												{#if post.category}
-													<span class="font-terminal bg-slate-800 px-2 py-0.5 text-xs text-slate-400">
+													<span class="bg-slate-800 px-2 py-0.5 text-xs text-slate-300">
 														{post.category}
 													</span>
 												{/if}
 											</div>
 
 											{#if getPostPreview(post)}
-												<p class="mb-3 line-clamp-2 text-sm text-slate-400">
+												<p class="mb-3 line-clamp-2 text-sm text-slate-300">
 													{getPostPreview(post)}
 												</p>
 											{/if}
 
-											<div class="flex items-center gap-4 text-sm text-slate-500">
-												<span class="font-terminal">
+											<div class="flex items-center gap-4 text-sm text-slate-400">
+												<span>
 													{formatDate(post.created_at)}
 												</span>
-												<span class="font-terminal text-accent-primary opacity-0 transition-opacity group-hover:opacity-100">
+												<span class="text-accent-primary opacity-0 transition-opacity group-hover:opacity-100">
 													Read more &rarr;
 												</span>
 											</div>
@@ -186,7 +185,7 @@
 			<!-- Sidebar: Most Recent -->
 			<aside class="hidden lg:block">
 				<div class="sticky top-8 border border-slate-800 bg-slate-900/50 p-6">
-					<h2 class="font-terminal mb-4 text-sm font-semibold text-accent-primary">
+					<h2 class="mb-4 text-sm font-semibold text-accent-primary">
 						Most Recent
 					</h2>
 
@@ -198,18 +197,18 @@
 									class="group block border-b border-slate-800 pb-3 last:border-0 last:pb-0"
 								>
 									<h3
-										class="font-terminal text-sm font-medium text-slate-200 transition-colors group-hover:text-accent-primary"
+										class="text-sm font-medium text-slate-200 transition-colors group-hover:text-accent-primary"
 									>
 										{post.title}
 									</h3>
-									<span class="font-terminal text-xs text-slate-500">
+									<span class="text-xs text-slate-400">
 										{formatDate(post.created_at)}
 									</span>
 								</a>
 							{/each}
 						</div>
 					{:else}
-						<p class="font-terminal text-sm text-slate-500">
+						<p class="text-sm text-slate-400">
 							No posts yet.
 						</p>
 					{/if}

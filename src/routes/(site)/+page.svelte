@@ -8,6 +8,7 @@
 	import GradientText from '$lib/components/custom/effect/GradientText.svelte';
 	import GlitchText from '$lib/components/custom/effect/GlitchText.svelte';
 	import AboutTerminal from '$lib/components/custom/about/AboutTerminal.svelte';
+	import Orb from '$lib/components/custom/effect/Orb.svelte';
 	import ModelScene from '$lib/three/ModelScene.svelte';
 	import { HERO_SCENE_CONFIG } from '$lib/three/heroConfig';
 	import { getFeaturedProjects } from '$lib/data/projects';
@@ -96,10 +97,19 @@
 		class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,165,207,0.15),transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(159,255,203,0.1),transparent_50%),radial-gradient(ellipse_at_bottom_left,rgba(37,161,142,0.1),transparent_50%)]"
 	></div>
 
-	<!-- Three.js hero scene - full-bleed background layer behind the z-10 content.
-	     Tint/vignette/scanline overlays are rendered by ModelScene itself,
-	     driven by HERO_SCENE_CONFIG.overlay (tune in /lab). -->
-	<div aria-hidden="true" class="pointer-events-none absolute inset-0 z-[5]">
+	<!-- Orb (fresnel globe) - behind the lab scene, in front of the gradient bg -->
+	<div aria-hidden="true" class="absolute inset-x-0 -top-[50%] z-[5] flex justify-center">
+		<Orb
+			color={[0.05, 0.08, 0.12]}
+			glowColor={[0, 0.45, 0.55]}
+			class="min-w-[1200px] w-full"
+		/>
+	</div>
+
+	<!-- Three.js lab scene - transparent canvas layered OVER the globe, so the
+	     model + overlay (tint/vignette/scanlines, tuned in /lab via
+	     HERO_SCENE_CONFIG.overlay) composite on top of the orb/fresnel. -->
+	<div aria-hidden="true" class="pointer-events-none absolute inset-0 z-[6]">
 		<ModelScene config={HERO_SCENE_CONFIG} />
 	</div>
 
@@ -119,7 +129,7 @@
 					proximityMode={true}
 					proximityRadius={30}
 					proximityBoost={25}
-					class="font-terminal mx-auto max-w-xl text-lg text-slate-400 md:text-xl"
+					class="mx-auto max-w-2xl text-lg leading-relaxed font-semibold tracking-wider text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.5)] md:text-xl"
 				/>
 			</div>
 
@@ -129,14 +139,14 @@
 				<div class="flex flex-wrap justify-center gap-4 md:justify-start mt-32">
 					<Button
 						href="#projects"
-						class="bg-accent-primary hover:bg-accent-primary/80 font-terminal text-slate-900"
+						class="bg-accent-primary hover:bg-accent-primary/80 text-slate-900"
 					>
 						View Work
 					</Button>
 					<Button
 						href="#contact"
 						variant="outline"
-						class="font-terminal border-slate-600 text-slate-300 hover:border-accent-highlight hover:text-accent-highlight"
+						class="border-slate-600 text-slate-300 hover:border-accent-highlight hover:text-accent-highlight"
 					>
 						Get in Touch
 					</Button>
@@ -147,12 +157,12 @@
 					class="border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm"
 				>
 					<div class="mb-4 flex items-center justify-between">
-						<h2 class="font-terminal text-sm font-semibold text-accent-primary">
+						<h2 class="text-sm font-semibold text-accent-primary">
 							Latest Posts
 						</h2>
 						<a
 							href="/blog"
-							class="font-terminal text-xs text-slate-500 transition-colors hover:text-accent-primary"
+							class="text-xs text-slate-400 transition-colors hover:text-accent-primary"
 						>
 							View All
 						</a>
@@ -166,18 +176,18 @@
 									class="group block border-b border-slate-800 pb-3 last:border-0 last:pb-0"
 								>
 									<h3
-										class="font-terminal text-sm font-medium text-slate-200 transition-colors group-hover:text-accent-primary"
+										class="text-sm font-medium text-slate-200 transition-colors group-hover:text-accent-primary"
 									>
 										{post.title}
 									</h3>
-									<span class="font-terminal text-xs text-slate-500">
+									<span class="text-xs text-slate-400">
 										{formatDate(post.created_at)}
 									</span>
 								</a>
 							{/each}
 						</div>
 					{:else}
-						<p class="font-terminal text-sm text-slate-500">
+						<p class="text-sm text-slate-400">
 							Blog posts coming soon!
 						</p>
 					{/if}
@@ -202,7 +212,7 @@
 			</h2>
 			<a
 				href="/web"
-				class="font-terminal flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-accent-primary"
+				class="flex items-center gap-2 text-sm text-slate-300 transition-colors hover:text-accent-primary"
 			>
 				View All
 			</a>
@@ -226,7 +236,7 @@
 			</h2>
 			<a
 				href="/games"
-				class="font-terminal flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-accent-highlight"
+				class="flex items-center gap-2 text-sm text-slate-300 transition-colors hover:text-accent-highlight"
 			>
 				View All
 			</a>
@@ -257,7 +267,7 @@
 			<!-- Status Message -->
 			{#if formStatus === 'success' || formStatus === 'error'}
 				<div
-					class="mb-6 p-4 text-center font-terminal text-sm {formStatus ===
+					class="mb-6 p-4 text-center text-sm {formStatus ===
 					'success'
 						? 'bg-accent-primary/10 text-accent-primary'
 						: 'bg-red-500/10 text-red-500'}"
@@ -268,31 +278,31 @@
 
 			<div class="space-y-6">
 				<div>
-					<Label for="name" class="font-terminal text-slate-300">Name</Label>
+					<Label for="name" class="text-slate-300">Name</Label>
 					<Input
 						id="name"
 						type="text"
 						bind:value={contactForm.name}
 						required
-						class="mt-1 font-terminal"
+						class="mt-1"
 						placeholder="Your name"
 					/>
 				</div>
 
 				<div>
-					<Label for="email" class="font-terminal text-slate-300">Email</Label>
+					<Label for="email" class="text-slate-300">Email</Label>
 					<Input
 						id="email"
 						type="email"
 						bind:value={contactForm.email}
 						required
-						class="mt-1 font-terminal"
+						class="mt-1"
 						placeholder="your@email.com"
 					/>
 				</div>
 
 				<div>
-					<Label for="message" class="font-terminal text-slate-300"
+					<Label for="message" class="text-slate-300"
 						>Message</Label
 					>
 					<Textarea
@@ -300,7 +310,7 @@
 						bind:value={contactForm.message}
 						required
 						rows={5}
-						class="mt-1 resize-none font-terminal"
+						class="mt-1 resize-none"
 						placeholder="Tell me about your project..."
 					/>
 				</div>
@@ -308,7 +318,7 @@
 				<Button
 					type="submit"
 					disabled={formStatus === 'sending'}
-					class="w-full bg-accent-primary font-terminal text-slate-900 hover:bg-accent-primary/80"
+					class="w-full bg-accent-primary text-slate-900 hover:bg-accent-primary/80"
 				>
 					{#if formStatus === 'sending'}
 						Sending...
@@ -325,7 +335,7 @@
 				href="https://github.com/parallaxrealms"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="font-terminal border border-slate-700 px-4 py-2 text-sm text-slate-500 transition-colors hover:border-accent-primary hover:text-accent-primary"
+				class="border border-slate-700 px-4 py-2 text-sm text-slate-400 transition-colors hover:border-accent-primary hover:text-accent-primary"
 			>
 				GitHub
 			</a>
@@ -333,7 +343,7 @@
 				href="https://parallaxpixels.itch.io/"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="font-terminal border border-slate-700 px-4 py-2 text-sm text-slate-500 transition-colors hover:border-accent-secondary hover:text-accent-secondary"
+				class="border border-slate-700 px-4 py-2 text-sm text-slate-400 transition-colors hover:border-accent-secondary hover:text-accent-secondary"
 			>
 				Itch.io
 			</a>

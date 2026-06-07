@@ -1,16 +1,12 @@
 <!--
   Variant 1: Terminal Dossier
-  CSS scanline rain background, single-column centered, CRT aesthetic
+  Single-column centered, CRT aesthetic
 -->
 <script lang="ts">
 	import { skills, bio, avatarSrc } from './aboutData';
 </script>
 
 <section class="terminal-section relative min-h-screen overflow-hidden bg-black">
-	<!-- Scanline rain - translating overlay for visible movement -->
-	<div aria-hidden="true" class="scanline-rain-track">
-		<div class="scanline-rain"></div>
-	</div>
 	<!-- Radial vignette -->
 	<div aria-hidden="true" class="vignette"></div>
 
@@ -82,34 +78,6 @@
 
 	.term-green-dim {
 		color: rgba(155, 255, 203, 0.75);
-	}
-
-	.scanline-rain-track {
-		position: absolute;
-		inset: 0;
-		overflow: hidden;
-		pointer-events: none;
-	}
-
-	.scanline-rain {
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: -50%;
-		height: 200%;
-		background: repeating-linear-gradient(
-			0deg,
-			transparent 0px,
-			transparent 4px,
-			rgba(155, 255, 203, 0.07) 4px,
-			rgba(155, 255, 203, 0.07) 5px
-		);
-		animation: scanRain 160s linear infinite;
-	}
-
-	@keyframes scanRain {
-		0% { transform: translateY(0); }
-		100% { transform: translateY(25%); }
 	}
 
 	.vignette {

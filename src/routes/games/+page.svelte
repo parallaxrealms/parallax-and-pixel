@@ -47,12 +47,12 @@
 		<div class="relative px-5 py-5 sm:px-8 lg:px-10 lg:py-6">
 			<a
 				href="/"
-				class="font-terminal mb-3 inline-block text-sm text-slate-500 transition-colors hover:text-accent-highlight"
+				class="mb-3 inline-block text-sm text-slate-400 transition-colors hover:text-accent-highlight"
 			>
 				../ back to home
 			</a>
 
-			<p class="font-terminal mb-1.5 text-xs tracking-[0.35em] text-accent-highlight uppercase">
+			<p class="mb-1.5 text-xs tracking-[0.35em] text-accent-highlight uppercase">
 				portfolio // game index
 			</p>
 
@@ -61,12 +61,12 @@
 			</h1>
 
 			<div class="space-y-2">
-				<p class="text-lg leading-relaxed text-slate-400">
+				<p class="text-lg leading-relaxed text-slate-300">
 					These are the games I'm most proud of that I've made in the past 5
 					years. I've been diving into game development and design on and off
 					for the past 15 years, both digital and tabletop.
 				</p>
-				<p class="text-base leading-relaxed text-slate-500">
+				<p class="text-base leading-relaxed text-slate-400">
 					I started making flash games way back in the early 2000s and around
 					the same time began getting heavily into Dungeons & Dragons and other
 					TTRPG games. After that I spent time with the Unity Engine joining
@@ -76,7 +76,7 @@
 				</p>
 			</div>
 
-			<p class="font-terminal mt-3 text-xs tracking-[0.25em] text-slate-600 uppercase">
+			<p class="mt-3 text-xs tracking-[0.25em] text-slate-500 uppercase">
 				{projects.length} projects indexed
 			</p>
 		</div>
@@ -86,7 +86,7 @@
 	<main>
 		{#if projects.length === 0}
 			<div class="py-24 text-center">
-				<p class="font-terminal text-lg text-slate-400">
+				<p class="text-lg text-slate-300">
 					Projects coming soon!
 				</p>
 			</div>
@@ -96,7 +96,7 @@
 			{/each}
 
 			<div class="px-6 py-12 text-center">
-				<span class="font-terminal text-xs tracking-[0.35em] text-slate-600 uppercase">
+				<span class="text-xs tracking-[0.35em] text-slate-500 uppercase">
 					// end of index
 				</span>
 			</div>

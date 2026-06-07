@@ -20,13 +20,13 @@
 			proximityMode={true}
 			proximityRadius={30}
 			proximityBoost={25}
-			class="shrink-0 font-terminal text-xs text-slate-500"
+			class="shrink-0 text-xs text-slate-400"
 		/>
 
 		<!-- Scrolling Quote Ticker (right, fills remaining space) -->
 		<div class="ticker-container ml-6 flex-1 overflow-hidden">
 			<span
-				class="ticker-text font-terminal text-xs text-slate-400"
+				class="ticker-text text-xs text-slate-300"
 				onanimationiteration={onTickerCycle}
 			>
 				"{tickerQuote}"

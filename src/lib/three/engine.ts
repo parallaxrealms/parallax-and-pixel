@@ -74,6 +74,34 @@ export function createModelScene(
 	let current = cloneConfig(config);
 	let disposed = false;
 
+	// ----- quality tier detection ---------------------------------------------
+	// Detected ONCE at engine creation (safe: this factory only ever runs in
+	// the browser, but every API is still guarded). All caps below are applied
+	// ON TOP of whatever the config asks for, so /lab knob changes stay capped.
+	const canMatchMedia =
+		typeof window !== 'undefined' && typeof window.matchMedia === 'function';
+	/** Touch-first device — treat as "mobile". */
+	const coarse = canMatchMedia && window.matchMedia('(pointer: coarse)').matches;
+	/** User asked for a static scene. */
+	const reducedMotion =
+		canMatchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const nav =
+		typeof navigator !== 'undefined'
+			? (navigator as Navigator & { deviceMemory?: number })
+			: null;
+	/** Low RAM or few cores — either alone marks the device low-end. */
+	const lowEnd =
+		nav !== null &&
+		((nav.deviceMemory !== undefined && nav.deviceMemory <= 4) ||
+			(nav.hardwareConcurrency !== undefined && nav.hardwareConcurrency <= 4));
+	/**
+	 * Tier pixel-ratio ceiling, re-applied inside clampPixelRatio so it
+	 * survives every applyConfig (e.g. /lab sliding pixelRatio to 3 on a phone).
+	 * Mobile: 1.0 (0.85 if also low-end). Desktop low-end: 1.25. Else: 3 (= the
+	 * existing absolute cap).
+	 */
+	const tierMaxPixelRatio = coarse ? (lowEnd ? 0.85 : 1) : lowEnd ? 1.25 : 3;
+
 	// ----- ready promise -----------------------------------------------------
 	let readyResolve!: () => void;
 	const ready = new Promise<void>((resolve) => {
@@ -115,7 +143,7 @@ export function createModelScene(
 
 	function clampPixelRatio(requested: number): number {
 		const device = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
-		return Math.max(0.5, Math.min(requested, device * 1.5, 3));
+		return Math.max(0.5, Math.min(requested, device * 1.5, 3, tierMaxPixelRatio));
 	}
 
 	// ----- lights -------------------------------------------------------------
@@ -607,6 +635,7 @@ export function createModelScene(
 				currentModelRoot = obj;
 				syncMaterials(true);
 				syncShell(); // primitive-sourced shell no longer matches → model clone
+				staticResettle(); // reduced-motion: show the swapped-in model
 			})
 			.catch((err) => {
 				if (token === loadToken && !disposed) {
@@ -635,10 +664,16 @@ export function createModelScene(
 
 	function syncPost() {
 		const p = current.post;
+		// Mobile tier: chromatic aberration + noise are skipped entirely (bloom
+		// and vignette stay — they're the visual identity). The EFFECTIVE flags
+		// feed the fingerprint below, so toggling CA/noise in config on mobile
+		// never rebuilds them into existence.
+		const caOn = p.chromaticAberration.on && !coarse;
+		const noiseOn = p.noise.on && !coarse;
 		// Rebuild the EffectPass ONLY when the enabled set changes (EffectPass
 		// compiles one merged shader per effect combination); otherwise mutate
 		// the live effect parameters in place.
-		const key = `${p.bloom.on}|${p.vignette.on}|${p.chromaticAberration.on}|${p.noise.on}`;
+		const key = `${p.bloom.on}|${p.vignette.on}|${caOn}|${noiseOn}`;
 		if (key !== effectKey) {
 			effectKey = key;
 			if (effectPass) {
@@ -662,7 +697,7 @@ export function createModelScene(
 				});
 				effects.push(bloomFx);
 			}
-			if (p.chromaticAberration.on) {
+			if (caOn) {
 				caFx = new ChromaticAberrationEffect({
 					offset: new THREE.Vector2(p.chromaticAberration.offset, p.chromaticAberration.offset),
 					radialModulation: false,
@@ -670,7 +705,7 @@ export function createModelScene(
 				});
 				effects.push(caFx);
 			}
-			if (p.noise.on) {
+			if (noiseOn) {
 				noiseFx = new NoiseEffect({
 					blendFunction: BlendFunction.OVERLAY,
 					premultiply: true
@@ -741,6 +776,9 @@ export function createModelScene(
 		camera.updateProjectionMatrix();
 		// composer.setSize also resizes the renderer + all internal buffers.
 		composer.setSize(w, h, false);
+		// While the loop is stopped (offscreen / reduced-motion settled), repaint
+		// once so the canvas never shows a stale stretched frame.
+		if (booted && !loopRunning) renderOnce();
 	}
 	let ro: ResizeObserver | null = null;
 	if (typeof ResizeObserver !== 'undefined') {
@@ -757,23 +795,90 @@ export function createModelScene(
 		mouseX = (ev.clientX / window.innerWidth) * 2 - 1;
 		mouseY = -((ev.clientY / window.innerHeight) * 2 - 1);
 	}
-	window.addEventListener('pointermove', onPointerMove);
+	// Mobile tier: no mouse to follow — pointermove from touch scrolling would
+	// just waste work, so the listener is never attached.
+	if (!coarse) window.addEventListener('pointermove', onPointerMove);
 
-	// ----- visibility pause ----------------------------------------------------------------
-	let paused = false;
-	function onVisibility() {
-		const hidden = document.hidden;
-		if (hidden === paused) return;
-		paused = hidden;
-		if (paused) {
-			// Cancel the queued rAF so resume doesn't spawn a second loop.
-			cancelAnimationFrame(rafId);
-		} else if (!disposed) {
-			clock.getDelta(); // swallow the hidden-time delta
+	// ----- pause / resume (visibility + viewport + reduced-motion) --------------------------
+	// Single source of truth: the loop runs iff the page is visible AND the
+	// canvas intersects the viewport AND we're not disposed AND (under
+	// prefers-reduced-motion) the static scene hasn't finished settling.
+	// updateRunning() starts the loop ONLY on a false→true transition and
+	// cancels the queued rAF on true→false, so the visibility and intersection
+	// handlers can never double-start it (preserves the old resume-race fix).
+	const STATIC_SETTLE_FRAMES = 3;
+	let staticFrames = 0;
+	let pageVisible = typeof document !== 'undefined' ? !document.hidden : true;
+	let inViewport = true;
+	let loopRunning = false;
+	let booted = false;
+
+	function shouldRun(): boolean {
+		return (
+			!disposed &&
+			pageVisible &&
+			inViewport &&
+			(!reducedMotion || staticFrames < STATIC_SETTLE_FRAMES)
+		);
+	}
+
+	function updateRunning() {
+		const run = shouldRun();
+		if (run === loopRunning) return;
+		loopRunning = run;
+		if (run) {
+			clock.getDelta(); // swallow the paused-time delta
 			frame();
+		} else {
+			// Cancel the queued rAF so a later resume can't spawn a second loop.
+			cancelAnimationFrame(rafId);
 		}
 	}
+
+	/** One-shot repaint while the loop is stopped — never restarts animation. */
+	function renderOnce() {
+		if (disposed || loopRunning) return;
+		composer.render(1 / 60);
+	}
+
+	/**
+	 * Reduced-motion: something visible changed (model swap, config apply) —
+	 * re-arm the settle window so a few fresh frames render, then halt again.
+	 * No-op without prefers-reduced-motion (the loop is already continuous).
+	 */
+	function staticResettle() {
+		if (!reducedMotion || disposed) return;
+		staticFrames = 0;
+		updateRunning(); // restarts only if visible + in viewport
+	}
+
+	function onVisibility() {
+		const visible = !document.hidden;
+		if (visible === pageVisible) return;
+		pageVisible = visible;
+		updateRunning();
+		// Settled reduced-motion scene resuming: repaint once, stay halted.
+		if (visible && inViewport && !loopRunning) renderOnce();
+	}
 	document.addEventListener('visibilitychange', onVisibility);
+
+	// ----- offscreen pause -------------------------------------------------------------------
+	// Threshold 0 (default): isIntersecting flips false only when the canvas is
+	// fully out of view, true again the moment any pixel re-enters.
+	let io: IntersectionObserver | null = null;
+	if (typeof IntersectionObserver !== 'undefined') {
+		io = new IntersectionObserver((entries) => {
+			for (const entry of entries) {
+				const visible = entry.isIntersecting;
+				if (visible === inViewport) continue;
+				inViewport = visible;
+				updateRunning();
+				// Settled reduced-motion scene re-entering: repaint once.
+				if (visible && pageVisible && !loopRunning) renderOnce();
+			}
+		});
+		io.observe(canvas);
+	}
 
 	// ----- render loop ------------------------------------------------------------------------
 	const clock = new THREE.Clock();
@@ -782,15 +887,33 @@ export function createModelScene(
 	let spinAngle = 0;
 
 	function frame() {
-		if (disposed || paused) return;
-		rafId = requestAnimationFrame(frame);
+		if (disposed || !loopRunning) return;
+		if (reducedMotion) {
+			// Static scene: render a few frames so bloom settles, then halt. Once
+			// settled, shouldRun() stays false — visibility/intersection resumes
+			// repaint via renderOnce() instead of restarting continuous animation;
+			// only staticResettle() re-arms the settle window.
+			staticFrames++;
+			if (staticFrames < STATIC_SETTLE_FRAMES) {
+				rafId = requestAnimationFrame(frame);
+			} else {
+				loopRunning = false;
+			}
+		} else {
+			rafId = requestAnimationFrame(frame);
+		}
 		const dt = Math.min(clock.getDelta(), 0.1);
 		elapsed += dt;
 
 		// Model transform: config pose + continuous spin + float bob.
+		// reducedMotion forces spin/float/drift/parallax to zero internally —
+		// the user's config object is never mutated.
 		const m = current.model;
-		spinAngle = (spinAngle + m.spinSpeed * dt) % (Math.PI * 2);
-		const float = m.floatAmplitude !== 0 ? Math.sin(elapsed * m.floatSpeed) * m.floatAmplitude : 0;
+		if (!reducedMotion) spinAngle = (spinAngle + m.spinSpeed * dt) % (Math.PI * 2);
+		const float =
+			!reducedMotion && m.floatAmplitude !== 0
+				? Math.sin(elapsed * m.floatSpeed) * m.floatAmplitude
+				: 0;
 		modelGroup.position.set(m.x, m.y + float, m.z);
 		modelGroup.rotation.set(m.rotationX, m.rotationY + spinAngle, m.rotationZ);
 		modelGroup.scale.setScalar(m.scale);
@@ -800,9 +923,11 @@ export function createModelScene(
 		// spinSpeed edits never jump.
 		const ws = m.wireframeShell;
 		if (shellRoot && ws?.on) {
-			shellSpinAngle = (shellSpinAngle + ws.spinSpeed * dt) % (Math.PI * 2);
+			if (!reducedMotion) shellSpinAngle = (shellSpinAngle + ws.spinSpeed * dt) % (Math.PI * 2);
 			const shellFloat =
-				ws.floatAmplitude !== 0 ? Math.sin(elapsed * ws.floatSpeed) * ws.floatAmplitude : 0;
+				!reducedMotion && ws.floatAmplitude !== 0
+					? Math.sin(elapsed * ws.floatSpeed) * ws.floatAmplitude
+					: 0;
 			shellRoot.position.set(ws.x, ws.y + shellFloat, ws.z);
 			shellRoot.rotation.set(ws.rotationX, ws.rotationY + shellSpinAngle, ws.rotationZ);
 			shellRoot.scale.setScalar(ws.scale);
@@ -810,7 +935,7 @@ export function createModelScene(
 
 		// Fresnel drift: slow aqua → mint → aqua sweep.
 		const f = current.fresnel;
-		if (f.on && f.drift) {
+		if (f.on && f.drift && !reducedMotion) {
 			const t = 0.5 - 0.5 * Math.cos((elapsed / DRIFT_PERIOD) * Math.PI * 2);
 			rimUniforms.uRimColor.value.copy(DRIFT_A).lerp(DRIFT_B, t);
 		}
@@ -818,8 +943,8 @@ export function createModelScene(
 		// Camera: config pose + eased mouse parallax.
 		const c = current.camera;
 		const p = c.parallax;
-		const targetX = p.on ? mouseX * p.amount : 0;
-		const targetY = p.on ? mouseY * p.amount * 0.6 : 0;
+		const targetX = p.on && !reducedMotion ? mouseX * p.amount : 0;
+		const targetY = p.on && !reducedMotion ? mouseY * p.amount * 0.6 : 0;
 		const ease = Math.min(Math.max(p.ease, 0.001), 1);
 		parX += (targetX - parX) * ease;
 		parY += (targetY - parY) * ease;
@@ -855,6 +980,10 @@ export function createModelScene(
 		if (current.model.path !== prevPath) {
 			setModelPath(current.model.path);
 		}
+
+		// Reduced-motion: the loop is halted once settled — render a few fresh
+		// frames so knob changes still show up. No-op otherwise.
+		staticResettle();
 	}
 
 	// ----- dispose --------------------------------------------------------------------------------
@@ -863,10 +992,12 @@ export function createModelScene(
 		disposed = true;
 		loadToken++; // cancels any in-flight load
 
+		loopRunning = false;
 		cancelAnimationFrame(rafId);
-		window.removeEventListener('pointermove', onPointerMove);
+		if (!coarse) window.removeEventListener('pointermove', onPointerMove);
 		document.removeEventListener('visibilitychange', onVisibility);
 		ro?.disconnect();
+		io?.disconnect();
 
 		teardownShell();
 		shellMat.dispose();
@@ -898,7 +1029,8 @@ export function createModelScene(
 	syncFresnel();
 	syncPost();
 	setModelPath(current.model.path);
-	frame();
+	updateRunning(); // single entry point — starts the loop iff shouldRun()
+	booted = true;
 
 	return { applyConfig, ready, dispose };
 }

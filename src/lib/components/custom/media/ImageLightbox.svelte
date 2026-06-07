@@ -74,7 +74,7 @@
 		>
 			<!-- Close button -->
 			<button
-				class="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center text-slate-400 transition-colors hover:text-white"
+				class="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center text-slate-300 transition-colors hover:text-white"
 				onclick={close}
 				aria-label="Close lightbox"
 			>
@@ -84,7 +84,7 @@
 			<!-- Navigation: Previous -->
 			{#if hasMultiple && currentIndex > 0}
 				<button
-					class="absolute left-4 z-10 flex h-10 w-10 items-center justify-center text-slate-400 transition-colors hover:text-white"
+					class="absolute left-4 z-10 flex h-10 w-10 items-center justify-center text-slate-300 transition-colors hover:text-white"
 					onclick={prev}
 					aria-label="Previous image"
 				>
@@ -95,7 +95,7 @@
 			<!-- Navigation: Next -->
 			{#if hasMultiple && currentIndex < images.length - 1}
 				<button
-					class="absolute right-4 z-10 flex h-10 w-10 items-center justify-center text-slate-400 transition-colors hover:text-white"
+					class="absolute right-4 z-10 flex h-10 w-10 items-center justify-center text-slate-300 transition-colors hover:text-white"
 					onclick={next}
 					aria-label="Next image"
 				>
@@ -113,7 +113,7 @@
 
 				{#if currentImage.caption}
 					<p
-						class="mt-4 max-w-2xl border-l-2 pl-3 font-terminal text-sm text-slate-300"
+						class="mt-4 max-w-2xl border-l-2 pl-3 text-sm text-slate-300"
 						style="border-color: #00a5cf;"
 					>
 						{currentImage.caption}
@@ -122,7 +122,7 @@
 
 				<!-- Image counter -->
 				{#if hasMultiple}
-					<p class="mt-2 font-terminal text-xs text-slate-500">
+					<p class="mt-2 text-xs text-slate-400">
 						{currentIndex + 1} / {images.length}
 					</p>
 				{/if}

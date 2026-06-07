@@ -52,7 +52,7 @@
 			/>
 			{#if image.caption}
 				<div
-					class="absolute inset-x-0 bottom-0 px-2 py-1 font-terminal text-xs text-slate-200"
+					class="absolute inset-x-0 bottom-0 px-2 py-1 text-xs text-slate-200"
 					style="background: linear-gradient(transparent, rgba(2, 6, 23, 0.8));"
 				>
 					{image.caption}

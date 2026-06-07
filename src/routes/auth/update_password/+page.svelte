@@ -4,7 +4,8 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import type { ActionResult } from '@sveltejs/kit';
-	import { AnimatedButton, PasswordInput } from '@parallaxrealms/pxp-components';
+	import { Button } from '$lib/components/shadcn/ui/button';
+	import { PasswordInput } from '@parallaxrealms/pxp-components';
 
 	interface ActionData {
 		success?: boolean;
@@ -98,304 +99,117 @@
 	});
 </script>
 
-<div class="auth-page">
-	<!-- Background -->
-	<div class="auth-background"></div>
+<div class="w-full max-w-md">
+	<!-- Terminal panel (About-terminal CRT frame, translucent) -->
+	<div
+		class="w-full border border-cyan-800/40 bg-slate-900/60 p-6 backdrop-blur-sm shadow-[inset_0_0_60px_rgba(0,165,207,0.04),0_0_30px_rgba(0,165,207,0.08)] sm:p-8"
+	>
+		<!-- Prompt -->
+		<div class="mb-6 font-terminal text-sm text-accent-highlight">
+			<span class="text-slate-500">parallax@dev:~$</span> auth --update-password<span class="cursor-blink">_</span>
+		</div>
 
-	<div class="auth-container center-center">
-		<div class="auth-card">
-			<h1 class="auth-title">Update Password</h1>
+		<!-- Heading -->
+		<h1 class="mb-4 text-center text-3xl font-bold text-slate-100">Update Password</h1>
 
-			{#if showSuccessMessage}
-				<div class="success-overlay">
-					<div class="success-card">
-						<div class="success-icon">✓</div>
-						<h2 class="success-title">Success!</h2>
-						<p class="success-text">Your password has been successfully updated.</p>
-						<p class="success-countdown">
-							Redirecting to login page in <span class="countdown-number">{redirectCountdown}</span>
-							seconds...
-						</p>
-						<div class="progress-bar">
-							<div
-								class="progress-fill"
-								style="width: {((5 - redirectCountdown) / 5) * 100}%"
-							></div>
-						</div>
-						<div class="success-link-wrapper">
-							<a
-								href="/auth?success=password_reset&message=Your password has been successfully updated. Please sign in with your new password."
-								class="success-link"
-							>
-								Go to Login Now
-							</a>
-						</div>
-					</div>
+		{#if showSuccessMessage}
+			<div class="text-center">
+				<div
+					class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-accent-primary to-accent-highlight text-3xl font-bold text-slate-950"
+				>
+					✓
 				</div>
-			{:else}
-				{#if form?.error}
-					<div class="auth-message auth-message-error">
-						{form.error}
-					</div>
+				<h2 class="mb-3 text-2xl font-bold text-slate-100">Success!</h2>
+				<p class="mb-4 font-terminal text-sm text-slate-400">
+					Your password has been successfully updated.
+				</p>
+				<p class="mb-6 font-terminal text-sm text-slate-300">
+					Redirecting to login page in
+					<span class="text-lg font-bold text-accent-primary">{redirectCountdown}</span>
+					seconds...
+				</p>
+				<div class="mb-6 h-2 w-full overflow-hidden bg-slate-700/60">
+					<div
+						class="h-full bg-gradient-to-r from-accent-primary via-accent-highlight to-accent-secondary transition-[width] duration-1000 ease-linear"
+						style="width: {((5 - redirectCountdown) / 5) * 100}%"
+					></div>
+				</div>
+				<div class="flex justify-center">
+					<a
+						href="/auth?success=password_reset&message=Your password has been successfully updated. Please sign in with your new password."
+						class="inline-block border border-accent-primary bg-accent-primary/10 px-6 py-3 font-terminal text-sm font-bold text-accent-primary transition-all hover:bg-accent-primary hover:text-slate-900"
+					>
+						Go to Login Now
+					</a>
+				</div>
+			</div>
+		{:else}
+			{#if form?.error}
+				<div class="mb-4 border border-red-500/30 bg-red-500/10 p-3 font-terminal text-sm text-red-400">
+					{form.error}
+				</div>
+			{/if}
+
+			<p class="mb-6 text-center font-terminal text-sm leading-relaxed text-slate-400">
+				Please enter your new password below.
+			</p>
+
+			<form method="POST" use:enhance={handleSubmit} class="flex flex-col gap-5">
+				<PasswordInput
+					id="password"
+					name="password"
+					bind:value={password}
+					label="New Password"
+					placeholder="Enter your new password"
+					autocomplete="new-password"
+					required={true}
+					helperText="Must be at least 6 characters"
+					class="rounded-lg"
+				/>
+
+				<PasswordInput
+					id="confirm-password"
+					name="confirmPassword"
+					bind:value={confirmPassword}
+					label="Confirm New Password"
+					placeholder="Confirm your new password"
+					autocomplete="new-password"
+					required={true}
+					class="rounded-lg"
+				/>
+
+				{#if confirmPassword && !passwordsMatch}
+					<p class="-mt-2 font-terminal text-sm text-red-400">Passwords do not match</p>
 				{/if}
 
-				<p class="auth-description">Please enter your new password below.</p>
+				<div class="pt-2">
+					<Button
+						type="submit"
+						size="lg"
+						class="w-full bg-accent-primary px-6 py-3 font-terminal text-base font-bold text-slate-900 hover:bg-accent-primary/80 disabled:cursor-not-allowed disabled:opacity-60"
+						disabled={loading || !passwordsMatch || !password}
+					>
+						{loading ? 'Updating...' : 'Update Password'}
+					</Button>
+				</div>
+			</form>
+		{/if}
 
-				<form method="POST" use:enhance={handleSubmit} class="auth-form">
-					<PasswordInput
-						id="password"
-						name="password"
-						bind:value={password}
-						label="New Password"
-						placeholder="Enter your new password"
-						autocomplete="new-password"
-						required={true}
-						helperText="Must be at least 6 characters"
-						class="rounded-lg"
-					/>
-
-					<PasswordInput
-						id="confirm-password"
-						name="confirmPassword"
-						bind:value={confirmPassword}
-						label="Confirm New Password"
-						placeholder="Confirm your new password"
-						autocomplete="new-password"
-						required={true}
-						class="rounded-lg"
-					/>
-
-					{#if confirmPassword && !passwordsMatch}
-						<p class="password-mismatch">Passwords do not match</p>
-					{/if}
-
-					<div class="form-submit">
-						<AnimatedButton
-							gradient="custom"
-							customColors={['#00a5cf', '#9fffcb', '#25a18e']}
-							size="lg"
-							class="auth-submit-btn"
-							type="submit"
-							disabled={loading || !passwordsMatch || !password}
-						>
-							<span class="btn-text">
-								{loading ? 'Updating...' : 'Update Password'}
-							</span>
-						</AnimatedButton>
-					</div>
-				</form>
-			{/if}
+		<!-- Footer prompt -->
+		<div class="mt-8 font-terminal text-sm text-slate-500">
+			parallax@dev:~$ <span class="cursor-blink text-accent-highlight">_</span>
 		</div>
 	</div>
 </div>
 
 <style>
-	.auth-page {
-		position: relative;
-		min-height: 100vh;
-		background-color: #020617; /* slate-950 */
+	.cursor-blink {
+		animation: blink 1s step-end infinite;
 	}
 
-	.auth-background {
-		position: absolute;
-		inset: 0;
-		background:
-			radial-gradient(circle at 50% 0%, rgba(0, 165, 207, 0.15) 0%, transparent 50%),
-			radial-gradient(circle at 0% 50%, rgba(37, 161, 142, 0.1) 0%, transparent 50%),
-			radial-gradient(circle at 100% 50%, rgba(159, 255, 203, 0.1) 0%, transparent 50%);
-		opacity: 0.6;
-	}
-
-	.auth-container {
-		position: relative;
-		min-height: 100vh;
-		z-index: 10;
-		padding: 1.5rem;
-	}
-
-	.auth-card {
-		width: 100%;
-		max-width: 28rem;
-		margin: 5rem auto 0;
-		background-color: #1e293b; /* slate-800 */
-		backdrop-filter: blur(10px);
-		border: 1px solid #334155; /* slate-700 */
-		padding: 2rem;
-	}
-
-	.auth-title {
-		margin-bottom: 1rem;
-		background: linear-gradient(to right, #00a5cf, #9fffcb, #25a18e);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		font-size: 1.875rem;
-		font-weight: 700;
-		letter-spacing: 0.05em;
-		text-align: center;
-	}
-
-	.auth-description {
-		margin-bottom: 1.5rem;
-		color: #94a3b8;
-		font-size: 0.875rem;
-		text-align: center;
-		line-height: 1.5;
-	}
-
-	/* Messages */
-	.auth-message {
-		margin-bottom: 1rem;
-		padding: 0.75rem 1rem;
-		font-size: 0.875rem;
-	}
-
-	.auth-message-error {
-		background-color: rgba(239, 68, 68, 0.1);
-		color: #ef4444;
-		border: 1px solid rgba(239, 68, 68, 0.3);
-	}
-
-	/* Form Elements */
-	.auth-form {
-		display: flex;
-		flex-direction: column;
-		gap: 1.25rem;
-	}
-
-	.password-mismatch {
-		font-size: 0.875rem;
-		color: #ef4444;
-		margin-top: -0.5rem;
-	}
-
-	.form-submit {
-		padding-top: 0.5rem;
-	}
-
-	:global(.auth-submit-btn) {
-		width: 100%;
-		padding: 1rem;
-		font-size: 1.125rem;
-		font-weight: 700;
-		color: #000;
-		letter-spacing: 0.05em;
-		transition: all 200ms;
-	}
-
-	:global(.auth-submit-btn:disabled) {
-		cursor: not-allowed;
-		opacity: 0.6;
-	}
-
-	.btn-text {
-		font-size: 1.125rem;
-		font-weight: 600;
-		letter-spacing: 0.05em;
-	}
-
-	/* Success Overlay */
-	.success-overlay {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.success-card {
-		width: 100%;
-		background-color: #1e293b;
-		border: 1px solid #334155;
-		padding: 2rem;
-		text-align: center;
-	}
-
-	.success-icon {
-		margin: 0 auto 1rem;
-		width: 4rem;
-		height: 4rem;
-		border-radius: 50%;
-		background: linear-gradient(135deg, #00a5cf, #9fffcb);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 2rem;
-		color: #020617;
-		font-weight: 700;
-	}
-
-	.success-title {
-		margin-bottom: 0.75rem;
-		font-size: 1.5rem;
-		font-weight: 700;
-		color: #f1f5f9;
-	}
-
-	.success-text {
-		margin-bottom: 1rem;
-		color: #94a3b8;
-		font-size: 1rem;
-	}
-
-	.success-countdown {
-		margin-bottom: 1.5rem;
-		color: #cbd5e1;
-		font-size: 0.875rem;
-	}
-
-	.countdown-number {
-		font-weight: 700;
-		color: #00a5cf;
-		font-size: 1.125rem;
-	}
-
-	.progress-bar {
-		width: 100%;
-		height: 0.5rem;
-		background-color: #334155;
-		overflow: hidden;
-		margin-bottom: 1.5rem;
-	}
-
-	.progress-fill {
-		height: 100%;
-		background: linear-gradient(90deg, #00a5cf, #9fffcb, #25a18e);
-		transition: width 1s linear;
-	}
-
-	.success-link-wrapper {
-		display: flex;
-		justify-content: center;
-	}
-
-	.success-link {
-		display: inline-block;
-		padding: 0.75rem 1.5rem;
-		background: linear-gradient(135deg, #00a5cf, #25a18e);
-		color: #020617;
-		text-decoration: none;
-		font-weight: 600;
-		transition: all 200ms;
-	}
-
-	.success-link:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 10px 15px -3px rgba(0, 165, 207, 0.3);
-	}
-
-	/* Responsive */
-	@media (max-width: 640px) {
-		.auth-card {
-			padding: 1.5rem;
-		}
-
-		.auth-title {
-			font-size: 1.5rem;
-		}
-
-		.success-icon {
-			width: 3rem;
-			height: 3rem;
-			font-size: 1.5rem;
+	@keyframes blink {
+		50% {
+			opacity: 0;
 		}
 	}
 </style>
