@@ -115,6 +115,25 @@
 	// Local state for sidebar functionality
 	let activeItem = $state('');
 	let expandedItems = $state<string[]>([]);
+
+	// On load / tab change, mark the active child and auto-expand its group so the
+	// current tab is always visible without manually opening the accordion.
+	$effect(() => {
+		const tab = $selectedTab;
+		if (!tab) return;
+		for (const item of items) {
+			if (item.tabId === tab) {
+				activeItem = item.id;
+				return;
+			}
+			const child = (item.children ?? []).find((c: SidebarItemType) => c.tabId === tab);
+			if (child) {
+				activeItem = child.id;
+				expandedItems = [item.id];
+				return;
+			}
+		}
+	});
 	let showUserDropdown = $state(false);
 
 	// Keep activeItem in sync with the selectedTab store
@@ -579,12 +598,15 @@
 	.user-profile-card {
 		display: flex;
 		align-items: center;
-		gap: 0.75rem;
-		padding: 0.25rem 0.5rem;
+		gap: 0.625rem;
+		padding: 0.375rem 0.5rem;
 		max-height: 57px;
 		background-color: var(--sidebar-slate-800);
-		border: none;
-		transition: all 0.3s ease;
+		border: 1px solid var(--sidebar-slate-700);
+		border-radius: 0;
+		transition:
+			background-color 0.2s ease,
+			border-color 0.2s ease;
 		cursor: pointer;
 		width: 100%;
 		text-align: left;
@@ -593,13 +615,16 @@
 
 		&:hover {
 			background-color: var(--sidebar-slate-700);
+			border-color: var(--sidebar-accent);
 		}
 
 		&.collapsed {
 			background-color: transparent;
+			border-color: transparent;
 
 			&:hover {
 				background-color: var(--sidebar-slate-800);
+				border-color: var(--sidebar-slate-700);
 			}
 		}
 	}
@@ -631,16 +656,16 @@
 		.avatar-image {
 			width: 2rem;
 			height: 2rem;
-			border-radius: 50%;
+			border-radius: 0; /* square — no rounded corners per UI-STYLE */
 			object-fit: cover;
-			border: 2px solid var(--sidebar-slate-700);
+			border: 1px solid var(--sidebar-slate-700);
 		}
 
 		.avatar-placeholder {
 			width: 2rem;
 			height: 2rem;
 			background: linear-gradient(135deg, var(--sidebar-accent), #9fffcb);
-			border-radius: 50%;
+			border-radius: 0; /* square */
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -659,13 +684,17 @@
 		.user-name {
 			font-size: 0.875rem;
 			font-weight: 600;
-			color: var(--sidebar-slate-300);
-			margin-bottom: 0.125rem;
+			color: #f1f5f9; /* slate-100 — crisp, sleek */
+			margin-bottom: 0.0625rem;
+			line-height: 1.2;
 		}
 
 		.user-plan {
-			font-size: 0.75rem;
-			color: var(--sidebar-slate-400);
+			font-size: 0.6875rem;
+			font-weight: 500;
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+			color: var(--sidebar-accent);
 		}
 	}
 

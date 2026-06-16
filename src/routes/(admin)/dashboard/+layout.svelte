@@ -7,9 +7,11 @@
 	import { onMount } from 'svelte';
 	import Sidebar from '$lib/components/custom/sidebar/Sidebar.svelte';
 	import DashboardNav from '$lib/components/custom/nav/DashboardNav.svelte';
+	import StatusBar from '$lib/components/dashboard/StatusBar.svelte';
 	import { Button } from '@parallaxrealms/pxp-components';
-	import { Home, ArrowLeft, FileText, Image, Share2, Activity } from 'lucide-svelte';
+	import { Home, ArrowLeft, FileText, Image, Share2, Activity, Gauge, Wrench, Shapes, ListTodo, CalendarDays, StickyNote, Landmark, Bot, Mail, Settings, Users, Globe, Briefcase, ServerCog, ShieldCheck, KeyRound, Signal, LayoutTemplate } from 'lucide-svelte';
 	import { createSidebarConfig } from '@parallaxrealms/pxp-utils/core';
+	import type { SidebarItem } from '@parallaxrealms/pxp-types/core';
 
 	let { children, data } = $props();
 
@@ -125,43 +127,80 @@
 		}
 	});
 
-	const dashboardItems = [
+	// Grouped left-nav. Parent items expand to reveal child tabs (the Sidebar
+	// renders `children` as an accordion); children carry the real `tabId`.
+	// Home stays a standalone top-level item.
+	const NAV_ITEMS: SidebarItem[] = [
+		{ id: 'home', label: 'Dashboard', icon: Home, tabId: 'home', adminOnly: false },
 		{
-			id: 'home',
-			label: 'Dashboard',
-			icon: Home,
-			tabId: 'home',
-			adminOnly: false
+			id: 'site',
+			label: 'Site',
+			icon: Globe,
+			adminOnly: false,
+			children: [
+				{ id: 'website', label: 'Pages', icon: FileText, tabId: 'website', adminOnly: false },
+				{ id: 'media', label: 'Media', icon: Image, tabId: 'media', adminOnly: false },
+				{ id: 'social', label: 'Social', icon: Share2, tabId: 'social', adminOnly: true }
+			]
 		},
 		{
-			id: 'website',
-			label: 'Pages',
-			icon: FileText,
-			tabId: 'website',
-			adminOnly: false
+			id: 'workspace',
+			label: 'Workspace',
+			icon: Briefcase,
+			adminOnly: false,
+			children: [
+				{ id: 'tasks', label: 'Tasks', icon: ListTodo, tabId: 'tasks', adminOnly: true },
+				{ id: 'calendar', label: 'Calendar', icon: CalendarDays, tabId: 'calendar', adminOnly: true },
+				{ id: 'notes', label: 'Notes', icon: StickyNote, tabId: 'notes', adminOnly: true },
+				{ id: 'finances', label: 'Finances', icon: Landmark, tabId: 'finances', adminOnly: true }
+			]
 		},
 		{
-			id: 'media',
-			label: 'MediaLibrary',
-			icon: Image,
-			tabId: 'media',
-			adminOnly: false
+			id: 'toolbox',
+			label: 'Tools',
+			icon: Wrench,
+			adminOnly: false,
+			children: [
+				{ id: 'tools', label: 'Generators', icon: KeyRound, tabId: 'tools', adminOnly: true },
+				{ id: 'daedalus', label: 'Daedalus', icon: Shapes, tabId: 'daedalus', adminOnly: true },
+				{ id: 'audit', label: 'Audit', icon: Gauge, tabId: 'audit', adminOnly: true },
+				{ id: 'mockups', label: 'Mockups', icon: LayoutTemplate, tabId: 'mockups', adminOnly: true }
+			]
 		},
 		{
-			id: 'social',
-			label: 'Social',
-			icon: Share2,
-			tabId: 'social',
-			adminOnly: true
+			id: 'ops',
+			label: 'Ops',
+			icon: ServerCog,
+			adminOnly: false,
+			children: [
+				{ id: 'telemetry', label: 'Telemetry', icon: Activity, tabId: 'telemetry', adminOnly: true },
+				{ id: 'status', label: 'Status', icon: Signal, tabId: 'status', adminOnly: true },
+				{ id: 'email', label: 'Email', icon: Mail, tabId: 'email', adminOnly: true },
+				{ id: 'bifrost', label: 'Bifrost', icon: Bot, tabId: 'bifrost', adminOnly: true }
+			]
 		},
 		{
-			id: 'telemetry',
-			label: 'Telemetry',
-			icon: Activity,
-			tabId: 'telemetry',
-			adminOnly: true
+			id: 'admin',
+			label: 'Admin',
+			icon: ShieldCheck,
+			adminOnly: false,
+			children: [
+				{ id: 'settings', label: 'Settings', icon: Settings, tabId: 'settings', adminOnly: false },
+				{ id: 'users', label: 'Users', icon: Users, tabId: 'users', adminOnly: true }
+			]
 		}
 	];
+
+	// Hide admin-only children/items from non-admins; drop groups left empty.
+	const dashboardItems = $derived(
+		NAV_ITEMS.flatMap((item) => {
+			if ('children' in item && item.children) {
+				const children = item.children.filter((c) => isAdmin || !c.adminOnly);
+				return children.length ? [{ ...item, children }] : [];
+			}
+			return isAdmin || !item.adminOnly ? [item] : [];
+		})
+	);
 
 	const footerItems = [
 		{
@@ -245,7 +284,21 @@
 			{isAdmin}
 		/>
 
+		<!-- Mobile drawer backdrop: dims the page behind the open drawer and closes
+			it on tap. Sits below the mobile sidebar (z-60) but above content. Only
+			rendered on mobile while open. -->
+		{#if isMobile && isOpen}
+			<button
+				type="button"
+				class="dashboard-backdrop"
+				aria-label="Close menu"
+				onclick={() => (isOpen = false)}
+			></button>
+		{/if}
+
 		<DashboardNav {isOpen} {isMobile} {toggleSidebar} {supabase} height="4rem" />
+
+		<StatusBar {isOpen} {isMobile} />
 
 		<div class={`dashboard-main ${isMobile ? 'w-full' : isOpen ? 'ml-[15rem]' : 'ml-[4rem]'}`}>
 			<main class="dashboard-content">
@@ -280,6 +333,34 @@
 		transition: all 0.3s;
 		overflow-x: hidden;
 		max-width: 100%;
+	}
+
+	/* Mobile drawer backdrop — dims the page behind the open sidebar drawer and
+		captures taps to close it. Below the mobile sidebar (z-60), above content. */
+	.dashboard-backdrop {
+		position: fixed;
+		top: 4rem; /* below the navbar */
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 55;
+		width: 100%;
+		border: 0;
+		padding: 0;
+		margin: 0;
+		background-color: rgba(2, 6, 23, 0.6); /* slate-950 @ 60% */
+		backdrop-filter: blur(1px);
+		cursor: pointer;
+		animation: dashboard-backdrop-in 0.2s ease-out;
+	}
+
+	@keyframes dashboard-backdrop-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
 	.dashboard-content {

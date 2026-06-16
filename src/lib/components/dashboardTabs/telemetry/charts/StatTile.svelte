@@ -58,7 +58,7 @@
 	});
 </script>
 
-<div class="border border-slate-700 bg-slate-900 p-3">
+<div class="border border-slate-800 bg-slate-900/50 p-4">
 	<div class="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{label}</div>
 	<div class="my-1 font-mono text-2xl font-light {valueColor}">
 		{loading ? '…' : value}

@@ -165,6 +165,7 @@
 		height: var(--sbi-height);
 		font-size: var(--sbi-font-size);
 		font-weight: 500;
+		letter-spacing: 0.005em;
 		cursor: pointer;
 		text-align: left;
 		position: relative;
@@ -184,17 +185,29 @@
 
 		&:hover {
 			background-color: var(--sbi-hover-bg);
+			color: #f1f5f9; /* slate-100 — crisp on hover */
+		}
+
+		&:focus-visible {
+			outline: 1px solid var(--sbi-accent);
+			outline-offset: -1px;
 		}
 
 		&.active {
 			background-color: var(--sbi-active-bg);
 			color: var(--sbi-active-text);
+			font-weight: 600;
 		}
 
 		&:disabled {
 			opacity: 0.5;
 			cursor: not-allowed;
 		}
+	}
+
+	/* Brighten the icon on hover to match the label */
+	:global(.sbi-btn:hover .sbi-icon) {
+		color: #f1f5f9;
 	}
 
 	:global(.sbi-icon) {
@@ -263,7 +276,7 @@
 		transition:
 			transform var(--sbi-duration) ease,
 			color var(--sbi-duration) ease;
-		color: white;
+		color: var(--sbi-slate-400);
 		transform-origin: center;
 	}
 
@@ -313,14 +326,15 @@
 		}
 
 		.sbi-container {
-			border-left: 1px solid var(--sbi-slate-700) !important;
+			border-left: 1px solid var(--sbi-slate-800) !important;
+			transition: border-color var(--sbi-duration) ease;
 
 			&:hover {
 				border-left: 1px solid var(--sbi-accent) !important;
 			}
 
 			&:has(.sbi-btn.active) {
-				border-left: 1px solid var(--sbi-accent) !important;
+				border-left: 2px solid var(--sbi-accent) !important;
 			}
 		}
 	}

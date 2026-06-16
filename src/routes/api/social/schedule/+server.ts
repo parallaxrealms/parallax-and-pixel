@@ -1,12 +1,12 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
+import { PRIVATE_SUPABASE_KEY } from '$env/static/private';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { createClient } from '@supabase/supabase-js';
 import type { SchedulePostRequest } from '$lib/types/social';
 
 function getServiceClient() {
-	return createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SATORI_KEY, {
+	return createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_KEY, {
 		auth: { persistSession: false }
 	});
 }

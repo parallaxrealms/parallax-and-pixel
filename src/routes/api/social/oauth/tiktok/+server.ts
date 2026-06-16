@@ -1,6 +1,6 @@
 import { redirect, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { TIKTOK_CLIENT_KEY, PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
+import { TIKTOK_CLIENT_KEY, PRIVATE_SUPABASE_KEY } from '$env/static/private';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { createClient } from '@supabase/supabase-js';
 
@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 	if (!session?.user) throw error(401, 'Unauthorized');
 
 	// Verify admin
-	const supabase = createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SATORI_KEY, {
+	const supabase = createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_KEY, {
 		auth: { persistSession: false }
 	});
 	const { data: role } = await supabase

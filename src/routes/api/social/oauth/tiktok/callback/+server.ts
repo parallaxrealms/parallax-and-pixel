@@ -1,6 +1,6 @@
 import { redirect, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
+import { TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET, PRIVATE_SUPABASE_KEY } from '$env/static/private';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { createClient } from '@supabase/supabase-js';
 import { encryptCredentials } from '$lib/server/crypto';
@@ -77,7 +77,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 		const expiresAt = new Date(Date.now() + expiresIn * 1000).toISOString();
 
-		const supabase = createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SATORI_KEY, {
+		const supabase = createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_KEY, {
 			auth: { persistSession: false }
 		});
 

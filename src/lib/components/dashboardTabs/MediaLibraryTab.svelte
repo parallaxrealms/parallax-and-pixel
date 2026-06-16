@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { SvelteSet } from 'svelte/reactivity';
-	import { Button } from '$lib/components/shadcn/ui/button';
 	import {
 		Dialog,
 		DialogContent,
@@ -10,8 +9,6 @@
 		DialogDescription,
 		DialogFooter
 	} from '$lib/components/shadcn/ui/dialog';
-	import { Input } from '$lib/components/shadcn/ui/input';
-	import { Label } from '$lib/components/shadcn/ui/label';
 	import {
 		Grid3X3,
 		Grid2X2,
@@ -66,10 +63,10 @@
 
 	let gridClasses = $derived(
 		currentView === 'grid-small'
-			? 'grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'
+			? 'grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'
 			: currentView === 'grid-medium'
-				? 'grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-				: 'flex flex-col gap-4'
+				? 'grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+				: 'flex flex-col gap-3'
 	);
 
 	$effect(() => {
@@ -201,92 +198,170 @@
 	}
 </script>
 
-<div class="tab-header">
-	<div class="flex items-center justify-between">
-		<h1 class="font-rubik text-2xl text-slate-100">
-			<span class="text-accent-primary">Media</span> Library
-		</h1>
-		<div class="flex items-center gap-2">
-			<div class="flex gap-1 border-r border-slate-600 pr-3">
-				<Button
-					size="sm"
-					variant="outline"
+<div class="mx-auto max-w-6xl">
+	<header class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+		<div class="flex items-center gap-3">
+			<ImgIcon class="h-6 w-6 text-accent-primary" />
+			<div>
+				<h1 class="text-2xl font-bold text-white">Media Library</h1>
+				<p class="mt-0.5 text-sm text-slate-400">Upload and manage shared media assets.</p>
+			</div>
+		</div>
+		<div class="flex flex-wrap items-center gap-2">
+			<div class="flex gap-1 border-r border-slate-700 pr-2">
+				<button
+					type="button"
+					aria-label="Small grid"
 					onclick={() => (currentView = 'grid-small')}
-					class={currentView === 'grid-small' ? 'bg-accent-primary text-slate-900' : ''}
+					class="inline-flex h-9 w-9 items-center justify-center border transition {currentView ===
+					'grid-small'
+						? 'border-accent-primary bg-accent-primary text-slate-950'
+						: 'border-slate-700 bg-slate-800 text-slate-300 hover:text-accent-primary'}"
 				>
 					<Grid3X3 class="h-4 w-4" />
-				</Button>
-				<Button
-					size="sm"
-					variant="outline"
+				</button>
+				<button
+					type="button"
+					aria-label="Medium grid"
 					onclick={() => (currentView = 'grid-medium')}
-					class={currentView === 'grid-medium' ? 'bg-accent-primary text-slate-900' : ''}
+					class="inline-flex h-9 w-9 items-center justify-center border transition {currentView ===
+					'grid-medium'
+						? 'border-accent-primary bg-accent-primary text-slate-950'
+						: 'border-slate-700 bg-slate-800 text-slate-300 hover:text-accent-primary'}"
 				>
 					<Grid2X2 class="h-4 w-4" />
-				</Button>
-				<Button
-					size="sm"
-					variant="outline"
+				</button>
+				<button
+					type="button"
+					aria-label="List view"
 					onclick={() => (currentView = 'list')}
-					class={currentView === 'list' ? 'bg-accent-primary text-slate-900' : ''}
+					class="inline-flex h-9 w-9 items-center justify-center border transition {currentView ===
+					'list'
+						? 'border-accent-primary bg-accent-primary text-slate-950'
+						: 'border-slate-700 bg-slate-800 text-slate-300 hover:text-accent-primary'}"
 				>
 					<List class="h-4 w-4" />
-				</Button>
+				</button>
 			</div>
 
-			<Button size="sm" variant="outline" onclick={loadMedia} aria-label="Refresh">
+			<button
+				type="button"
+				onclick={loadMedia}
+				aria-label="Refresh"
+				class="inline-flex h-9 w-9 items-center justify-center border border-slate-700 bg-slate-800 text-slate-300 transition hover:text-accent-primary"
+			>
 				<RefreshCw class="h-4 w-4" />
-			</Button>
+			</button>
 
-			<Button onclick={() => (isUploadOpen = true)} class="bg-accent-primary text-slate-900 hover:bg-accent-highlight">
-				<Upload class="mr-2 h-4 w-4" />
-				<span class="font-terminal">Upload</span>
-			</Button>
+			<button
+				type="button"
+				onclick={() => (isUploadOpen = true)}
+				class="inline-flex items-center gap-2 bg-accent-primary px-4 py-2 text-sm font-medium text-slate-950 transition hover:opacity-90"
+			>
+				<Upload class="h-4 w-4" />
+				Upload
+			</button>
 		</div>
-	</div>
-</div>
+	</header>
 
-<div class="mb-4 flex flex-wrap items-center gap-3 text-slate-100">
-	<div class="flex items-center gap-2">
-		<Label class="font-terminal text-sm">Folder</Label>
-		<Input
-			class="h-8 w-56 border-slate-700 bg-slate-800"
-			placeholder="e.g. products"
-			bind:value={folder}
-			onchange={loadMedia}
-		/>
+	<div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+		<div class="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
+			<label for="media-folder" class="text-xs font-medium uppercase tracking-wider text-slate-400"
+				>Folder</label
+			>
+			<input
+				id="media-folder"
+				class="w-full border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-accent-primary focus:outline-none sm:w-56"
+				placeholder="e.g. products"
+				bind:value={folder}
+				onchange={loadMedia}
+			/>
+		</div>
+		<div class="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
+			<label for="media-search" class="text-xs font-medium uppercase tracking-wider text-slate-400"
+				>Search</label
+			>
+			<input
+				id="media-search"
+				class="w-full border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-accent-primary focus:outline-none sm:w-72"
+				placeholder="filename…"
+				bind:value={search}
+				oninput={loadMedia}
+			/>
+		</div>
+		{#if selected.size}
+			<div class="shrink-0 text-xs text-slate-300">{selected.size} selected</div>
+		{/if}
 	</div>
-	<div class="flex items-center gap-2">
-		<Label class="font-terminal text-sm">Search</Label>
-		<Input
-			class="h-8 w-72 border-slate-700 bg-slate-800"
-			placeholder="filename…"
-			bind:value={search}
-			oninput={loadMedia}
-		/>
-	</div>
-	{#if selected.size}
-		<div class="font-terminal text-xs text-slate-300">{selected.size} selected</div>
-	{/if}
-</div>
 
-{#if isLoading}
-	<div class="flex h-[40vh] items-center justify-center">
-		<DiamondSpinner size="lg" text="Loading media..." />
-	</div>
-{:else if error}
-	<div class="my-4 border border-red-500/50 bg-red-900/30 p-4 text-red-200">{error}</div>
-{:else if items.length === 0}
-	<p class="font-terminal mt-8 text-center text-slate-400">No media found.</p>
-{:else}
-	<div class={gridClasses}>
-		{#each items as it (it.id)}
-			{#if currentView === 'list'}
-				<div
-					class="flex items-center justify-between border border-slate-700/50 bg-slate-900/80 p-3"
-				>
-					<div class="flex items-center gap-3">
-						<div class="h-12 w-16 overflow-hidden bg-slate-700/70">
+	{#if isLoading}
+		<div class="flex h-[40vh] items-center justify-center">
+			<DiamondSpinner size="lg" text="Loading media..." />
+		</div>
+	{:else if error}
+		<div class="my-4 border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-300">{error}</div>
+	{:else if items.length === 0}
+		<div class="border border-slate-800 bg-slate-900/50 px-4 py-12 text-center text-sm text-slate-500">
+			No media found.
+		</div>
+	{:else}
+		<div class={gridClasses}>
+			{#each items as it (it.id)}
+				{#if currentView === 'list'}
+					<div
+						class="flex flex-col gap-3 border border-slate-800 bg-slate-900/50 p-3 sm:flex-row sm:items-center sm:justify-between"
+					>
+						<div class="flex min-w-0 items-center gap-3">
+							<div class="h-12 w-16 shrink-0 overflow-hidden border border-slate-700 bg-slate-800">
+								{#if it.type === 'image'}
+									<img
+										src={it.publicUrl}
+										alt={it.name}
+										class="h-full w-full object-cover"
+										loading="lazy"
+									/>
+								{:else if it.type === 'video'}
+									<Video class="m-2 h-8 w-8 text-slate-400" />
+								{:else}
+									<ImgIcon class="m-2 h-8 w-8 text-slate-400" />
+								{/if}
+							</div>
+							<div class="min-w-0">
+								<p class="truncate text-sm text-slate-200">{it.name}</p>
+								<p class="text-xs text-slate-500">
+									{it.updated_at?.slice(0, 10)} · {(it.size / 1024).toFixed(1)} KB
+								</p>
+							</div>
+						</div>
+						<div class="flex shrink-0 items-center gap-2">
+							<button
+								type="button"
+								onclick={() => copy(it.publicUrl, it.id)}
+								class="inline-flex items-center gap-1.5 border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-300 transition hover:text-accent-primary"
+							>
+								{#if copiedId === it.id}
+									<Check class="h-3.5 w-3.5 text-emerald-400" /> Copied
+								{:else}
+									<Copy class="h-3.5 w-3.5" /> Copy URL
+								{/if}
+							</button>
+							<button
+								type="button"
+								aria-label="Delete"
+								class="inline-flex items-center gap-1.5 border border-red-500/40 bg-red-500/10 px-3 py-2 text-xs text-red-300 transition hover:bg-red-500/20"
+								onclick={() => remove(it.id)}
+							>
+								<Trash2 class="h-4 w-4" />
+							</button>
+						</div>
+					</div>
+				{:else}
+					<button
+						type="button"
+						class="group relative overflow-hidden border border-slate-800 bg-slate-900/50 p-2 text-left transition hover:border-accent-primary"
+						onclick={() => toggleSelect(it.id)}
+					>
+						<div class="relative aspect-square w-full overflow-hidden border border-slate-800 bg-slate-800">
 							{#if it.type === 'image'}
 								<img
 									src={it.publicUrl}
@@ -295,116 +370,93 @@
 									loading="lazy"
 								/>
 							{:else if it.type === 'video'}
-								<Video class="m-2 h-8 w-8 text-slate-300" />
+								<video src={it.publicUrl} class="h-full w-full object-cover" muted></video>
 							{:else}
-								<ImgIcon class="m-2 h-8 w-8 text-slate-300" />
+								<div class="flex h-full items-center justify-center">
+									<ImgIcon class="h-10 w-10 text-slate-400" />
+								</div>
+							{/if}
+							{#if selected.has(it.id)}
+								<div class="absolute inset-0 flex items-center justify-center bg-accent-primary/40">
+									<Check class="h-7 w-7 text-white" />
+								</div>
 							{/if}
 						</div>
-						<div class="min-w-0">
-							<p class="font-terminal truncate text-slate-100">{it.name}</p>
-							<p class="font-terminal text-xs text-slate-400">
-								{it.updated_at?.slice(0, 10)} · {(it.size / 1024).toFixed(1)} KB
-							</p>
-						</div>
-					</div>
-					<div class="flex items-center gap-2">
-						<Button variant="outline" size="sm" onclick={() => copy(it.publicUrl, it.id)}>
-							{#if copiedId === it.id}
-								<Check class="mr-1 h-3 w-3 text-green-400" /> Copied
-							{:else}
-								<Copy class="mr-1 h-3 w-3" /> Copy URL
-							{/if}
-						</Button>
-						<Button
-							variant="ghost"
-							size="sm"
-							class="text-red-400 hover:bg-red-500/10"
-							onclick={() => remove(it.id)}
-						>
-							<Trash2 class="h-4 w-4" />
-						</Button>
-					</div>
-				</div>
-			{:else}
-				<button
-					type="button"
-					class="group relative overflow-hidden border border-slate-700/50 bg-slate-900/80 p-2 text-left transition hover:border-accent-primary"
-					onclick={() => toggleSelect(it.id)}
-				>
-					<div class="relative h-36 w-full bg-slate-700/70">
-						{#if it.type === 'image'}
-							<img
-								src={it.publicUrl}
-								alt={it.name}
-								class="h-full w-full object-cover"
-								loading="lazy"
-							/>
-						{:else if it.type === 'video'}
-							<video src={it.publicUrl} class="h-full w-full object-cover" muted></video>
-						{:else}
-							<div class="flex h-full items-center justify-center">
-								<ImgIcon class="h-10 w-10 text-slate-300" />
+						<div class="mt-2 flex items-center justify-between gap-2">
+							<p class="min-w-0 truncate text-sm text-slate-200" title={it.name}>{it.name}</p>
+							<div class="flex shrink-0 gap-1">
+								<span
+									role="button"
+									tabindex="0"
+									aria-label="Copy URL"
+									class="inline-flex h-8 w-8 items-center justify-center border border-slate-700 bg-slate-800 text-slate-300 transition hover:text-accent-primary"
+									onclick={(e: MouseEvent) => {
+										e.stopPropagation();
+										copy(it.publicUrl, it.id);
+									}}
+									onkeydown={(e: KeyboardEvent) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											e.preventDefault();
+											e.stopPropagation();
+											copy(it.publicUrl, it.id);
+										}
+									}}
+								>
+									{#if copiedId === it.id}
+										<Check class="h-4 w-4 text-emerald-400" />
+									{:else}
+										<Copy class="h-4 w-4" />
+									{/if}
+								</span>
+								<span
+									role="button"
+									tabindex="0"
+									aria-label="Delete"
+									class="inline-flex h-8 w-8 items-center justify-center border border-red-500/40 bg-red-500/10 text-red-300 transition hover:bg-red-500/20"
+									onclick={(e: MouseEvent) => {
+										e.stopPropagation();
+										remove(it.id);
+									}}
+									onkeydown={(e: KeyboardEvent) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											e.preventDefault();
+											e.stopPropagation();
+											remove(it.id);
+										}
+									}}
+								>
+									<Trash2 class="h-4 w-4" />
+								</span>
 							</div>
-						{/if}
-						{#if selected.has(it.id)}
-							<div class="absolute inset-0 flex items-center justify-center bg-accent-primary/40">
-								<Check class="h-7 w-7 text-white" />
-							</div>
-						{/if}
-					</div>
-					<div class="mt-2 flex items-center justify-between">
-						<p class="font-terminal truncate text-sm text-slate-100" title={it.name}>{it.name}</p>
-						<div class="flex gap-1">
-							<Button
-								variant="outline"
-								size="icon"
-								class="h-8 w-8"
-								onclick={(e: MouseEvent) => {
-									e.stopPropagation();
-									copy(it.publicUrl, it.id);
-								}}
-							>
-								{#if copiedId === it.id}
-									<Check class="h-4 w-4 text-green-400" />
-								{:else}
-									<Copy class="h-4 w-4" />
-								{/if}
-							</Button>
-							<Button
-								variant="ghost"
-								size="icon"
-								class="h-8 w-8 text-red-400 hover:bg-red-500/10"
-								onclick={(e: MouseEvent) => {
-									e.stopPropagation();
-									remove(it.id);
-								}}
-							>
-								<Trash2 class="h-4 w-4" />
-							</Button>
 						</div>
-					</div>
-				</button>
-			{/if}
-		{/each}
-	</div>
-{/if}
+					</button>
+				{/if}
+			{/each}
+		</div>
+	{/if}
+</div>
 
 <!-- Upload dialog -->
 <Dialog bind:open={isUploadOpen}>
 	<DialogContent
-		class="max-w-lg border border-slate-700 bg-slate-800 p-4 text-slate-100"
+		class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-none border border-slate-700 bg-slate-900 p-4 text-slate-100"
 	>
 		<DialogHeader>
-			<DialogTitle class="font-rubik">Upload Media</DialogTitle>
-			<DialogDescription class="font-terminal text-slate-400">
+			<DialogTitle class="text-lg font-bold text-white">Upload Media</DialogTitle>
+			<DialogDescription class="text-sm text-slate-400">
 				Files go to bucket "media_library"{folder ? ` / ${folder}` : ''}.
 			</DialogDescription>
 		</DialogHeader>
 
-		<div class="space-y-3">
-			<div>
-				<Label class="font-terminal">Target folder</Label>
-				<Input class="border-slate-600 bg-slate-700" bind:value={folder} placeholder="optional subfolder" />
+		<div class="space-y-3 py-2">
+			<div class="flex flex-col gap-1.5">
+				<label for="upload-folder" class="text-sm text-slate-300">Target folder</label>
+				<input
+					id="upload-folder"
+					class="w-full border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-accent-primary focus:outline-none"
+					bind:value={folder}
+					placeholder="optional subfolder"
+				/>
 			</div>
 			<div>
 				<input
@@ -412,27 +464,27 @@
 					accept="image/*,video/*"
 					multiple
 					onchange={(e: Event) => (filesToUpload = (e.target as HTMLInputElement).files)}
-					class="font-terminal w-full border border-slate-600 bg-slate-700 p-2"
+					class="w-full border border-slate-700 bg-slate-900 p-2 text-sm text-slate-300 file:mr-3 file:border-0 file:bg-slate-800 file:px-3 file:py-1 file:text-sm file:text-slate-300"
 				/>
 			</div>
 		</div>
 
-		<DialogFooter class="mt-4">
-			<Button variant="outline" onclick={() => (isUploadOpen = false)}>Cancel</Button>
-			<Button
+		<DialogFooter class="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-end">
+			<button
+				type="button"
+				onclick={() => (isUploadOpen = false)}
+				class="inline-flex items-center justify-center gap-2 border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-300 transition hover:text-accent-primary"
+			>
+				Cancel
+			</button>
+			<button
+				type="button"
 				onclick={upload}
 				disabled={!filesToUpload || filesToUpload.length === 0}
-				class="bg-accent-primary text-slate-900 hover:bg-accent-highlight"
+				class="inline-flex items-center justify-center gap-2 bg-accent-primary px-4 py-2 text-sm font-medium text-slate-950 transition hover:opacity-90 disabled:opacity-60"
 			>
-				<Upload class="mr-2 h-4 w-4" /> Upload
-			</Button>
+				<Upload class="h-4 w-4" /> Upload
+			</button>
 		</DialogFooter>
 	</DialogContent>
 </Dialog>
-
-<style lang="postcss">
-	@reference "tailwindcss";
-	.tab-header {
-		@apply my-8 border border-slate-700/50 bg-gradient-to-r from-slate-900/90 to-slate-800/90 p-6 shadow-xl backdrop-blur-sm;
-	}
-</style>

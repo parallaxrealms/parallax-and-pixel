@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import { createClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
-import { PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
+import { PRIVATE_SUPABASE_KEY } from '$env/static/private';
 import { decryptCredentials } from '$lib/server/crypto';
 import { postToPlatform } from '$lib/server/social/router';
 import type { SocialIntegration } from '$lib/types/social';
@@ -10,7 +10,7 @@ import type { PostPayload } from '$lib/server/social/types';
 let initialized = false;
 
 function getServiceClient() {
-	return createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SATORI_KEY, {
+	return createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_KEY, {
 		auth: { persistSession: false }
 	});
 }

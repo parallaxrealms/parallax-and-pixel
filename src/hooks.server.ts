@@ -1,4 +1,5 @@
 import { initCronJobs } from '$lib/server/cron'
+import { startAuditWorker } from '$lib/server/audit/worker'
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public'
 import { createServerClient } from '@supabase/ssr'
 import { redirect, type Handle } from '@sveltejs/kit'
@@ -18,6 +19,10 @@ initCronJobs()
 // build's analyse phase so Coolify build-time env can't start an exporter.
 if (!building) {
   initTelemetry({ serviceName: process.env.OTEL_SERVICE_NAME ?? 'parallax-and-pixel' })
+  // Durable website-audit worker: polls claim_next_audit() and runs queued
+  // audits (scoring + PDF render). Idempotent + timers unref'd; no-op until a
+  // row is enqueued via /api/admin/audit/run.
+  startAuditWorker()
 }
 
 // Create JWKS for asymmetric JWT verification

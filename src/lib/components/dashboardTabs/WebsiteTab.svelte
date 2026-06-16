@@ -1,11 +1,6 @@
 <script lang="ts">
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import type { Page } from '$lib';
-	import { Button } from '@parallaxrealms/pxp-components';
-	import * as Card from '@parallaxrealms/pxp-components/shadcn/card';
-	import { Input } from '@parallaxrealms/pxp-components/shadcn/input';
-	import { Label } from '@parallaxrealms/pxp-components/shadcn/label';
-	import * as Dialog from '@parallaxrealms/pxp-components/shadcn/dialog';
 	import DiamondSpinner from '$lib/components/custom/loader/DiamondSpinner.svelte';
 	// No icons - text-only design
 	import { goto } from '$app/navigation';
@@ -177,665 +172,281 @@
 		}
 	}
 
-	function getStatusBadgeClass(status: string) {
+	function getStatusBadgeClass(status: string): string {
 		switch (status) {
 			case 'published':
-				return 'status-published';
+				return 'bg-emerald-500/15 text-emerald-400';
 			case 'draft':
-				return 'status-draft';
+				return 'bg-amber-500/15 text-amber-400';
 			case 'scheduled':
-				return 'status-scheduled';
+				return 'bg-accent-primary/20 text-accent-primary';
 			default:
-				return 'status-default';
+				return 'bg-slate-700 text-slate-300';
 		}
 	}
 </script>
 
-<div class="website-tab">
+<div class="mx-auto max-w-6xl">
 	<!-- Header -->
-	<div class="header-section">
-		<h1 class="text-2xl md:text-3xl">
-			<span class="font-rubik text-accent-primary">Pages</span>
-			<span class="text-slate-500">&</span>
-			<span class="font-fade text-accent-highlight">Links</span>
-		</h1>
-		<p class="font-terminal mt-1 text-slate-400">
-			Manage your blog posts and navigation
-		</p>
-	</div>
+	<header class="mb-6">
+		<h1 class="text-2xl font-bold text-white">Pages &amp; Links</h1>
+		<p class="mt-1 text-sm text-slate-400">Manage your blog posts and navigation.</p>
+	</header>
 
 	{#if loading}
-		<div class="loading-container">
+		<div class="flex items-center justify-center py-16">
 			<DiamondSpinner size="lg" text="Loading..." />
 		</div>
 	{:else if error}
-		<div class="cyber-alert">
-			<span class="font-terminal text-accent-highlight">ERROR:</span>
-			<span class="font-terminal ml-2">{error}</span>
-			<button type="button" onclick={loadData} class="retry-btn">Retry</button>
+		<div class="flex flex-col gap-2 border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300 sm:flex-row sm:items-center">
+			<span><span class="font-semibold">ERROR:</span> {error}</span>
+			<button
+				type="button"
+				onclick={loadData}
+				class="inline-flex items-center justify-center border border-red-500/40 bg-red-500/10 px-3 py-1.5 text-xs text-red-300 transition hover:bg-red-500/20 sm:ml-auto"
+			>
+				Retry
+			</button>
 		</div>
 	{:else}
-		<div class="content-grid">
-			<!-- Pages Section -->
-			<div class="section-card">
-				<div class="section-header">
-					<h2 class="font-fade text-lg text-accent-primary">Blog Posts</h2>
-					<button type="button" onclick={() => (showAddPageDialog = true)} class="add-btn">
-						<span class="font-terminal">+ New Post</span>
-					</button>
-				</div>
+		<!-- Pages Section -->
+		<div class="border border-slate-800 bg-slate-900/50 p-4">
+			<div class="mb-4 flex flex-col gap-3 border-b border-slate-800 pb-3 sm:flex-row sm:items-center sm:justify-between">
+				<h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Blog Posts</h2>
+				<button
+					type="button"
+					onclick={() => (showAddPageDialog = true)}
+					class="inline-flex items-center justify-center gap-2 bg-accent-primary px-4 py-2 text-sm font-medium text-slate-950 transition hover:opacity-90"
+				>
+					+ New Post
+				</button>
+			</div>
 
-				{#if pages.length === 0}
-					<div class="empty-state">
-						<p class="font-terminal text-lg text-slate-500">No pages yet</p>
-					</div>
-				{:else}
-					<div class="items-list">
-						{#each customPages as page (page.id)}
-							<div class="page-item">
-								<div class="page-info">
-									<div class="page-header">
-										<span class="font-terminal page-title">{page.title}</span>
-										<span class="status-badge {getStatusBadgeClass(page.status)}">{page.status}</span>
-										{#if page.status === 'scheduled' && page.page_options?.scheduled_at}
-											<span class="font-terminal text-xs text-slate-500">{new Date(page.page_options.scheduled_at as string).toLocaleString()}</span>
-										{/if}
-									</div>
-									<span class="font-terminal page-slug">/blog/{page.slug}</span>
+			{#if pages.length === 0}
+				<div class="border border-slate-800 bg-slate-900/50 px-4 py-12 text-center text-sm text-slate-500">
+					No pages yet
+				</div>
+			{:else}
+				<div class="flex flex-col gap-2">
+					{#each customPages as page (page.id)}
+						<div class="flex flex-col gap-3 border border-slate-800 bg-slate-950 p-3 transition hover:bg-slate-900/60 sm:flex-row sm:items-center sm:justify-between">
+							<div class="min-w-0 flex-1">
+								<div class="flex flex-wrap items-center gap-2">
+									<span class="truncate text-sm font-medium text-white">{page.title}</span>
+									<span class="inline-block px-2 py-0.5 text-xs font-medium uppercase tracking-wider {getStatusBadgeClass(page.status)}">{page.status}</span>
+									{#if page.status === 'scheduled' && page.page_options?.scheduled_at}
+										<span class="text-xs text-slate-500">{new Date(page.page_options.scheduled_at as string).toLocaleString()}</span>
+									{/if}
 								</div>
-								<div class="page-actions">
+								<span class="mt-0.5 block truncate text-xs text-slate-500">/blog/{page.slug}</span>
+							</div>
+							<div class="flex shrink-0 flex-wrap gap-2">
+								<button
+									type="button"
+									onclick={() => goto(`/editor/${page.slug}`)}
+									class="inline-flex items-center justify-center border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-300 transition hover:text-accent-primary disabled:opacity-60"
+									aria-label="Edit"
+									disabled={!!$navigating}
+								>
+									{#if $navigating?.to?.url.pathname === `/editor/${page.slug}`}<span class="animate-pulse text-accent-primary">...</span>{:else}Edit{/if}
+								</button>
+								{#if page.status === 'published'}
 									<button
 										type="button"
-										onclick={() => goto(`/editor/${page.slug}`)}
-										class="action-btn edit font-terminal text-xs"
-										aria-label="Edit"
-										disabled={!!$navigating}
+										onclick={() => goto(`/blog/${page.slug}`)}
+										class="inline-flex items-center justify-center border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-300 transition hover:text-accent-primary"
+										aria-label="View"
 									>
-										{#if $navigating?.to?.url.pathname === `/editor/${page.slug}`}<span class="loading-dots">...</span>{:else}Edit{/if}
+										View
 									</button>
-									{#if page.status === 'published'}
-										<button
-											type="button"
-											onclick={() => goto(`/blog/${page.slug}`)}
-											class="action-btn view font-terminal text-xs"
-											aria-label="View"
-										>
-											View
-										</button>
-									{/if}
+								{/if}
+								<button
+									type="button"
+									onclick={() => openPageSettingsDialog(page)}
+									class="inline-flex items-center justify-center border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-300 transition hover:text-accent-primary"
+									aria-label="Settings"
+								>
+									Set
+								</button>
+								<button
+									type="button"
+									onclick={() => deletePage(page)}
+									class="inline-flex items-center justify-center border border-red-500/40 bg-red-500/10 px-3 py-1.5 text-xs text-red-300 transition hover:bg-red-500/20"
+									aria-label="Delete"
+								>
+									Del
+								</button>
+							</div>
+						</div>
+					{/each}
+
+					{#if staticPages.length > 0}
+						<div class="my-2 border-t border-dashed border-slate-800 pt-3">
+							<span class="text-xs uppercase tracking-wider text-slate-500">Static Pages</span>
+						</div>
+						{#each staticPages as page (page.id)}
+							<div class="flex flex-col gap-3 border border-slate-800 bg-slate-950 p-3 opacity-70 transition hover:bg-slate-900/60 sm:flex-row sm:items-center sm:justify-between">
+								<div class="min-w-0 flex-1">
+									<div class="flex flex-wrap items-center gap-2">
+										<span class="truncate text-sm font-medium text-white">{page.title}</span>
+										<span class="inline-block px-2 py-0.5 text-xs font-medium uppercase tracking-wider {getStatusBadgeClass(page.status)}">{page.status}</span>
+									</div>
+									<span class="mt-0.5 block truncate text-xs text-slate-500">/{page.slug || '(home)'}</span>
+								</div>
+								<div class="flex shrink-0 flex-wrap gap-2">
+									<button
+										type="button"
+										onclick={() => goto(`/${page.slug}`)}
+										class="inline-flex items-center justify-center border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-300 transition hover:text-accent-primary"
+										aria-label="View"
+									>
+										View
+									</button>
 									<button
 										type="button"
 										onclick={() => openPageSettingsDialog(page)}
-										class="action-btn settings font-terminal text-xs"
+										class="inline-flex items-center justify-center border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-300 transition hover:text-accent-primary"
 										aria-label="Settings"
 									>
 										Set
 									</button>
-									<button
-										type="button"
-										onclick={() => deletePage(page)}
-										class="action-btn delete font-terminal text-xs"
-										aria-label="Delete"
-									>
-										Del
-									</button>
 								</div>
 							</div>
 						{/each}
-
-						{#if staticPages.length > 0}
-							<div class="divider">
-								<span class="font-terminal text-xs text-accent-secondary">Static Pages</span>
-							</div>
-							{#each staticPages as page (page.id)}
-								<div class="page-item static">
-									<div class="page-info">
-										<div class="page-header">
-											<span class="font-terminal page-title">{page.title}</span>
-											<span class="status-badge {getStatusBadgeClass(page.status)}">{page.status}</span>
-										</div>
-										<span class="font-terminal page-slug">/{page.slug || '(home)'}</span>
-									</div>
-									<div class="page-actions">
-										<button
-											type="button"
-											onclick={() => goto(`/${page.slug}`)}
-											class="action-btn view font-terminal text-xs"
-											aria-label="View"
-										>
-											View
-										</button>
-										<button
-											type="button"
-											onclick={() => openPageSettingsDialog(page)}
-											class="action-btn settings font-terminal text-xs"
-											aria-label="Settings"
-										>
-											Set
-										</button>
-									</div>
-								</div>
-							{/each}
-						{/if}
-					</div>
-				{/if}
-			</div>
+					{/if}
+				</div>
+			{/if}
 		</div>
 	{/if}
 </div>
 
 <!-- Add Page Dialog -->
-<Dialog.Root bind:open={showAddPageDialog}>
-	<Dialog.Content class="dialog-content">
-		<Dialog.Header>
-			<Dialog.Title class="font-rubik text-accent-primary">New Blog Post</Dialog.Title>
-			<Dialog.Description class="font-terminal">Create a new blog post.</Dialog.Description>
-		</Dialog.Header>
-		<div class="dialog-body">
-			<div class="form-group">
-				<Label for="page-title" class="font-terminal">Title</Label>
-				<Input id="page-title" placeholder="e.g. My First Post" bind:value={newPageTitle} class="cyber-input" />
+{#if showAddPageDialog}
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+		<button
+			type="button"
+			aria-label="Close dialog"
+			class="absolute inset-0 cursor-default"
+			onclick={() => {
+				showAddPageDialog = false;
+				resetNewPageForm();
+			}}
+		></button>
+		<div class="relative z-10 max-h-[90vh] w-full max-w-lg overflow-y-auto border border-slate-700 bg-slate-900 p-6">
+			<header class="mb-4">
+				<h2 class="text-lg font-bold text-white">New Blog Post</h2>
+				<p class="mt-0.5 text-sm text-slate-400">Create a new blog post.</p>
+			</header>
+			<div class="flex flex-col gap-4">
+				<div class="flex flex-col gap-1.5">
+					<label for="page-title" class="text-sm text-slate-300">Title</label>
+					<input
+						id="page-title"
+						placeholder="e.g. My First Post"
+						bind:value={newPageTitle}
+						class="w-full border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-accent-primary focus:outline-none"
+					/>
+				</div>
+				<div class="flex flex-col gap-1.5">
+					<label for="page-slug" class="text-sm text-slate-300">URL Slug</label>
+					<input
+						id="page-slug"
+						placeholder="e.g. my-first-post"
+						bind:value={newPageSlug}
+						oninput={() => (slugManuallyEdited = true)}
+						class="w-full border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-accent-primary focus:outline-none"
+					/>
+					<p class="text-xs text-slate-500">/blog/{newPageSlug || 'slug'}</p>
+				</div>
+				<div class="flex flex-col gap-1.5">
+					<label for="page-description" class="text-sm text-slate-300">Meta Description (optional)</label>
+					<textarea
+						id="page-description"
+						placeholder="Brief description for search engines..."
+						bind:value={newPageDescription}
+						rows={2}
+						class="w-full resize-y border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-accent-primary focus:outline-none"
+					></textarea>
+				</div>
 			</div>
-			<div class="form-group">
-				<Label for="page-slug" class="font-terminal">URL Slug</Label>
-				<Input
-					id="page-slug"
-					placeholder="e.g. my-first-post"
-					bind:value={newPageSlug}
-					oninput={() => (slugManuallyEdited = true)}
-					class="cyber-input"
-				/>
-				<p class="font-terminal text-xs text-slate-500 mt-1">/blog/{newPageSlug || 'slug'}</p>
-			</div>
-			<div class="form-group">
-				<Label for="page-description" class="font-terminal">Meta Description (optional)</Label>
-				<textarea
-					id="page-description"
-					placeholder="Brief description for search engines..."
-					bind:value={newPageDescription}
-					rows={2}
-					class="cyber-textarea"
-				></textarea>
+			<div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+				<button
+					type="button"
+					onclick={() => {
+						showAddPageDialog = false;
+						resetNewPageForm();
+					}}
+					class="inline-flex items-center justify-center border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-300 transition hover:text-accent-primary"
+				>
+					Cancel
+				</button>
+				<button
+					type="button"
+					onclick={addPage}
+					disabled={!newPageTitle.trim() || !newPageSlug.trim()}
+					class="inline-flex items-center justify-center bg-accent-primary px-4 py-2 text-sm font-medium text-slate-950 transition hover:opacity-90 disabled:opacity-60"
+				>
+					Create &amp; Edit
+				</button>
 			</div>
 		</div>
-		<Dialog.Footer>
-			<Button
-				variant="outlined"
-				onclick={() => {
-					showAddPageDialog = false;
-					resetNewPageForm();
-				}}
-			>
-				Cancel
-			</Button>
-			<Button onclick={addPage} disabled={!newPageTitle.trim() || !newPageSlug.trim()} class="primary-btn">
-				Create & Edit
-			</Button>
-		</Dialog.Footer>
-	</Dialog.Content>
-</Dialog.Root>
+	</div>
+{/if}
 
 <!-- Page Settings Dialog -->
-<Dialog.Root bind:open={showPageSettingsDialog}>
-	<Dialog.Content class="dialog-content">
-		<Dialog.Header>
-			<Dialog.Title class="font-rubik text-accent-secondary">Page Settings</Dialog.Title>
-			<Dialog.Description class="font-terminal">{editingPage?.title}</Dialog.Description>
-		</Dialog.Header>
-		<div class="dialog-body">
-			{#if editingPage?.is_static}
-				<div class="static-warning">
-					<span class="font-terminal text-sm text-accent-secondary">Static page - URL cannot be changed</span>
+{#if showPageSettingsDialog}
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+		<button
+			type="button"
+			aria-label="Close dialog"
+			class="absolute inset-0 cursor-default"
+			onclick={() => {
+				showPageSettingsDialog = false;
+				editingPage = null;
+			}}
+		></button>
+		<div class="relative z-10 max-h-[90vh] w-full max-w-lg overflow-y-auto border border-slate-700 bg-slate-900 p-6">
+			<header class="mb-4">
+				<h2 class="text-lg font-bold text-white">Page Settings</h2>
+				<p class="mt-0.5 text-sm text-slate-400">{editingPage?.title}</p>
+			</header>
+			<div class="flex flex-col gap-4">
+				{#if editingPage?.is_static}
+					<div class="border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-400">
+						Static page - URL cannot be changed
+					</div>
+				{/if}
+				<div class="flex flex-col gap-1.5">
+					<label for="settings-meta-description" class="text-sm text-slate-300">Meta Description</label>
+					<textarea
+						id="settings-meta-description"
+						placeholder="Brief description for search engines..."
+						bind:value={editPageMetaDescription}
+						rows={3}
+						class="w-full resize-y border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-accent-primary focus:outline-none"
+					></textarea>
+					<p class="text-xs text-slate-500">Used by search engines</p>
 				</div>
-			{/if}
-			<div class="form-group">
-				<Label for="settings-meta-description" class="font-terminal">Meta Description</Label>
-				<textarea
-					id="settings-meta-description"
-					placeholder="Brief description for search engines..."
-					bind:value={editPageMetaDescription}
-					rows={3}
-					class="cyber-textarea"
-				></textarea>
-				<p class="font-terminal text-xs text-slate-500 mt-1">Used by search engines</p>
+			</div>
+			<div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+				<button
+					type="button"
+					onclick={() => {
+						showPageSettingsDialog = false;
+						editingPage = null;
+					}}
+					class="inline-flex items-center justify-center border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-300 transition hover:text-accent-primary"
+				>
+					Cancel
+				</button>
+				<button
+					type="button"
+					onclick={updatePageSettings}
+					class="inline-flex items-center justify-center bg-accent-primary px-4 py-2 text-sm font-medium text-slate-950 transition hover:opacity-90"
+				>
+					Save Settings
+				</button>
 			</div>
 		</div>
-		<Dialog.Footer>
-			<Button
-				variant="outlined"
-				onclick={() => {
-					showPageSettingsDialog = false;
-					editingPage = null;
-				}}
-			>
-				Cancel
-			</Button>
-			<Button onclick={updatePageSettings} class="primary-btn">Save Settings</Button>
-		</Dialog.Footer>
-	</Dialog.Content>
-</Dialog.Root>
-
-<style>
-	.website-tab {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		max-width: 1200px;
-		margin: 0 auto;
-	}
-
-	.header-section {
-		text-align: center;
-		padding: 1rem 0;
-	}
-
-	/* Loading */
-	.loading-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 4rem;
-	}
-
-	/* Error */
-	.cyber-alert {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 1rem;
-		border: 1px solid var(--accent-highlight);
-		background: rgba(255, 0, 255, 0.1);
-		border-radius: 0.5rem;
-	}
-
-	.retry-btn {
-		margin-left: auto;
-		padding: 0.25rem 0.75rem;
-		background: var(--accent-highlight);
-		color: #000;
-		border: none;
-		border-radius: 0.25rem;
-		font-family: 'Space Mono', monospace;
-		cursor: pointer;
-	}
-
-	/* Content Grid */
-	.content-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 1.5rem;
-	}
-
-	@media (min-width: 1024px) {
-		.content-grid {
-			grid-template-columns: 1fr 1fr;
-		}
-	}
-
-	/* Section Card */
-	.section-card {
-		background: rgba(23, 23, 23, 0.5);
-		border: 1px solid #3f3f46;
-		border-radius: 0.75rem;
-		padding: 1.25rem;
-		backdrop-filter: blur(10px);
-	}
-
-	.section-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 1rem;
-		padding-bottom: 0.75rem;
-		border-bottom: 1px solid #3f3f46;
-	}
-
-	.section-title-group {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	/* Add Button */
-	.add-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.25rem;
-		padding: 0.5rem 0.75rem;
-		background: var(--accent-primary);
-		color: #000;
-		border: none;
-		border-radius: 0.375rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: all 0.2s;
-	}
-
-	.add-btn:hover {
-		background: var(--accent-highlight);
-		transform: translateY(-1px);
-	}
-
-	.add-btn.secondary {
-		background: transparent;
-		color: var(--accent-highlight);
-		border: 1px solid var(--accent-highlight);
-	}
-
-	.add-btn.secondary:hover {
-		background: rgba(255, 0, 255, 0.1);
-	}
-
-	/* Empty State */
-	.empty-state {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 2rem;
-		gap: 0.5rem;
-	}
-
-	/* Items List */
-	.items-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	/* Page Item */
-	.page-item {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0.75rem;
-		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid #3f3f46;
-		border-radius: 0.5rem;
-		transition: all 0.2s;
-	}
-
-	.page-item:hover {
-		border-color: var(--accent-primary);
-		background: rgba(0, 255, 255, 0.05);
-	}
-
-	.page-item.static {
-		opacity: 0.7;
-	}
-
-	.page-item.static:hover {
-		border-color: var(--accent-secondary);
-		background: rgba(255, 191, 0, 0.05);
-	}
-
-	.page-info {
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-		min-width: 0;
-		flex: 1;
-	}
-
-	.page-header {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	.page-title {
-		font-size: 0.875rem;
-		color: #fafafa;
-	}
-
-	.page-slug {
-		font-size: 0.75rem;
-		color: #71717a;
-	}
-
-	/* Status Badge */
-	.status-badge {
-		padding: 0.125rem 0.5rem;
-		border-radius: 0.25rem;
-		font-family: 'Space Mono', monospace;
-		font-size: 0.625rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.status-published {
-		background: rgba(0, 255, 255, 0.2);
-		color: var(--accent-primary);
-	}
-
-	.status-draft {
-		background: rgba(255, 191, 0, 0.2);
-		color: var(--accent-secondary);
-	}
-
-	.status-scheduled {
-		background: rgba(139, 92, 246, 0.2);
-		color: #a78bfa;
-	}
-
-	.status-default {
-		background: rgba(255, 255, 255, 0.1);
-		color: #a3a3a3;
-	}
-
-	/* Actions */
-	.page-actions,
-	.link-actions {
-		display: flex;
-		gap: 0.25rem;
-	}
-
-	.action-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.25rem 0.5rem;
-		background: transparent;
-		border: 1px solid #3f3f46;
-		border-radius: 0.25rem;
-		cursor: pointer;
-		transition: all 0.2s;
-	}
-
-	.action-btn:disabled {
-		cursor: wait;
-		pointer-events: none;
-	}
-
-	.action-btn.edit {
-		color: var(--accent-primary);
-	}
-
-	.action-btn.edit:hover {
-		background: rgba(0, 255, 255, 0.1);
-		border-color: var(--accent-primary);
-	}
-
-	.action-btn.view {
-		color: var(--accent-highlight);
-	}
-
-	.action-btn.view:hover {
-		background: rgba(255, 0, 255, 0.1);
-		border-color: var(--accent-highlight);
-	}
-
-	.action-btn.settings {
-		color: var(--accent-secondary);
-	}
-
-	.action-btn.settings:hover {
-		background: rgba(255, 191, 0, 0.1);
-		border-color: var(--accent-secondary);
-	}
-
-	.action-btn.delete {
-		color: #ef4444;
-	}
-
-	.action-btn.delete:hover {
-		background: rgba(239, 68, 68, 0.1);
-		border-color: #ef4444;
-	}
-
-	.action-btn.toggle {
-		color: #a3a3a3;
-	}
-
-	.action-btn.toggle:hover {
-		background: rgba(255, 255, 255, 0.05);
-	}
-
-	/* Link Item */
-	.link-item {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0.75rem;
-		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid #3f3f46;
-		border-radius: 0.5rem;
-		transition: all 0.2s;
-	}
-
-	.link-item:hover {
-		border-color: var(--accent-highlight);
-		background: rgba(255, 0, 255, 0.05);
-	}
-
-	.link-item.inactive {
-		opacity: 0.5;
-	}
-
-	.link-info {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	.link-name {
-		font-size: 0.875rem;
-		color: #fafafa;
-	}
-
-	.hidden-badge {
-		padding: 0.125rem 0.375rem;
-		background: rgba(255, 255, 255, 0.1);
-		border-radius: 0.25rem;
-		font-family: 'Space Mono', monospace;
-		font-size: 0.625rem;
-		color: #71717a;
-	}
-
-	/* Divider */
-	.divider {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.5rem 0;
-		margin: 0.5rem 0;
-		border-top: 1px dashed #3f3f46;
-	}
-
-	/* Dialog Styles */
-	:global(.dialog-content) {
-		background: rgba(23, 23, 23, 0.95) !important;
-		border: 1px solid #3f3f46 !important;
-		backdrop-filter: blur(10px);
-	}
-
-	.dialog-body {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		padding: 1rem 0;
-	}
-
-	.form-group {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.checkbox-group {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	:global(.cyber-input) {
-		background: rgba(0, 0, 0, 0.3) !important;
-		border-color: #3f3f46 !important;
-	}
-
-	:global(.cyber-input:focus) {
-		border-color: var(--accent-primary) !important;
-	}
-
-	.cyber-textarea {
-		width: 100%;
-		padding: 0.5rem 0.75rem;
-		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid #3f3f46;
-		border-radius: 0.375rem;
-		font-family: 'Space Mono', monospace;
-		font-size: 0.875rem;
-		color: #fafafa;
-		resize: vertical;
-	}
-
-	.cyber-textarea:focus {
-		outline: none;
-		border-color: var(--accent-primary);
-	}
-
-	.static-warning {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem;
-		background: rgba(255, 191, 0, 0.1);
-		border: 1px solid var(--accent-secondary);
-		border-radius: 0.375rem;
-	}
-
-	:global(.primary-btn) {
-		background: var(--accent-primary) !important;
-		color: #000 !important;
-	}
-
-	:global(.primary-btn:hover) {
-		background: var(--accent-highlight) !important;
-	}
-
-	/* Light mode */
-	:global(.light) .section-card {
-		background: rgba(250, 250, 250, 0.9);
-		border-color: #e5e5e5;
-	}
-
-	:global(.light) .page-item,
-	:global(.light) .link-item {
-		background: rgba(255, 255, 255, 0.5);
-		border-color: #e5e5e5;
-	}
-
-	:global(.light) .page-title,
-	:global(.light) .link-name {
-		color: #171717;
-	}
-
-	.loading-dots {
-		color: var(--accent-primary);
-		animation: pulse-dots 1s ease-in-out infinite;
-	}
-
-	@keyframes pulse-dots {
-		0%, 100% { opacity: 1; }
-		50% { opacity: 0.3; }
-	}
-</style>
+	</div>
+{/if}

@@ -7,7 +7,7 @@ import { json } from '@sveltejs/kit';
  * @parallaxrealms/pxp-utils/api-auth's createAdminUsersHandler:
  *   1. locals.getSession() — JWT-validated session from hooks.server.ts
  *   2. user_roles lookup via locals.supabase (RLS lets a user read own role)
- *   3. allow sysadmin | admin | power-user
+ *   3. allow admin | power-user
  *
  * Returns null when the caller is an admin, otherwise a 401/403 JSON Response
  * the handler should return as-is.
@@ -26,7 +26,7 @@ export async function requireAdmin(locals: App.Locals): Promise<Response | null>
 
 	if (
 		!roleData ||
-		(roleData.role !== 'sysadmin' && roleData.role !== 'admin' && roleData.role !== 'power-user')
+		(roleData.role !== 'admin' && roleData.role !== 'power-user')
 	) {
 		return json({ error: 'Admin access required' }, { status: 403 });
 	}

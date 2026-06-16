@@ -363,34 +363,30 @@
 <div class="social-tab">
 	<!-- Header -->
 	<div class="header-section">
-		<h1 class="text-2xl md:text-3xl">
-			<span class="font-rubik text-accent-primary">Social</span>
-			<span class="text-slate-500">&</span>
-			<span class="font-fade text-accent-highlight">Sharing</span>
+		<h1 class="text-2xl font-bold text-white">
+			<span class="text-accent-primary">Social</span> &amp; Sharing
 		</h1>
-		<p class="font-terminal mt-1 text-slate-400">
-			Post to social media platforms
-		</p>
+		<p class="mt-0.5 text-sm text-slate-400">Post to social media platforms.</p>
 	</div>
 
 	<!-- Sub-nav -->
 	<div class="sub-nav">
 		<button
-			class="sub-nav-btn font-terminal"
+			class="sub-nav-btn"
 			class:active={activeSection === 'compose'}
 			onclick={() => (activeSection = 'compose')}
 		>
 			Compose
 		</button>
 		<button
-			class="sub-nav-btn font-terminal"
+			class="sub-nav-btn"
 			class:active={activeSection === 'integrations'}
 			onclick={() => (activeSection = 'integrations')}
 		>
 			Integrations
 		</button>
 		<button
-			class="sub-nav-btn font-terminal"
+			class="sub-nav-btn"
 			class:active={activeSection === 'history'}
 			onclick={() => (activeSection = 'history')}
 		>
@@ -407,17 +403,17 @@
 		<div class="compose-section">
 			<div class="section-card">
 				<div class="section-header">
-					<h2 class="font-fade text-lg text-accent-primary">Compose Post</h2>
+					<h2 class="text-lg text-accent-primary">Compose Post</h2>
 				</div>
 
 				<!-- Platform selection -->
 				<div class="platform-select">
-					<Label class="font-terminal">Platforms</Label>
+					<Label class="">Platforms</Label>
 					<div class="platform-chips">
 						{#each enabledPlatforms as platform}
 							{@const config = PLATFORM_CONFIGS[platform]}
 							<button
-								class="platform-chip font-terminal"
+								class="platform-chip"
 								class:selected={selectedPlatforms.has(platform)}
 								onclick={() => togglePlatform(platform)}
 								style="--platform-color: {config.color}"
@@ -427,7 +423,7 @@
 							</button>
 						{/each}
 						{#if enabledPlatforms.length === 0}
-							<p class="font-terminal text-sm text-slate-500">
+							<p class="text-sm text-slate-500">
 								No platforms configured. Go to Integrations to set up.
 							</p>
 						{/if}
@@ -436,14 +432,14 @@
 
 				<!-- Content textarea -->
 				<div class="compose-area">
-					<Label class="font-terminal">Content</Label>
+					<Label class="">Content</Label>
 					<textarea
 						class="compose-textarea"
 						bind:value={postContent}
 						placeholder="What's on your mind?"
 						rows={5}
 					></textarea>
-					<div class="char-count font-terminal" class:over={charsRemaining < 0}>
+					<div class="char-count" class:over={charsRemaining < 0}>
 						{#if charLimit() < Infinity}
 							{postContent.length} / {charLimit()}
 							{#if charsRemaining < 0}
@@ -457,7 +453,7 @@
 
 				<!-- Image picker -->
 				<div class="image-section">
-					<Label class="font-terminal">Images (optional)</Label>
+					<Label class="">Images (optional)</Label>
 					{#if user}
 						<div class="media-selector-row">
 							<MediaSelector
@@ -493,7 +489,7 @@
 
 				<!-- Schedule toggle -->
 				<div class="schedule-section">
-					<label class="schedule-toggle font-terminal">
+					<label class="schedule-toggle">
 						<input type="checkbox" bind:checked={scheduleMode} />
 						<span>Schedule for later</span>
 					</label>
@@ -505,7 +501,7 @@
 							min={new Date().toISOString().slice(0, 16)}
 						/>
 						{#if scheduledAt}
-							<p class="font-terminal text-xs text-slate-500">Will post at {new Date(scheduledAt).toLocaleString()}</p>
+							<p class="text-xs text-slate-500">Will post at {new Date(scheduledAt).toLocaleString()}</p>
 						{/if}
 					{/if}
 				</div>
@@ -546,12 +542,12 @@
 					<div class="post-results">
 						{#each postResults as result}
 							<div class="result-row" class:success={result.success} class:fail={!result.success}>
-								<span class="font-terminal result-platform">{result.display_name}</span>
-								<span class="font-terminal result-status">
+								<span class="result-platform">{result.display_name}</span>
+								<span class="result-status">
 									{result.success ? 'Sent' : 'Failed'}
 								</span>
 								{#if result.error}
-									<span class="font-terminal result-error text-xs">{result.error}</span>
+									<span class="result-error text-xs">{result.error}</span>
 								{/if}
 							</div>
 						{/each}
@@ -561,12 +557,12 @@
 				<!-- Scheduled posts queue -->
 				{#if scheduledPosts.length > 0}
 					<div class="scheduled-queue">
-						<h3 class="font-fade text-sm text-accent-secondary">Scheduled Posts</h3>
+						<h3 class="text-sm text-accent-secondary">Scheduled Posts</h3>
 						{#each scheduledPosts as post}
 							<div class="scheduled-item">
 								<div class="scheduled-item-info">
-									<span class="font-terminal text-sm">{post.content.length > 60 ? post.content.slice(0, 60) + '...' : post.content}</span>
-									<span class="font-terminal text-xs text-slate-500">{new Date(post.scheduled_at).toLocaleString()}</span>
+									<span class="text-sm">{post.content.length > 60 ? post.content.slice(0, 60) + '...' : post.content}</span>
+									<span class="text-xs text-slate-500">{new Date(post.scheduled_at).toLocaleString()}</span>
 									<div class="scheduled-platforms">
 										{#each post.platforms as platform}
 											{@const config = PLATFORM_CONFIGS[platform]}
@@ -575,7 +571,7 @@
 									</div>
 								</div>
 								<button
-									class="action-btn delete font-terminal text-xs"
+									class="action-btn delete text-xs"
 									onclick={() => cancelScheduledPost(post.id)}
 								>
 									Cancel
@@ -596,61 +592,61 @@
 					<div class="platform-card section-card">
 						<div class="platform-card-header">
 							<span class="platform-dot-lg" style="background-color: {config.color}"></span>
-							<h3 class="font-fade text-lg text-white">{config.name}</h3>
+							<h3 class="text-lg text-white">{config.name}</h3>
 						</div>
 
 						<div class="platform-card-body">
 							{#if config.requiresOAuth && !integration}
-								<p class="font-terminal text-sm text-slate-500">Not connected</p>
+								<p class="text-sm text-slate-500">Not connected</p>
 								{#if platform === 'instagram' || platform === 'facebook'}
 									<a
 										href="/api/social/oauth/meta?platform={platform}"
-										class="add-btn font-terminal"
+										class="add-btn"
 									>
 										Connect with Meta
 									</a>
 								{:else if platform === 'tiktok'}
 									<a
 										href="/api/social/oauth/tiktok"
-										class="add-btn font-terminal"
+										class="add-btn"
 									>
 										Connect TikTok
 									</a>
 								{/if}
-								<p class="font-terminal text-xs text-slate-600 mt-1">
+								<p class="text-xs text-slate-600 mt-1">
 									Requires {config.name} developer app registration
 								</p>
 							{:else if integration}
 								<div class="integration-status">
-									<span class="status-badge status-published font-terminal">Connected</span>
-									<span class="font-terminal text-xs text-slate-500">{integration.display_name}</span>
+									<span class="status-badge status-published">Connected</span>
+									<span class="text-xs text-slate-500">{integration.display_name}</span>
 								</div>
 								{#if integration.oauth_expires_at}
-									<span class="font-terminal text-xs text-slate-600">
+									<span class="text-xs text-slate-600">
 										Token expires {new Date(integration.oauth_expires_at).toLocaleDateString()}
 									</span>
 								{/if}
 								<div class="integration-actions">
 									{#if config.requiresOAuth}
 										{#if platform === 'instagram' || platform === 'facebook'}
-											<a href="/api/social/oauth/meta?platform={platform}" class="action-btn edit font-terminal text-xs">
+											<a href="/api/social/oauth/meta?platform={platform}" class="action-btn edit text-xs">
 												Reconnect
 											</a>
 										{:else if platform === 'tiktok'}
-											<a href="/api/social/oauth/tiktok" class="action-btn edit font-terminal text-xs">
+											<a href="/api/social/oauth/tiktok" class="action-btn edit text-xs">
 												Reconnect
 											</a>
 										{/if}
 									{:else}
 										<button
-											class="action-btn edit font-terminal text-xs"
+											class="action-btn edit text-xs"
 											onclick={() => openConfig(platform as SocialPlatform)}
 										>
 											Update
 										</button>
 									{/if}
 									<button
-										class="action-btn font-terminal text-xs"
+										class="action-btn text-xs"
 										class:settings={integration.is_enabled}
 										class:delete={!integration.is_enabled}
 										onclick={() => toggleIntegration(integration)}
@@ -658,16 +654,16 @@
 										{integration.is_enabled ? 'Enabled' : 'Disabled'}
 									</button>
 									<button
-										class="action-btn delete font-terminal text-xs"
+										class="action-btn delete text-xs"
 										onclick={() => deleteIntegration(integration.id)}
 									>
 										Del
 									</button>
 								</div>
 							{:else}
-								<p class="font-terminal text-sm text-slate-500">Not connected</p>
+								<p class="text-sm text-slate-500">Not connected</p>
 								<button
-									class="add-btn font-terminal"
+									class="add-btn"
 									onclick={() => openConfig(platform as SocialPlatform)}
 								>
 									Configure
@@ -675,7 +671,7 @@
 							{/if}
 						</div>
 
-						<div class="platform-card-footer font-terminal text-xs text-slate-600">
+						<div class="platform-card-footer text-xs text-slate-600">
 							Max {config.maxChars} chars
 							{config.supportsImages ? ' | Images' : ''}
 						</div>
@@ -689,15 +685,15 @@
 		<div class="history-section">
 			<div class="section-card">
 				<div class="section-header">
-					<h2 class="font-fade text-lg text-accent-primary">Post History</h2>
+					<h2 class="text-lg text-accent-primary">Post History</h2>
 					<div class="history-filters">
-						<select class="filter-select font-terminal" bind:value={historyPlatformFilter} onchange={() => { historyPage = 1; }}>
+						<select class="filter-select" bind:value={historyPlatformFilter} onchange={() => { historyPage = 1; }}>
 							<option value="">All Platforms</option>
 							{#each Object.entries(PLATFORM_CONFIGS) as [key, cfg]}
 								<option value={key}>{cfg.name}</option>
 							{/each}
 						</select>
-						<select class="filter-select font-terminal" bind:value={historyStatusFilter} onchange={() => { historyPage = 1; }}>
+						<select class="filter-select" bind:value={historyStatusFilter} onchange={() => { historyPage = 1; }}>
 							<option value="">All Status</option>
 							<option value="success">Success</option>
 							<option value="failed">Failed</option>
@@ -713,7 +709,7 @@
 					</div>
 				{:else if historyPosts.length === 0}
 					<div class="empty-state">
-						<p class="font-terminal text-lg text-slate-500">No posts yet</p>
+						<p class="text-lg text-slate-500">No posts yet</p>
 					</div>
 				{:else}
 					<div class="history-list">
@@ -722,21 +718,21 @@
 							<div class="history-item">
 								<div class="history-item-left">
 									<span class="platform-dot" style="background-color: {config?.color || '#666'}"></span>
-									<span class="font-terminal text-xs text-slate-400">{config?.name || post.platform}</span>
+									<span class="text-xs text-slate-400">{config?.name || post.platform}</span>
 								</div>
 								<div class="history-item-content">
-									<span class="font-terminal text-sm">{truncate(post.content, 80)}</span>
+									<span class="text-sm">{truncate(post.content, 80)}</span>
 								</div>
 								<div class="history-item-right">
 									<span
-										class="status-badge font-terminal"
+										class="status-badge"
 										class:status-published={post.status === 'success'}
 										class:status-draft={post.status === 'partial'}
 										class:status-failed={post.status === 'failed'}
 									>
 										{post.status}
 									</span>
-									<span class="font-terminal text-xs text-slate-600">{formatDate(post.posted_at)}</span>
+									<span class="text-xs text-slate-600">{formatDate(post.posted_at)}</span>
 								</div>
 							</div>
 						{/each}
@@ -746,17 +742,17 @@
 					{#if historyTotal > historyLimit}
 						<div class="pagination">
 							<button
-								class="action-btn font-terminal text-xs"
+								class="action-btn text-xs"
 								disabled={historyPage <= 1}
 								onclick={() => (historyPage = historyPage - 1)}
 							>
 								Prev
 							</button>
-							<span class="font-terminal text-xs text-slate-500">
+							<span class="text-xs text-slate-500">
 								Page {historyPage} of {Math.ceil(historyTotal / historyLimit)}
 							</span>
 							<button
-								class="action-btn font-terminal text-xs"
+								class="action-btn text-xs"
 								disabled={historyPage >= Math.ceil(historyTotal / historyLimit)}
 								onclick={() => (historyPage = historyPage + 1)}
 							>
@@ -777,19 +773,19 @@
 			<Dialog.Title class="font-rubik" style="color: {PLATFORM_CONFIGS[configPlatform]?.color}">
 				Configure {PLATFORM_CONFIGS[configPlatform]?.name}
 			</Dialog.Title>
-			<Dialog.Description class="font-terminal">
+			<Dialog.Description class="">
 				Enter your {PLATFORM_CONFIGS[configPlatform]?.name} credentials
 			</Dialog.Description>
 		</Dialog.Header>
 		<div class="dialog-body">
 			<div class="form-group">
-				<Label for="config-display-name" class="font-terminal">Display Name</Label>
+				<Label for="config-display-name" class="">Display Name</Label>
 				<Input id="config-display-name" bind:value={configDisplayName} class="cyber-input" />
 			</div>
 
 			{#if configPlatform === 'discord'}
 				<div class="form-group">
-					<Label for="discord-webhook" class="font-terminal">Webhook URL</Label>
+					<Label for="discord-webhook" class="">Webhook URL</Label>
 					<Input
 						id="discord-webhook"
 						type="url"
@@ -797,13 +793,13 @@
 						bind:value={discordWebhookUrl}
 						class="cyber-input"
 					/>
-					<p class="font-terminal text-xs text-slate-500 mt-1">
+					<p class="text-xs text-slate-500 mt-1">
 						Server Settings > Integrations > Webhooks > New Webhook > Copy URL
 					</p>
 				</div>
 			{:else if configPlatform === 'bluesky'}
 				<div class="form-group">
-					<Label for="bsky-identifier" class="font-terminal">Handle or Email</Label>
+					<Label for="bsky-identifier" class="">Handle or Email</Label>
 					<Input
 						id="bsky-identifier"
 						placeholder="you.bsky.social"
@@ -812,7 +808,7 @@
 					/>
 				</div>
 				<div class="form-group">
-					<Label for="bsky-password" class="font-terminal">App Password</Label>
+					<Label for="bsky-password" class="">App Password</Label>
 					<Input
 						id="bsky-password"
 						type="password"
@@ -820,14 +816,20 @@
 						bind:value={blueskyAppPassword}
 						class="cyber-input"
 					/>
-					<p class="font-terminal text-xs text-slate-500 mt-1">
+					<p class="text-xs text-slate-500 mt-1">
 						Settings > Privacy and Security > App Passwords > Add App Password
 					</p>
 				</div>
 			{/if}
 		</div>
 		<Dialog.Footer>
-			<Button variant="outlined" onclick={() => (showConfigDialog = false)}>Cancel</Button>
+			<Button
+				variant="outlined"
+				onclick={() => (showConfigDialog = false)}
+				class="rounded-none border border-slate-700 bg-slate-800 text-slate-300 hover:text-accent-primary"
+			>
+				Cancel
+			</Button>
 			<Button
 				onclick={saveIntegration}
 				disabled={configSaving}
@@ -848,14 +850,13 @@
 	.social-tab {
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
-		max-width: 1200px;
+		gap: 1.5rem;
+		max-width: 1152px;
 		margin: 0 auto;
 	}
 
 	.header-section {
-		text-align: center;
-		padding: 1rem 0;
+		padding: 0.25rem 0 0.5rem;
 	}
 
 	.loading-container {
@@ -869,8 +870,9 @@
 	.sub-nav {
 		display: flex;
 		gap: 0.25rem;
-		border-bottom: 1px solid #3f3f46;
+		border-bottom: 1px solid #1e293b;
 		padding-bottom: 0;
+		overflow-x: auto;
 	}
 
 	.sub-nav-btn {
@@ -878,10 +880,11 @@
 		background: transparent;
 		border: 1px solid transparent;
 		border-bottom: 2px solid transparent;
-		color: #71717a;
+		color: #94a3b8;
 		cursor: pointer;
 		transition: all 0.2s;
 		font-size: 0.875rem;
+		white-space: nowrap;
 	}
 
 	.sub-nav-btn:hover {
@@ -893,13 +896,11 @@
 		border-bottom-color: var(--accent-primary);
 	}
 
-	/* Section Card - matches WebsiteTab */
+	/* Section Card */
 	.section-card {
-		background: rgba(23, 23, 23, 0.5);
-		border: 1px solid #3f3f46;
-		border-radius: 0.75rem;
-		padding: 1.25rem;
-		backdrop-filter: blur(10px);
+		background: rgba(15, 23, 42, 0.5);
+		border: 1px solid #1e293b;
+		padding: 1rem;
 	}
 
 	.section-header {
@@ -908,7 +909,7 @@
 		justify-content: space-between;
 		margin-bottom: 1rem;
 		padding-bottom: 0.75rem;
-		border-bottom: 1px solid #3f3f46;
+		border-bottom: 1px solid #1e293b;
 		flex-wrap: wrap;
 		gap: 0.5rem;
 	}
@@ -935,11 +936,10 @@
 		display: flex;
 		align-items: center;
 		gap: 0.375rem;
-		padding: 0.375rem 0.75rem;
-		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid #3f3f46;
-		border-radius: 0.375rem;
-		color: #a3a3a3;
+		padding: 0.5rem 0.75rem;
+		background: #0f172a;
+		border: 1px solid #334155;
+		color: #cbd5e1;
 		cursor: pointer;
 		transition: all 0.2s;
 		font-size: 0.8125rem;
@@ -952,20 +952,18 @@
 	.platform-chip.selected {
 		border-color: var(--platform-color);
 		background: color-mix(in srgb, var(--platform-color) 15%, transparent);
-		color: #fafafa;
+		color: #ffffff;
 	}
 
 	.platform-dot {
 		width: 8px;
 		height: 8px;
-		border-radius: 50%;
 		flex-shrink: 0;
 	}
 
 	.platform-dot-lg {
 		width: 12px;
 		height: 12px;
-		border-radius: 50%;
 		flex-shrink: 0;
 	}
 
@@ -975,13 +973,12 @@
 
 	.compose-textarea {
 		width: 100%;
-		padding: 0.75rem;
-		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid #3f3f46;
-		border-radius: 0.375rem;
+		padding: 0.5rem 0.75rem;
+		background: #0f172a;
+		border: 1px solid #334155;
 		font-family: 'Space Mono', monospace;
 		font-size: 0.875rem;
-		color: #fafafa;
+		color: #ffffff;
 		resize: vertical;
 		margin-top: 0.5rem;
 	}
@@ -994,12 +991,12 @@
 	.char-count {
 		text-align: right;
 		font-size: 0.75rem;
-		color: #71717a;
+		color: #94a3b8;
 		margin-top: 0.25rem;
 	}
 
 	.char-count.over {
-		color: #ef4444;
+		color: #f87171;
 	}
 
 	.image-section {
@@ -1022,8 +1019,7 @@
 		position: relative;
 		width: 80px;
 		height: 80px;
-		border: 1px solid #3f3f46;
-		border-radius: 0.375rem;
+		border: 1px solid #334155;
 		overflow: hidden;
 	}
 
@@ -1035,17 +1031,16 @@
 
 	.remove-img-btn {
 		position: absolute;
-		top: 2px;
-		right: 2px;
+		top: 0;
+		right: 0;
 		width: 18px;
 		height: 18px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: rgba(0, 0, 0, 0.7);
-		color: #ef4444;
+		background: rgba(2, 6, 23, 0.8);
+		color: #f87171;
 		border: none;
-		border-radius: 50%;
 		cursor: pointer;
 		font-size: 0.625rem;
 		line-height: 1;
@@ -1066,23 +1061,22 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.5rem 0.75rem;
-		border-radius: 0.375rem;
 		flex-wrap: wrap;
 	}
 
 	.result-row.success {
-		background: rgba(0, 255, 255, 0.08);
-		border: 1px solid rgba(0, 255, 255, 0.2);
+		background: rgba(0, 165, 207, 0.1);
+		border: 1px solid rgba(0, 165, 207, 0.3);
 	}
 
 	.result-row.fail {
-		background: rgba(239, 68, 68, 0.08);
-		border: 1px solid rgba(239, 68, 68, 0.2);
+		background: rgba(239, 68, 68, 0.1);
+		border: 1px solid rgba(239, 68, 68, 0.3);
 	}
 
 	.result-platform {
 		font-size: 0.8125rem;
-		color: #fafafa;
+		color: #ffffff;
 	}
 
 	.result-status {
@@ -1094,19 +1088,25 @@
 	}
 
 	.result-row.fail .result-status {
-		color: #ef4444;
+		color: #f87171;
 	}
 
 	.result-error {
-		color: #ef4444;
+		color: #f87171;
 		flex-basis: 100%;
 	}
 
 	/* ═══ INTEGRATIONS ═══ */
 	.platform-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		grid-template-columns: 1fr;
 		gap: 1rem;
+	}
+
+	@media (min-width: 640px) {
+		.platform-grid {
+			grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		}
 	}
 
 	.platform-card {
@@ -1140,7 +1140,7 @@
 	}
 
 	.platform-card-footer {
-		border-top: 1px solid #3f3f46;
+		border-top: 1px solid #1e293b;
 		padding-top: 0.5rem;
 	}
 
@@ -1148,34 +1148,38 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.25rem;
-		padding: 0.375rem 0.75rem;
+		padding: 0.5rem 0.75rem;
 		background: var(--accent-primary);
-		color: #000;
+		color: #020617;
 		border: none;
-		border-radius: 0.375rem;
-		font-weight: 600;
+		font-weight: 500;
 		cursor: pointer;
 		transition: all 0.2s;
 		font-size: 0.8125rem;
 	}
 
 	.add-btn:hover {
-		background: var(--accent-highlight);
+		opacity: 0.9;
 	}
 
 	/* ═══ HISTORY ═══ */
 	.history-filters {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 0.5rem;
 	}
 
 	.filter-select {
-		padding: 0.25rem 0.5rem;
-		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid #3f3f46;
-		border-radius: 0.375rem;
-		color: #a3a3a3;
+		padding: 0.375rem 0.5rem;
+		background: #0f172a;
+		border: 1px solid #334155;
+		color: #cbd5e1;
 		font-size: 0.75rem;
+	}
+
+	.filter-select:focus {
+		outline: none;
+		border-color: var(--accent-primary);
 	}
 
 	.history-list {
@@ -1189,9 +1193,8 @@
 		align-items: center;
 		gap: 0.75rem;
 		padding: 0.625rem 0.75rem;
-		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid #3f3f46;
-		border-radius: 0.5rem;
+		background: #020617;
+		border: 1px solid #1e293b;
 		transition: border-color 0.2s;
 	}
 
@@ -1210,7 +1213,7 @@
 		flex: 1;
 		min-width: 0;
 		overflow: hidden;
-		color: #d4d4d8;
+		color: #cbd5e1;
 	}
 
 	.history-item-right {
@@ -1235,39 +1238,39 @@
 		padding: 2rem;
 	}
 
-	/* Status badges - match WebsiteTab */
+	/* Status badges */
 	.status-badge {
 		padding: 0.125rem 0.5rem;
-		border-radius: 0.25rem;
 		font-size: 0.625rem;
+		font-weight: 500;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 	}
 
 	.status-published {
-		background: rgba(0, 255, 255, 0.2);
-		color: var(--accent-primary);
+		background: rgba(16, 185, 129, 0.15);
+		color: #34d399;
 	}
 
 	.status-draft {
-		background: rgba(255, 191, 0, 0.2);
-		color: var(--accent-secondary);
+		background: rgba(245, 158, 11, 0.15);
+		color: #fbbf24;
 	}
 
 	.status-failed {
-		background: rgba(239, 68, 68, 0.2);
-		color: #ef4444;
+		background: rgba(239, 68, 68, 0.15);
+		color: #f87171;
 	}
 
-	/* Action buttons - match WebsiteTab */
+	/* Action buttons */
 	.action-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0.25rem 0.5rem;
-		background: transparent;
-		border: 1px solid #3f3f46;
-		border-radius: 0.25rem;
+		padding: 0.375rem 0.625rem;
+		background: #1e293b;
+		border: 1px solid #334155;
+		color: #cbd5e1;
 		cursor: pointer;
 		transition: all 0.2s;
 	}
@@ -1282,26 +1285,26 @@
 	}
 
 	.action-btn.edit:hover {
-		background: rgba(0, 255, 255, 0.1);
+		background: rgba(0, 165, 207, 0.1);
 		border-color: var(--accent-primary);
 	}
 
 	.action-btn.settings {
-		color: var(--accent-secondary);
+		color: #34d399;
 	}
 
 	.action-btn.settings:hover {
-		background: rgba(255, 191, 0, 0.1);
-		border-color: var(--accent-secondary);
+		background: rgba(16, 185, 129, 0.1);
+		border-color: #34d399;
 	}
 
 	.action-btn.delete {
-		color: #ef4444;
+		color: #f87171;
 	}
 
 	.action-btn.delete:hover {
 		background: rgba(239, 68, 68, 0.1);
-		border-color: #ef4444;
+		border-color: #f87171;
 	}
 
 	/* Dialog styles */
@@ -1319,14 +1322,18 @@
 	}
 
 	:global(.dialog-content) {
-		background: rgba(23, 23, 23, 0.95) !important;
-		border: 1px solid #3f3f46 !important;
-		backdrop-filter: blur(10px);
+		background: #0f172a !important;
+		border: 1px solid #334155 !important;
+		border-radius: 0 !important;
+		max-height: 90vh;
+		overflow-y: auto;
 	}
 
 	:global(.cyber-input) {
-		background: rgba(0, 0, 0, 0.3) !important;
-		border-color: #3f3f46 !important;
+		background: #0f172a !important;
+		border-color: #334155 !important;
+		border-radius: 0 !important;
+		color: #ffffff !important;
 	}
 
 	:global(.cyber-input:focus) {
@@ -1347,7 +1354,7 @@
 		gap: 0.5rem;
 		cursor: pointer;
 		font-size: 0.8125rem;
-		color: #a3a3a3;
+		color: #cbd5e1;
 	}
 
 	.schedule-toggle input[type="checkbox"] {
@@ -1357,12 +1364,11 @@
 	.schedule-datetime {
 		width: 100%;
 		padding: 0.5rem 0.75rem;
-		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid #3f3f46;
-		border-radius: 0.375rem;
+		background: #0f172a;
+		border: 1px solid #334155;
 		font-family: 'Space Mono', monospace;
 		font-size: 0.8125rem;
-		color: #fafafa;
+		color: #ffffff;
 	}
 
 	.schedule-datetime:focus {
@@ -1373,7 +1379,7 @@
 	.scheduled-queue {
 		margin-top: 1rem;
 		padding-top: 1rem;
-		border-top: 1px solid #3f3f46;
+		border-top: 1px solid #1e293b;
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
@@ -1385,9 +1391,8 @@
 		justify-content: space-between;
 		gap: 0.5rem;
 		padding: 0.5rem 0.75rem;
-		background: rgba(139, 92, 246, 0.05);
-		border: 1px solid rgba(139, 92, 246, 0.2);
-		border-radius: 0.375rem;
+		background: rgba(0, 165, 207, 0.05);
+		border: 1px solid rgba(0, 165, 207, 0.2);
 	}
 
 	.scheduled-item-info {
@@ -1405,10 +1410,12 @@
 
 	:global(.primary-btn) {
 		background: var(--accent-primary) !important;
-		color: #000 !important;
+		color: #020617 !important;
+		border-radius: 0 !important;
+		font-weight: 500 !important;
 	}
 
 	:global(.primary-btn:hover) {
-		background: var(--accent-highlight) !important;
+		opacity: 0.9;
 	}
 </style>

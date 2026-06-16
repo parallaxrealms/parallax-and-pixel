@@ -182,7 +182,7 @@
 	});
 </script>
 
-<div class="border border-slate-800 bg-slate-900/40">
+<div class="border border-slate-800 bg-slate-900/50">
 	{#if title}
 		<div class="flex items-center justify-between border-b border-slate-800 px-3 py-1.5">
 			<div class="text-xs font-semibold text-slate-300">{title}</div>

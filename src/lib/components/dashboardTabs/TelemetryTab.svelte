@@ -242,7 +242,7 @@
 	);
 	let p99Series = $derived<Series[]>(
 		data
-			? [matrixToSeries(data.results['p99'], { key: 'p99', label: 'p99 ms', color: '#a78bfa' })]
+			? [matrixToSeries(data.results['p99'], { key: 'p99', label: 'p99 ms', color: '#00a5cf' })]
 			: []
 	);
 
@@ -261,7 +261,7 @@
 			? [
 					matrixToSeries(data.results['p50_ts'], { key: 'p50', label: 'p50', color: '#60a5fa' }),
 					matrixToSeries(data.results['p95_ts'], { key: 'p95', label: 'p95', color: '#fbbf24' }),
-					matrixToSeries(data.results['p99_ts'], { key: 'p99', label: 'p99', color: '#a78bfa' })
+					matrixToSeries(data.results['p99_ts'], { key: 'p99', label: 'p99', color: '#00a5cf' })
 				]
 			: []
 	);
@@ -334,13 +334,21 @@
 	}
 </script>
 
-<div class="mx-auto max-w-[1400px] space-y-4">
+<div class="mx-auto max-w-[1400px] space-y-6">
+	<header class="flex items-center gap-3">
+		<Activity class="h-6 w-6 text-accent-primary" />
+		<div>
+			<h1 class="text-2xl font-bold text-white">Telemetry</h1>
+			<p class="mt-0.5 text-sm text-slate-400">Server health and site metrics.</p>
+		</div>
+	</header>
+
 	<!-- ── Server health ────────────────────────────────────────────────────── -->
-	<div class="flex items-center justify-between border-b border-slate-700 pb-2">
+	<div class="flex flex-col gap-2 border-b border-slate-800 pb-2 sm:flex-row sm:items-center sm:justify-between">
 		<div class="flex items-center gap-2">
-			<Server class="h-4 w-4 text-slate-300" />
+			<Server class="h-4 w-4 text-slate-400" />
 			<div>
-				<h2 class="text-lg font-light tracking-wide text-slate-100">Server Health</h2>
+				<h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Server Health</h2>
 				<p class="text-[11px] text-slate-500">
 					YGG · MIDGARD · HEL1 — {serversAutoRefresh ? 'auto-refresh every 7s' : 'auto-refresh paused'}
 				</p>
@@ -356,7 +364,7 @@
 			</label>
 			<button
 				onclick={loadServers}
-				class="p-1.5 text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-100"
+				class="p-1.5 text-slate-400 transition-colors hover:bg-slate-800 hover:text-accent-primary"
 				title="Refresh servers"
 			>
 				<RefreshCw class="h-3.5 w-3.5 {serversLoading ? 'animate-spin' : ''}" />
@@ -364,7 +372,7 @@
 		</div>
 	</div>
 
-	<div class="grid grid-cols-1 gap-3 xl:grid-cols-3">
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each servers as server (server.id)}
 			<ServerCard
 				name={server.name}
@@ -378,23 +386,23 @@
 	</div>
 
 	<!-- ── Site telemetry ───────────────────────────────────────────────────── -->
-	<div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-700 pb-1">
+	<div class="flex flex-col gap-3 border-b border-slate-800 pb-2 lg:flex-row lg:items-center lg:justify-between">
 		<div class="flex items-center gap-2">
-			<Activity class="h-4 w-4 text-slate-300" />
+			<Activity class="h-4 w-4 text-slate-400" />
 			<div>
-				<h2 class="text-lg font-light tracking-wide text-slate-100">Site Telemetry</h2>
+				<h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Site Telemetry</h2>
 				<p class="text-[11px] text-slate-500">native prometheus · http server metrics</p>
 			</div>
 		</div>
 
-		<div class="flex flex-wrap items-center gap-2 pb-1">
+		<div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
 			<div class="flex border border-slate-700">
 				{#each services as service (service.id)}
 					<button
 						onclick={() => (activeService = service.id)}
-						class="px-3 py-2 text-sm font-medium transition-colors md:text-xs {activeService ===
+						class="flex-1 px-3 py-2 text-sm font-medium transition-colors sm:flex-none md:text-xs {activeService ===
 						service.id
-							? 'bg-slate-700 text-accent-primary'
+							? 'bg-slate-800 text-accent-primary'
 							: 'text-slate-400 hover:bg-slate-800 hover:text-slate-300'}"
 					>
 						{service.label}
@@ -405,32 +413,34 @@
 				{#each timeRanges as range (range.id)}
 					<button
 						onclick={() => (activeRange = range.id)}
-						class="px-3 py-2 text-sm transition-colors md:px-2 md:py-1 md:text-xs {activeRange ===
+						class="flex-1 px-3 py-2 text-sm transition-colors sm:flex-none md:px-2 md:py-1 md:text-xs {activeRange ===
 						range.id
-							? 'bg-slate-700 text-slate-100'
+							? 'bg-slate-800 text-accent-primary'
 							: 'text-slate-400 hover:bg-slate-800'}"
 					>
 						{range.label}
 					</button>
 				{/each}
 			</div>
-			<label class="flex items-center gap-1 text-xs text-slate-400">
-				<input type="checkbox" bind:checked={autoRefresh} class="h-3 w-3 accent-[#00a5cf]" />
-				auto
-			</label>
-			<button
-				onclick={refreshAll}
-				class="p-2 text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-200"
-				title="Refresh"
-			>
-				<RefreshCw class="h-4 w-4 {loading ? 'animate-spin' : ''}" />
-			</button>
+			<div class="flex items-center gap-3">
+				<label class="flex items-center gap-1 text-xs text-slate-400">
+					<input type="checkbox" bind:checked={autoRefresh} class="h-3 w-3 accent-[#00a5cf]" />
+					auto
+				</label>
+				<button
+					onclick={refreshAll}
+					class="p-2 text-slate-400 transition-colors hover:bg-slate-800 hover:text-accent-primary"
+					title="Refresh"
+				>
+					<RefreshCw class="h-4 w-4 {loading ? 'animate-spin' : ''}" />
+				</button>
+			</div>
 		</div>
 	</div>
 
 	{#if errorMsg}
 		<div
-			class="flex items-start gap-2 border border-red-900/60 bg-red-950/40 p-3 text-xs text-red-300"
+			class="flex items-start gap-2 border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300"
 		>
 			<AlertCircle class="mt-0.5 h-4 w-4 shrink-0" />
 			<div>{errorMsg}</div>
@@ -438,7 +448,7 @@
 	{/if}
 
 	{#if !configured}
-		<div class="border border-slate-700 bg-slate-900/50 p-8 text-center">
+		<div class="border border-slate-800 bg-slate-900/50 p-8 text-center">
 			<Activity class="mx-auto mb-3 h-8 w-8 text-slate-600" />
 			<div class="text-sm font-medium text-slate-200">Telemetry not configured</div>
 			<p class="mx-auto mt-1 max-w-md text-xs text-slate-500">
@@ -449,7 +459,7 @@
 			</p>
 		</div>
 	{:else}
-		<div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 			<StatTile
 				label="Request Rate"
 				value={formatNumber(reqRate)}
@@ -479,14 +489,14 @@
 			<StatTile
 				label="p99 Latency"
 				value={formatMs(p99Val)}
-				valueColor="text-violet-400"
+				valueColor="text-accent-primary"
 				sparkline={p99Series[0]?.points}
-				sparkColor="#a78bfa"
+				sparkColor="#00a5cf"
 				{loading}
 			/>
 		</div>
 
-		<div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
 			<TimeSeriesChart
 				title="Requests by Status Class"
 				unit="req/s"
@@ -507,45 +517,47 @@
 			/>
 		</div>
 
-		<div class="border border-slate-800 bg-slate-900/40">
-			<div class="border-b border-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-300">
+		<div class="border border-slate-800 bg-slate-900/50">
+			<div class="border-b border-slate-800 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
 				Top Routes
 			</div>
 			{#if topRoutes.length === 0}
 				<div class="p-3 text-xs text-slate-600">No route data</div>
 			{:else}
-				<table class="w-full text-xs">
-					<thead>
-						<tr class="border-b border-slate-800 text-[10px] uppercase tracking-wider text-slate-500">
-							<th class="px-3 py-1.5 text-left font-semibold">Route</th>
-							<th class="px-3 py-1.5 text-right font-semibold">req/s</th>
-							<th class="px-3 py-1.5 text-right font-semibold">p95 ms</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each topRoutes as row (row.route)}
-							<tr class="border-b border-slate-800/60 last:border-b-0 hover:bg-slate-800/30">
-								<td class="px-3 py-1.5 font-mono text-slate-300">{row.route}</td>
-								<td class="px-3 py-1.5 text-right font-mono text-slate-200">
-									{formatNumber(row.rps, 3)}
-								</td>
-								<td class="px-3 py-1.5 text-right font-mono {routeP95Color(row.p95)}">
-									{row.p95 === null ? '·' : row.p95.toFixed(0)}
-								</td>
+				<div class="overflow-x-auto">
+					<table class="w-full text-xs">
+						<thead>
+							<tr class="border-b border-slate-800 text-[10px] uppercase tracking-wider text-slate-500">
+								<th class="px-3 py-1.5 text-left font-semibold">Route</th>
+								<th class="px-3 py-1.5 text-right font-semibold">req/s</th>
+								<th class="px-3 py-1.5 text-right font-semibold">p95 ms</th>
 							</tr>
-						{/each}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{#each topRoutes as row (row.route)}
+								<tr class="border-b border-slate-800/60 last:border-b-0 hover:bg-slate-800/30">
+									<td class="px-3 py-1.5 font-mono text-slate-300">{row.route}</td>
+									<td class="px-3 py-1.5 text-right font-mono text-slate-200">
+										{formatNumber(row.rps, 3)}
+									</td>
+									<td class="px-3 py-1.5 text-right font-mono {routeP95Color(row.p95)}">
+										{row.p95 === null ? '·' : row.p95.toFixed(0)}
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
 			{/if}
 		</div>
 
 		{#if webVitals.length > 0}
-			<div class="border border-slate-800 bg-slate-900/40">
+			<div class="border border-slate-800 bg-slate-900/50">
 				<div
-					class="flex items-center justify-between border-b border-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-300"
+					class="flex items-center justify-between border-b border-slate-800 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-400"
 				>
 					<span>Web Vitals</span>
-					<span class="font-mono text-[10px] font-normal text-slate-500">p75 · last 1h</span>
+					<span class="font-mono text-[10px] font-normal normal-case text-slate-500">p75 · last 1h</span>
 				</div>
 				<div class="grid grid-cols-2 gap-px bg-slate-800 sm:grid-cols-3 lg:grid-cols-5">
 					{#each webVitals as vital (vital.name)}

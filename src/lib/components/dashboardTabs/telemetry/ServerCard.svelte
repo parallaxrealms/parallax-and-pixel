@@ -68,7 +68,7 @@
 	}
 </script>
 
-<section class="border border-slate-700 bg-slate-900/50">
+<section class="border border-slate-800 bg-slate-900/50">
 	<div class="h-0.5 bg-accent-primary"></div>
 	<header
 		class="flex items-center justify-between border-b border-slate-800 bg-slate-950/60 px-3 py-2"
@@ -85,7 +85,7 @@
 			</div>
 		</div>
 		<div class="flex items-center gap-2">
-			<span class="h-2 w-2 rounded-full {sevDot} {sev === 'crit' ? 'animate-pulse' : ''}"></span>
+			<span class="h-2 w-2 {sevDot} {sev === 'crit' ? 'animate-pulse' : ''}"></span>
 			<span class="text-[10px] uppercase tracking-wider text-slate-400">
 				{sev === 'unknown' ? '·' : sev}
 			</span>
@@ -93,7 +93,9 @@
 	</header>
 
 	{#if error}
-		<div class="p-4 text-[11px] text-red-300">{error}</div>
+		<div class="m-3 border border-red-500/40 bg-red-500/10 px-3 py-2 text-[11px] text-red-300">
+			{error}
+		</div>
 	{:else}
 		<div class="p-3">
 			<div class="grid grid-cols-3 gap-2">

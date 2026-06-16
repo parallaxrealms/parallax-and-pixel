@@ -7,6 +7,19 @@
 	import MediaLibraryTab from '$lib/components/dashboardTabs/MediaLibraryTab.svelte';
 	import SocialTab from '$lib/components/dashboardTabs/SocialTab.svelte';
 	import TelemetryTab from '$lib/components/dashboardTabs/TelemetryTab.svelte';
+	import AuditTab from '$lib/components/dashboardTabs/AuditTab.svelte';
+	import MockupsTab from '$lib/components/dashboardTabs/MockupsTab.svelte';
+	import ToolsTab from '$lib/components/dashboardTabs/ToolsTab.svelte';
+	import DaedalusTab from '$lib/components/dashboardTabs/DaedalusTab.svelte';
+	import TasksTab from '$lib/components/dashboardTabs/TasksTab.svelte';
+	import CalendarTab from '$lib/components/dashboardTabs/CalendarTab.svelte';
+	import NotesTab from '$lib/components/dashboardTabs/NotesTab.svelte';
+	import FinancesTab from '$lib/components/dashboardTabs/FinancesTab.svelte';
+	import BifrostTab from '$lib/components/dashboardTabs/BifrostTab.svelte';
+	import ServiceStatusTab from '$lib/components/dashboardTabs/ServiceStatusTab.svelte';
+	import EmailTab from '$lib/components/dashboardTabs/EmailTab.svelte';
+	import SettingsTab from '$lib/components/dashboardTabs/SettingsTab.svelte';
+	import UsersTab from '$lib/components/dashboardTabs/UsersTab.svelte';
 
 	let { data } = $props();
 	let supabase = $derived(data.supabase);
@@ -48,6 +61,58 @@
 			{:else if $selectedTab === 'telemetry'}
 				<div>
 					<TelemetryTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'audit'}
+				<div>
+					<AuditTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'mockups'}
+				<div>
+					<MockupsTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'tools'}
+				<div>
+					<ToolsTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'daedalus'}
+				<div>
+					<DaedalusTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'tasks'}
+				<div>
+					<TasksTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'calendar'}
+				<div>
+					<CalendarTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'notes'}
+				<div>
+					<NotesTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'finances'}
+				<div>
+					<FinancesTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'bifrost'}
+				<div>
+					<BifrostTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'status'}
+				<div>
+					<ServiceStatusTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'email'}
+				<div>
+					<EmailTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'settings'}
+				<div>
+					<SettingsTab {supabase} />
+				</div>
+			{:else if $selectedTab === 'users'}
+				<div>
+					<UsersTab {supabase} />
 				</div>
 			{/if}
 		{/if}

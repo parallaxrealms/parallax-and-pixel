@@ -37,7 +37,7 @@
 	}
 </script>
 
-<div class="border border-slate-700 bg-slate-900/60 p-3">
+<div class="border border-slate-800 bg-slate-900/50 p-3">
 	<div class="mb-1.5 flex items-baseline justify-between">
 		<div class="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
 			Load Average

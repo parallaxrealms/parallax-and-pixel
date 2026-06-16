@@ -1,7 +1,7 @@
 import { createStorageQuotaHandler } from '@parallaxrealms/pxp-utils/api-auth';
 import { createClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
-import { PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
+import { PRIVATE_SUPABASE_KEY } from '$env/static/private';
 
 /**
  * POST /api/admin/users/quota
@@ -10,7 +10,7 @@ import { PRIVATE_SUPABASE_SATORI_KEY } from '$env/static/private';
  */
 export const POST = createStorageQuotaHandler({
 	getServiceRoleClient: () =>
-		createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SATORI_KEY, {
+		createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_KEY, {
 			auth: { persistSession: false }
 		})
 });
