@@ -7,9 +7,8 @@
 	import { Input } from '@parallaxrealms/pxp-components/shadcn/input';
 	import { Label } from '@parallaxrealms/pxp-components/shadcn/label';
 	import { Checkbox } from '@parallaxrealms/pxp-components/shadcn/checkbox';
-	import * as Dialog from '@parallaxrealms/pxp-components/shadcn/dialog';
 	import * as Select from '$lib/components/shadcn/ui/select';
-	import { MediaSelector } from '@parallaxrealms/pxp-components/ecom';
+	import MediaPickerDialog from '$lib/editor/components/MediaPickerDialog.svelte';
 	import { EdraEditor, EdraToolBar } from '@parallaxrealms/pxp-components/editor';
 	import {
 		ImageComparisonSliderNode,
@@ -34,14 +33,6 @@
 		MultiColumnNode,
 		ColumnNode
 	];
-
-	// Dialog component aliases for MediaSelector
-	const MediaDialog = Dialog.Root;
-	const MediaDialogContent = Dialog.Content;
-	const MediaDialogHeader = Dialog.Header;
-	const MediaDialogTitle = Dialog.Title;
-	const MediaDialogDescription = Dialog.Description;
-	const MediaDialogFooter = Dialog.Footer;
 
 	let { data, form } = $props();
 
@@ -102,14 +93,8 @@
 	// Scheduled posting
 	let scheduledAt = $state((pageOptions?.scheduled_at as string) ?? '');
 
-	// For MediaSelector image URL binding
-	let selectedBgImageUrl = $state('');
-	$effect(() => {
-		if (selectedBgImageUrl) {
-			bgImageUrl = selectedBgImageUrl;
-			selectedBgImageUrl = '';
-		}
-	});
+	// Background-image media picker (media_assets-backed)
+	let bgMediaPickerOpen = $state(false);
 
 	function toggleSidebar() {
 		sidebarOpen = !sidebarOpen;
@@ -556,22 +541,21 @@
 								<Label>Image Source</Label>
 								{#if data.supabase && data.session?.user}
 									<div class="media-selector-row">
-										<MediaSelector
+										<Button
+											type="button"
+											variant="outlined"
+											onclick={() => (bgMediaPickerOpen = true)}
+										>
+											Browse media library
+										</Button>
+										<MediaPickerDialog
+											bind:open={bgMediaPickerOpen}
+											onSelect={(url) => (bgImageUrl = url)}
 											supabase={data.supabase}
 											user={data.session.user}
 											{siteId}
-											mode="picker"
-											bind:value={selectedBgImageUrl}
-											{Button}
-											{Input}
-											{Label}
-											{Checkbox}
-											Dialog={MediaDialog}
-											DialogContent={MediaDialogContent}
-											DialogHeader={MediaDialogHeader}
-											DialogTitle={MediaDialogTitle}
-											DialogDescription={MediaDialogDescription}
-											DialogFooter={MediaDialogFooter}
+											mediaTable="media_assets"
+											mediaBucket="media_library"
 										/>
 									</div>
 								{/if}
