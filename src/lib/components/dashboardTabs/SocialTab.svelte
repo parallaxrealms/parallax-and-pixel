@@ -5,7 +5,7 @@
 	import { Label } from '@parallaxrealms/pxp-components/shadcn/label';
 	import { Checkbox } from '@parallaxrealms/pxp-components/shadcn/checkbox';
 	import * as Dialog from '@parallaxrealms/pxp-components/shadcn/dialog';
-	import { MediaSelector } from '@parallaxrealms/pxp-components/ecom';
+	import MediaPickerDialog from '$lib/editor/components/MediaPickerDialog.svelte';
 	import DiamondSpinner from '$lib/components/custom/loader/DiamondSpinner.svelte';
 	import { Loader2 } from 'lucide-svelte';
 	import {
@@ -16,13 +16,6 @@
 		type ScheduledSocialPost
 	} from '$lib/types/social';
 
-	// Dialog component aliases for MediaSelector
-	const MediaDialog = Dialog.Root;
-	const MediaDialogContent = Dialog.Content;
-	const MediaDialogHeader = Dialog.Header;
-	const MediaDialogTitle = Dialog.Title;
-	const MediaDialogDescription = Dialog.Description;
-	const MediaDialogFooter = Dialog.Footer;
 
 	interface Props {
 		supabase: SupabaseClient;
@@ -47,6 +40,7 @@
 	let posting = $state(false);
 	let postResults = $state<{ platform: string; display_name: string; success: boolean; error?: string }[]>([]);
 	let selectedImageUrl = $state('');
+	let mediaPickerOpen = $state(false);
 
 	// ─── Schedule state ───
 	let scheduleMode = $state(false);
@@ -456,22 +450,21 @@
 					<Label class="">Images (optional)</Label>
 					{#if user}
 						<div class="media-selector-row">
-							<MediaSelector
+							<Button
+								type="button"
+								variant="outlined"
+								onclick={() => (mediaPickerOpen = true)}
+							>
+								Browse media library
+							</Button>
+							<MediaPickerDialog
+								bind:open={mediaPickerOpen}
+								onSelect={(url) => (selectedImageUrl = url)}
 								{supabase}
 								{user}
 								{siteId}
-								mode="picker"
-								bind:value={selectedImageUrl}
-								{Button}
-								{Input}
-								{Label}
-								{Checkbox}
-								Dialog={MediaDialog}
-								DialogContent={MediaDialogContent}
-								DialogHeader={MediaDialogHeader}
-								DialogTitle={MediaDialogTitle}
-								DialogDescription={MediaDialogDescription}
-								DialogFooter={MediaDialogFooter}
+								mediaTable="media_assets"
+								mediaBucket="media_library"
 							/>
 						</div>
 					{/if}
